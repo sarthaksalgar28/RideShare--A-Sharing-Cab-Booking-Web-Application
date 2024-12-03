@@ -1,23 +1,26 @@
-/* styles.css */
-
-body {
-  font-family: 'Roboto', sans-serif;
+.App {
+  text-align: center;
+  margin: 20px;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+form {
+  margin: 20px 0;
 }
 
-h1, h2, h3 {
-  margin: 0;
+input {
+  margin: 5px;
+  padding: 10px;
+  width: 200px;
 }
 
-a {
-  text-decoration: none;
+button {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
-a:hover {
-  text-decoration: underline;
+button:hover {
+  background-color: #45a049;
 }
