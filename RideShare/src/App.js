@@ -10,6 +10,9 @@ import SearchSection from './components/SearchSection';
 import PopularRides from './components/PopularRides';
 import Footer from './components/Footer';
 import MapComponent from './components/MapComponent'; // Import the MapComponent
+import Home from './components/Home'; // Ensure you import Home
+import Login from './components/Login'; // Ensure you import Login
+import Signup from './components/Signup'; // Ensure you import Signup
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -27,7 +30,9 @@ const App = () => {
                 <div>
                     <Navbar />
                     <Routes>
-                        <Route path="/" element={<HeroSection />} />
+                        <Route path="/" element={<Home />} /> {/* Use element prop */}
+                        <Route path="/login" element={<Login />} /> {/* Use element prop */}
+                        <Route path="/signup" element={<Signup />} /> {/* Use element prop */}
                         <Route path="/search" element={<SearchSection onSearch={handleSearch} setDistance={setDistance} />} />
                     </Routes>
                     {distance && <p>Distance: {distance} meters</p>} {/* Display the distance */}

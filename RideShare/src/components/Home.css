@@ -1,0 +1,20 @@
+/* src/Home.css */
+.home-container {
+    text-align: center;
+    padding: 50px;
+    background-color: #007BFF;
+    color: white;
+}
+
+.home-title {
+    font-size: 2em;
+    margin: 0;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.home-paragraph {
+    font-size: 1.5em;
+    margin-top: 20px;
+    font-style: italic;
+}

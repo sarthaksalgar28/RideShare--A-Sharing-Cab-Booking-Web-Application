@@ -14,8 +14,8 @@ const Navbar = () => {
                     <li><Link className="text-gray-700 hover:text-blue-600" to="#">Contact</Link></li>
                 </ul>
                 <div className="flex space-x-4">
-                    <Link className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" to="#">Login</Link>
-                    <Link className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" to="#">Sign Up</Link>
+                    <Link className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" to="Login">Login</Link>
+                    <Link className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" to="Signup">Sign Up</Link>
                 </div>
             </div>
         </nav>
