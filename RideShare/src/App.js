@@ -1,5 +1,4 @@
 // src/App.js
-
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import Router components
 import { LoadScript } from '@react-google-maps/api'; // Import LoadScript for Google Maps
@@ -13,6 +12,9 @@ import MapComponent from './components/MapComponent'; // Import the MapComponent
 import Home from './components/Home'; // Ensure you import Home
 import Login from './components/Login'; // Ensure you import Login
 import Signup from './components/Signup'; // Ensure you import Signup
+import AboutUs from './components/AboutUs';
+import ContactUs from './components/ContactUs';
+import OffersSection from './components/OffersSection';
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -30,14 +32,22 @@ const App = () => {
                 <div>
                     <Navbar />
                     <Routes>
-                        <Route path="/" element={<Home />} /> {/* Use element prop */}
-                        <Route path="/login" element={<Login />} /> {/* Use element prop */}
-                        <Route path="/signup" element={<Signup />} /> {/* Use element prop */}
-                        <Route path="/search" element={<SearchSection onSearch={handleSearch} setDistance={setDistance} />} />
+                        <Route path="/" element={<Home />} /> {/* Home Page */}
+                        <Route path="/login" element={<Login/>} /> {/* Login Page */}
+                        <Route path="/signup" element={<Signup/>} /> {/* Signup Page */}
+                        <Route path="/rides" element={<PopularRides />} />
+                        <Route path="/about" element={<AboutUs />} />
+                        <Route path="/contact" element={<ContactUs />} />
+                       
+                        {/* <Route path="/search" element={<SearchSection onSearch={handleSearch} setDistance={setDistance} />} /> */}
                     </Routes>
-                    {distance && <p>Distance: {distance} meters</p>} {/* Display the distance */}
-                    {/* <MapComponent /> Add the MapComponent here */}
-                    <PopularRides />
+                   
+                    {/* Only show PopularRides and Footer on the Home and Search pages */}
+                    <Routes>
+                        {/* <Route path="/" element={<><PopularRides /></>} /> */}
+                        <Route path="/search" element={<><SearchSection onSearch={handleSearch} setDistance={setDistance} /><PopularRides /></>} />
+                    </Routes>
+                    <OffersSection />
                     <Footer />
                 </div>
             </Router>

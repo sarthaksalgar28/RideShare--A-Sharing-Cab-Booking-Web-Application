@@ -1,15 +1,17 @@
-// src/components/SearchSection.js
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Change this import
+import { useNavigate } from 'react-router-dom';
 import MapComponent from './MapComponent';
 
 const SearchSection = ({ setDistance }) => {
-    const navigate = useNavigate(); // Use useNavigate instead of useHistory
+    const navigate = useNavigate();
     const fromInputRef = useRef(null);
     const toInputRef = useRef(null);
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
-    const isLoggedIn = false; // Replace this with your actual authentication logic
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [distanceInfo, setDistanceInfo] = useState(null); // State for distance and duration
+
+    const isLoggedIn = true; // Simulate logged-in state or replace with real check
 
     useEffect(() => {
         const fromAutocomplete = new window.google.maps.places.Autocomplete(fromInputRef.current, {
@@ -22,14 +24,14 @@ const SearchSection = ({ setDistance }) => {
 
         fromAutocomplete.addListener('place_changed', () => {
             const place = fromAutocomplete.getPlace();
-            if (place.geometry) {
+            if (place && place.geometry) {
                 setFrom(place.formatted_address);
             }
         });
 
         toAutocomplete.addListener('place_changed', () => {
             const place = toAutocomplete.getPlace();
-            if (place.geometry) {
+            if (place && place.geometry) {
                 setTo(place.formatted_address);
             }
         });
@@ -47,9 +49,9 @@ const SearchSection = ({ setDistance }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!isLoggedIn) {
-            navigate('/login'); // Use navigate instead of history.push
+            navigate('/login');
         } else {
-            // Add your ride search logic here
+            setIsSubmitted(true);
         }
     };
 
@@ -106,10 +108,24 @@ const SearchSection = ({ setDistance }) => {
                             Search
                         </button>
                     </form>
-                    {from && to && <MapComponent from={from} to={to} setDistance={setDistance} />}
+
+                    {/* Map Component */}
+                    {isSubmitted && from && to && (
+                        <div className="mt-10">
+                            <MapComponent from={from} to={to} setDistance={setDistanceInfo} />
+                        </div>
+                    )}
+
+                    {/* Display distance and time */}
+                    {distanceInfo && (
+                        <div className="mt-4 text-lg text-gray-700">
+                            <p>Distance: {distanceInfo.distance}</p>
+                            <p>Duration: {distanceInfo.duration}</p>
+                        </div>
+                    )}
                 </div>
             </div>
- </section>
+        </section>
     );
 };
 

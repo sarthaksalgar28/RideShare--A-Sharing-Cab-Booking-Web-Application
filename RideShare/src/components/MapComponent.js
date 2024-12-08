@@ -1,91 +1,49 @@
-// src/components/MapComponent.js
 import React, { useEffect, useRef } from 'react';
-import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
-
-const containerStyle = {
-  width: '100%',
-  height: '400px'
-};
-
-const center = {
-  lat: 18.529574417998, // Default center latitude
-  lng: 73.83384044884515 // Default center longitude
-};
 
 const MapComponent = ({ from, to, setDistance }) => {
-  const mapRef = useRef(null);
-  const directionsServiceRef = useRef(null);
-  const directionsRendererRef = useRef(null);
+    const mapRef = useRef(null);
 
-  useEffect(() => {
-    directionsServiceRef.current = new window.google.maps.DirectionsService();
-    directionsRendererRef.current = new window.google.maps.DirectionsRenderer({
-      polylineOptions: {
-        strokeColor: '#00008B', // Dark blue color
-        strokeOpacity: 1.0,
-        strokeWeight: 5,
-      }
-    });
+    useEffect(() => {
+        if (!from || !to) return;
 
-    if (mapRef.current) {
-      directionsRendererRef.current.setMap(mapRef.current);
-    }
-  }, []);
+        const map = new window.google.maps.Map(mapRef.current, {
+            zoom: 7,
+            center: { lat: 20.5937, lng: 78.9629 }, // Centered over India
+        });
 
-  useEffect(() => {
-    if (from && to) {
-      const request = {
-        origin: from,
-        destination: to,
-        travelMode: window.google.maps.TravelMode.DRIVING,
-      };
+        const directionsService = new window.google.maps.DirectionsService();
+        const directionsRenderer = new window.google.maps.DirectionsRenderer({ map });
 
-      directionsServiceRef.current.route(request, (result, status) => {
-        if (status === window.google.maps.DirectionsStatus.OK) {
-          directionsRendererRef.current.setDirections(result);
-          
-          // Calculate and set the distance
-          const distanceInMeters = result.routes[0].legs[0].distance.value;
-          if (typeof setDistance === 'function') {
-            setDistance(distanceInMeters); // Call the setDistance function passed as a prop
-          } else {
-            console.error('setDistance is not a function');
-          }
-        } else {
-          console.error('Error fetching directions', result);
-        }
-      });
-    }
-  }, [from, to, setDistance]);
+        const request = {
+            origin: from,
+            destination: to,
+            travelMode: 'DRIVING',
+            provideRouteAlternatives: true,
+        };
 
-  return (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={10}
-      onLoad={(map) => {
-        mapRef.current = map;
-        directionsRendererRef.current.setMap(map);
-      }}
-    >
-      {from && (
-        <Marker 
-          position={{ 
-            lat: parseFloat(from.split(',')[0]), 
-            lng: parseFloat(from.split(',')[1]) 
-          }} 
-        />
-      )}
-      {to && (
-        <Marker 
-          position={{ 
-            lat: parseFloat(to.split(',')[0]), 
-            lng: parseFloat(to.split(',')[1]) 
-          }} 
-        />
-      )}
-    </GoogleMap>
-  );
+        directionsService.route(request, (result, status) => {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(result);
+
+                // Extract distance and duration from the first route
+                const leg = result.routes[0].legs[0];
+                if (leg) {
+                    setDistance({
+                        distance: leg.distance.text,
+                        duration: leg.duration.text,
+                    });
+                }
+            } else {
+                console.error('Directions request failed due to ' + status);
+            }
+        });
+
+        return () => {
+            directionsRenderer.setMap(null);
+        };
+    }, [from, to, setDistance]);
+
+    return <div ref={mapRef} style={{ height: '500px', width: '100%' }}></div>;
 };
 
 export default MapComponent;
