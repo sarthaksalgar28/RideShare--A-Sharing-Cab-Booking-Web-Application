@@ -14,21 +14,11 @@ const AboutUs = () => {
 
                 <h3 className="text-2xl font-semibold mb-4">How It All Started</h3>
                 <p className="mb-4">
-                    The idea for RideShare was born out of a simple yet powerful observation. In 2003, our founder, Fred, faced a challenge while trying to get home to his family in the countryside. With no car and fully booked trains, he realized the potential of the empty seats in cars around him. This moment sparked the vision for a new travel network that would connect people traveling in the same direction.
+                    The idea for RideShare was born out of a shared experience among our group during the Diwali festival. Each year, we faced significant challenges trying to get home to our families amidst the heavy traffic and limited transportation options. Frustrated by the difficulties of travel during this busy time, we realized there had to be a better way to connect people who were traveling in the same direction.
                 </p>
                 <p className="mb-4">
-                    Over the next decade, Fred, along with co-founders Francis and Nicolas, transformed this vision into reality. Together, they built RideShare into a leading carpooling platform, connecting millions of travelers and creating a community that shares not just rides, but experiences.
+                    This realization sparked our vision for a platform that would make travel easier and more accessible for everyone. We came together as a team to develop RideShare, a solution that not only addresses the challenges of holiday travel but also fosters a sense of community among travelers. Our goal is to ensure that no one has to face the journey alone, especially during times when family reunions are most important.
                 </p>
-
-                <h3 className="text-2xl font-semibold mb-4">Our Key Numbers</h3>
-                <ul className="list-disc list-inside mb-4">
-                    <li><strong>90 million members</strong>: A thriving community of travelers.</li>
-                    <li><strong>22 countries</strong>: Expanding our reach to connect more people.</li>
-                    <li><strong>25 million travelers per quarter</strong>: Helping millions of people find rides every season.</li>
-                    <li><strong>More than €1.4 billion saved</strong>: Our members have saved this amount since our inception.</li>
-                    <li><strong>263 kilometers</strong>: The average distance of a RideShare trip.</li>
-                    <li><strong>30 billion kilometers shared</strong>: Our community has collectively traveled this distance since our creation.</li>
-                </ul>
 
                 <h3 className="text-2xl font-semibold mb-4">Meet Our Team</h3>
                 <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
@@ -64,4 +54,4 @@ const AboutUs = () => {
     );
 };
 
-export default AboutUs
+export default AboutUs; 

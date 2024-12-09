@@ -15,6 +15,11 @@ import Signup from './components/Signup'; // Ensure you import Signup
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import OffersSection from './components/OffersSection';
+import NavbarDriver from './components/NavBarDriver';
+import PublishRide from './components/PublishRide';
+import UpcomingRides from './components/UpcomingRides';
+import PointSelectionLandingPage from './components/PointSelectionLandingPage';
+
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -33,21 +38,22 @@ const App = () => {
                     <Navbar />
                     <Routes>
                         <Route path="/" element={<Home />} /> {/* Home Page */}
-                        <Route path="/login" element={<Login/>} /> {/* Login Page */}
-                        <Route path="/signup" element={<Signup/>} /> {/* Signup Page */}
+                        <Route path="/login" element={<Login />} /> {/* Login Page */}
+                        <Route path="/signup" element={<Signup />} /> {/* Signup Page */}
                         <Route path="/rides" element={<PopularRides />} />
                         <Route path="/about" element={<AboutUs />} />
                         <Route path="/contact" element={<ContactUs />} />
-                       
-                        {/* <Route path="/search" element={<SearchSection onSearch={handleSearch} setDistance={setDistance} />} /> */}
-                    </Routes>
-                   
-                    {/* Only show PopularRides and Footer on the Home and Search pages */}
-                    <Routes>
-                        {/* <Route path="/" element={<><PopularRides /></>} /> */}
                         <Route path="/search" element={<><SearchSection onSearch={handleSearch} setDistance={setDistance} /><PopularRides /></>} />
                     </Routes>
                     <OffersSection />
+                    <NavbarDriver /> {/* Moved NavbarDriver here to ensure it is always visible */}
+                    <Routes>
+                        <Route path="/publish-ride" element={<PublishRide />} /> {/* Route for PublishRide */}
+                        <Route path="/select-point" element={<PointSelectionLandingPage />} /> {/* Route for Point Selection */}
+                        </Routes>
+                    <UpcomingRides />
+                    <PointSelectionLandingPage />
+                    
                     <Footer />
                 </div>
             </Router>
