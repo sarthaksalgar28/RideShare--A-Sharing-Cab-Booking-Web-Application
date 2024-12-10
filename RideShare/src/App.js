@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { LoadScript } from '@react-google-maps/api';
 
-import NavbarWrapper from './components/NavbarWrapper.js';
+// Import components
+import NavbarWrapper from './components/NavbarWrapper';
 import HeroSection from './components/HeroSection';
 import SearchSection from './components/SearchSection';
 import PopularRides from './components/PopularRides';
@@ -16,11 +17,15 @@ import OffersSection from './components/OffersSection';
 import NavbarDriver from './components/Driver/NavBarDriver';
 import PublishRide from './components/Driver/PublishRide';
 import UpcomingRides from './components/Driver/UpcomingRides';
+import useRides from './ridesData'; // Import the custom hook for rides
 
 const App = () => {
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [distance, setDistance] = useState(null);
+    
+    // Use the custom hook to manage rides
+    const { rides, addRide } = useRides();
 
     const handleSearch = (fromValue, toValue) => {
         setFrom(fromValue);
@@ -28,7 +33,7 @@ const App = () => {
     };
 
     return (
-        <LoadScript googleMapsApiKey=" AIzaSyDrQeNVgH6Jws5AngUuXOwpBMX3bywLWZI" libraries={['places']}>
+        <LoadScript googleMapsApiKey="AIzaSyDrQeNVgH6Jws5AngUuXOwpBMX3bywLWZI" libraries={['places']}>
             <div>
                 <NavbarWrapper />
               
@@ -36,16 +41,18 @@ const App = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/rides" element={<PopularRides />} />
+                    <Route path="/rides" element={<PopularRides rides={rides} />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/contact" element={<ContactUs />} />
-                    <Route path="/search" element={<><SearchSection onSearch={handleSearch} setDistance={setDistance} /><PopularRides /></>} />
-                    <Route path="/contact" element={<ContactUs />} />
-                    {/* <Route path="/publish-ride" element={<NavbarDriver />} />  */}
-                    <Route path="/publish-ride" element={<PublishRide />} />
+                    <Route path="/search" element={
+                        <>
+                            <SearchSection onSearch={handleSearch} setDistance={setDistance} />
+                            <PopularRides rides={rides} />
+                        </>
+                    } />
+                    <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
                 </Routes>
-                {/* <OffersSection/> */}
                 
                 <Footer />
             </div>

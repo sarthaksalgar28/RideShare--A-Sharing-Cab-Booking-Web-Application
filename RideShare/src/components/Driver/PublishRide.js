@@ -1,9 +1,8 @@
-// src/components/PublishRide.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavbarDriver from './NavBarDriver';
 
-const PublishRide = () => {
+const PublishRide = ({ addRide }) => {
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
   const [pickupPoint, setPickupPoint] = useState('');
@@ -40,8 +39,7 @@ const PublishRide = () => {
     });
 
     return () => {
-      if (sourceInputRef.current) {
-        window.google.maps.event.clearInstanceListeners(sourceInputRef.current);
+      if (sourceInputRef.current) {      window.google.maps.event.clearInstanceListeners(sourceInputRef.current);
       }
       if (destinationInputRef.current) {
         window.google.maps.event.clearInstanceListeners(destinationInputRef.current);
@@ -51,15 +49,20 @@ const PublishRide = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({
-      source,
-      destination,
-      pickupPoint,
-      dropOffPoint,
-      date,
-      time,
-      passengers,
-    });
+    
+    // Create a new ride object
+    const newRide = {
+      driver: "Your Driver Name", // Replace with actual driver name
+      rating: 5.0, // You can set a default rating or calculate it based on your logic
+      route: `${source} to ${destination}`,
+      date: `${date} at ${time}`,
+      price: `${passengers * 100}rs`, // Example price calculation
+    };
+
+    // Add the new ride to the rides list
+    addRide(newRide);
+
+    // Reset form fields
     setSource('');
     setDestination('');
     setPickupPoint('');
@@ -67,6 +70,8 @@ const PublishRide = () => {
     setDate('');
     setTime('');
     setPassengers(1);
+    
+    // Navigate to the select point page
     navigate('/select-point');
   };
 
@@ -130,7 +135,7 @@ const PublishRide = () => {
                 </label>
                 <input
                   type="text"
-                  id="drop Off"
+                  id="dropOff"
                   value={dropOffPoint}
                   onChange={(e) => setDropOffPoint(e.target.value)}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -150,49 +155,48 @@ const PublishRide = () => {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
-              />
+                required               />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="time">
+                    Time
+                  </label>
+                  <input
+                    type="time"
+                    id="time"
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="passengers">
+                    Number of Passengers
+                  </label>
+                  <input
+                    type="number"
+                    id="passengers"
+                    value={passengers}
+                    onChange={(e) => setPassengers(e.target.value)}
+                    min="1"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                  />
+                </div>
+                <div className="flex items-center justify-center">
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                  >
+                    Publish Ride
+                  </button>
+                </div>
+              </form>
             </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="time">
-                Time
-              </label>
-              <input
-                type="time"
-                id="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="passengers">
-                Number of Passengers
-              </label>
-              <input
-                type="number"
-                id="passengers"
-                value={passengers}
-                onChange={(e) => setPassengers(e.target.value)}
-                min="1"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
-              />
-            </div>
-            <div className="flex items-center justify-center">
-              <button
-                type="submit"
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-              >
-                Publish Ride
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default PublishRide;
+          </div>
+        </>
+      );
+    };
+    
+    export default PublishRide;
