@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MapComponent from './MapComponent';
-
+import UserNavbar from './UserNavbar.js';
 const SearchSection = ({ setDistance }) => {
     const navigate = useNavigate();
     const fromInputRef = useRef(null);
@@ -56,6 +56,8 @@ const SearchSection = ({ setDistance }) => {
     };
 
     return (
+        <>
+        <UserNavbar/>
         <section id="Search" className="py-10">
             <div className="container mx-auto px-4">
                 <div className="bg-white shadow-md rounded-lg p-6">
@@ -126,6 +128,7 @@ const SearchSection = ({ setDistance }) => {
                 </div>
             </div>
         </section>
+        </>
     );
 };
 
