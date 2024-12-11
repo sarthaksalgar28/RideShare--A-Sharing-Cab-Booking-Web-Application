@@ -1,50 +1,44 @@
+// src/Login.js
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import './login.css'; // Import the CSS file if you are using external CSS
 
 const Login = () => {
-    const navigate = useNavigate(); // Initialize the useNavigate hook
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
     const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
+
+        const user = JSON.parse(sessionStorage.getItem('user'));
 
         // Validate email and password
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!emailRegex.test(email)) {
             setEmailError('Invalid email address');
+            return; // Stop further execution
         } else {
             setEmailError('');
         }
 
         if (password.length < 8) {
             setPasswordError('Password must be at least 8 characters long');
+            return; // Stop further execution
         } else {
             setPasswordError('');
         }
 
-        // Hardcoded login details for user interface
-        const userInterface = {
-            email: 'user@gmail.com',
-            password: 'pass1234',
-        };
-
-        // Hardcoded login details for driver interface
-        const driverInterface = {
-            email: 'driver@gmail.com',
-            password: 'driver123',
-        };
-
         if (emailRegex.test(email) && password.length >= 8) {
-            if (email === userInterface.email && password === userInterface.password) {
-                // Redirect to SearchSection
-                navigate('/search');
-            } else if (email === driverInterface.email && password === driverInterface.password) {
-                // Redirect to PublishRide
-                navigate('/publish-ride');
+            if (user && email === user.email && password === user.password) {
+                // Redirect based on role
+                if (user.role === 'user') {
+                    navigate('/search'); // Redirect to SearchSection
+                } else if (user.role === 'driver') {
+                    navigate('/publish-ride'); // Redirect to PublishRide
+                }
             } else {
                 alert('Invalid email or password');
             }
@@ -52,59 +46,54 @@ const Login = () => {
     };
 
     return (
-        <div style={{ textAlign: 'center', padding: '50px', backgroundColor: '#007BFF', color: 'white' }}>
-            <h2 id="login">Login</h2>
-            <form onSubmit={handleSubmit}> {/* Attach the handleSubmit function */}
-                <input 
-                    type="email" 
-                    name="email" 
-                    placeholder="Email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required 
-                    style={{ 
-                        margin: '10px', 
-                        padding: '10px', 
-                        borderRadius: '5px', 
-                        border: '1px solid white', 
-                        color: 'black' // Set font color to black
-                    }} 
-                />
-                {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
-                <br />
-                <input 
-                    type="password" 
-                    name="password" 
-                    placeholder="Password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required 
-                    style={{ 
-                        margin: '10px', 
-                        padding: '10px', 
-                        borderRadius: '5px', 
-                        border: '1px solid white', 
-                        color: 'black' // Set font color to black
-                    }} 
-                />
-                {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
-                <br />
-                <button 
-                    type="submit" 
-                    style={{ 
-                        backgroundColor: 'white', 
-                        color: '#007BFF', 
-                        padding: '10px 20px', 
-                        border: 'none', 
-                        borderRadius: '5px' 
-                    }}
-                >
-                    Login
-                </button>
-            </form>
-            <p>
-                Don't have an account? <Link to="/signup" style={{ color: 'white' }}>Sign up</Link>
-            </p>
+        <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: '#007BFF', color: 'white' }}>
+            <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
+                <h2 className="text-2xl font-bold text-blue-600 mb-4 text-center">Login</h2>
+                <form onSubmit={handleSubmit} className="text-black">
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                        {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                        {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <button
+                            type="submit"
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline mb-2"
+                        >
+                            Login
+                        </button>
+                        <p className="text-center mt-4">
+                    Don't have an account? <Link to="/signup" className="text-blue-500 px-4 py-2">Sign Up</Link>
+                </p>
+                    </div>
+                </form>
+               
+            </div>
         </div>
     );
 };
