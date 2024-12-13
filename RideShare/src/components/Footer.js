@@ -19,7 +19,7 @@ const Footer = () => {
     }, []);
 
     return (
-        <footer className="bg-white py-6">
+        <footer className="bg-white py-6 position-fixed fixed-bottom">
             <div className="container mx-auto px-4">
                 <div className="flex justify-between items-center">
                     <p className="text-gray-700">© 2024 RideShare. All rights reserved.</p>

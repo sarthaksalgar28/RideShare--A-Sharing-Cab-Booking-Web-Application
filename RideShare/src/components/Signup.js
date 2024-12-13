@@ -1,7 +1,8 @@
 // src/Signup.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Signup.css'; // Import the CSS file if you are using external CSS
+// import './Signup.css'; // Import the CSS file if you are using external CSS
+import SignupPageNavbar from './SignupNavbar';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -51,6 +52,8 @@ const Signup = () => {
     };
 
     return (
+        <>
+        
         <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: '#007BFF', color: 'white' }}>
             <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
                 <h2 className="text-2xl font-bold text-blue-600 mb-4 text-center">Sign Up</h2>
@@ -145,6 +148,7 @@ const Signup = () => {
                
             </div>
         </div>
+        </>
     );
 };
 

@@ -18,6 +18,7 @@ import NavbarDriver from './components/Driver/NavBarDriver';
 import PublishRide from './components/Driver/PublishRide';
 import UpcomingRides from './components/Driver/UpcomingRides';
 import useRides from './ridesData'; // Import the custom hook for rides
+import SignupNavbar from './components/SignupNavbar';
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -40,7 +41,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
+                    
                     <Route path="/rides" element={<PopularRides rides={rides} />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/contact" element={<ContactUs />} />
@@ -50,8 +51,16 @@ const App = () => {
                             <PopularRides rides={rides} />
                         </>
                     } />
+                    <Route path="/Signup" element={
+                        <> 
+                        <SignupNavbar/>
+                            <Signup />
+                        </>
+                    } />
                     <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
+                   
+                    
                 </Routes>
                 
                 <Footer />
