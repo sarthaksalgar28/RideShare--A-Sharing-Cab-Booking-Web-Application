@@ -1,90 +1,82 @@
 // src/PopularRides.js
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
-const PopularRides = ({ rides = [], showUsername = false }) => {
-    const user = JSON.parse(sessionStorage.getItem('user')); // Retrieve user data from session storage
-    const username = user ? user.name : 'Driver'; // Default to 'Driver' if no user is logged in
-
-    // State to manage available spots for each ride
-    const initialSpots = rides.map(ride => ({ id: ride.id, spots: 4 })); // Assuming each ride starts with 4 spots
-    const [availableSpots, setAvailableSpots] = useState(initialSpots);
-
-    const handleBooking = (rideId) => {
-        setAvailableSpots(prevSpots => 
-            prevSpots.map(spot => 
-                spot.id === rideId && spot.spots > 0 
-                    ? { ...spot, spots: spot.spots - 1 } // Decrease spots for the specific ride
-                    : spot // Keep the other rides unchanged
-            )
-        );
-    };
-
-    // Function to render circles based on available spots
-    const renderSpotCircles = (spots) => {
-        const circles = [];
-        for (let i = 0; i < 4; i++) {
-            circles.push(
-                <div 
-                    key={i} 
-                    className={`w-4 h-4 rounded-full border-2 ${i < spots ? 'bg-gray-800' : 'bg-white border-gray-800'}`} 
-                />
-            );
-        }
-        return <div className="flex space-x-1">{circles}</div>;
-    };
-
+const PopularRides = ({ rides }) => {
     return (
-        <section id="Rides" className="py-10 bg-gray-100">
-            <div className="container mx-auto px-4">
-                <h2 className="text-2xl font-bold mb-6">Popular Rides</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {rides.length > 0 ? (
-                        rides.map((ride, index) => {
-                            // Find the available spots for the current ride
-                            const rideSpots = availableSpots.find(spot => spot.id === ride.id)?.spots || 0;
+        <div className="container">
+            <style>
+                {`
+                    .container {
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        padding: 20px;
+                    }
 
-                            return (
-                                <div key={ride.id} className="bg-white shadow-md rounded-lg p-4">
-                                    <div className="flex items-center mb-4">
-                                        <img
-                                            alt="Profile picture of the driver"
-                                            className="w-12 h-12 rounded-full mr-4"
-                                            src="https://storage.googleapis.com/a1aa/image/ImxifoeQiAuc9UQR8c7JdbMQ7tOWJ1Cc2rqVjgDHbH4EFG3TA.jpg"
-                                        />
-                                        <div>
-                                            <h3 className="text-lg font-semibold">{showUsername ? username : 'Driver'}</h3>
-                                            <p className="text-gray-600">{ride.rating} <i className="fas fa-star text-yellow-500"></i></p>
-                                        </div>
-                                    </div>
-                                    <div className="mb-4">
-                                        <p className="text-gray-700"><i className="fas fa-map-marker-alt text-blue-600"></i> {ride.route}</p>
-                                        <p className="text-gray-700"><i className="fas fa-calendar-alt text-blue-600"></i> {ride.date}</p>
-                                        <div className="flex items-center">
-                                            {renderSpotCircles(rideSpots)} {/* Render circles for available spots */}
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <p className="text-lg font-bold">{ride.price}</p>
-                                        <button 
-                                            className="bg-blue-600 text-white px-4 py-2 rounded" 
-                                            onClick={() => handleBooking(ride.id)} 
-                                            disabled={rideSpots === 0} // Disable button if no spots are available
-                                        >
-                                            {rideSpots > 0 ? 'Book Now' : 'Fully Booked'}
-                                        </button>
-                                    </div>
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <p>No rides available.</p>
-                    )}
-                </div>
+                    h2 {
+                        color: #007bff;
+                        margin-bottom: 20px;
+                    }
+
+                    .rides-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                        gap: 20px;
+                    }
+
+                    .card {
+                        background-color: white;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        padding: 20px;
+                        transition: transform 0.2s;
+                    }
+
+                    .card:hover {
+                        transform: scale(1.02);
+                    }
+
+                    .font-bold {
+                        font-weight: bold;
+                    }
+
+                    .book-now-button {
+                        background-color: #2563eb; /* Blue 600 */
+                        color: white;
+                        padding: 10px 15px;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        text-align: center;
+                        display: inline-block;
+                        margin-top: 10px;
+                        text-decoration: none;
+                    }
+
+                    .book-now-button:hover {
+                        background-color: #1d4ed8; /* Darker blue on hover */
+                    }
+
+                    .route {
+                        color: #2563eb; /* Blue 600 */
+                    }
+                `}
+            </style>
+            <h2 className="text-2xl font-bold">Popular Rides</h2>
+            <div className="rides-grid">
+                {rides.map((ride, index) => (
+                    <div key={index} className="card">
+                        <h3 className="font-bold route">{ride.route}</h3>
+                        <p>Date: {ride.date}</p>
+                        <p>Driver: {ride.driver}</p>
+                        <p>Price: {ride.price}</p>
+                        <p>Rating: {ride.rating}</p>
+                        <Link to="/book-now" className="book-now-button">Book Now</Link> {/* Updated Link */}
+                    </div>
+                ))}
             </div>
-        </section>
+        </div>
     );
 };
 
 export default PopularRides;
-
-

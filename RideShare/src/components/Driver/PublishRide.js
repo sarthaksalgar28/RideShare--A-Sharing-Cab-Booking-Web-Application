@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import NavbarDriver from './NavBarDriver';
 
 const PublishRide = ({ addRide }) => {
+    const [driverName, setDriverName] = useState(''); // State for driver's name
     const [source, setSource] = useState('');
     const [destination, setDestination] = useState('');
     const [pickupPoint, setPickupPoint] = useState('');
@@ -51,9 +52,9 @@ const PublishRide = ({ addRide }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         const newRide = {
-            driver: JSON.parse(sessionStorage.getItem('user')).name || "Your Driver Name", // Retrieve driver name from session storage
+            driver: driverName || "Your Driver Name", // Use the driver's name from the input
             rating: 5.0,
             route: `${source} to ${destination}`,
             date: `${date} at ${time}`,
@@ -63,6 +64,7 @@ const PublishRide = ({ addRide }) => {
         addRide(newRide);
 
         // Reset form fields
+        setDriverName(''); // Reset driver's name
         setSource('');
         setDestination('');
         setPickupPoint('');
@@ -81,6 +83,21 @@ const PublishRide = ({ addRide }) => {
                 <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-2xl">
                     <h2 className="text-2xl font-bold text-blue-600 mb-4 text-center">Publish a Ride</h2>
                     <form onSubmit={handleSubmit}>
+                        {/* Driver's Name Field */}
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="driverName">
+                                Driver's Name
+                            </label>
+                            <input
+                                type="text"
+                                id="driverName"
+                                value={driverName}
+                                onChange={(e) => setDriverName(e.target.value)}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                required
+                            />
+                        </div>
+
                         <div className="flex mb-4">
                             <div className="w-1/2 pr-2">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="source">
@@ -92,7 +109,7 @@ const PublishRide = ({ addRide }) => {
                                     id="source"
                                     value={source}
                                     onChange={(e) => setSource(e.target.value)}
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    className=" shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     required
                                 />
                             </div>

@@ -17,6 +17,7 @@ import OffersSection from './components/OffersSection';
 import NavbarDriver from './components/Driver/NavBarDriver';
 import PublishRide from './components/Driver/PublishRide';
 import UpcomingRides from './components/Driver/UpcomingRides';
+import BookNow from './components/BookNow'; // Import the Book Now component
 import useRides from './ridesData'; // Import the custom hook for rides
 import SignupNavbar from './components/SignupNavbar';
 
@@ -41,7 +42,6 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
-                    
                     <Route path="/rides" element={<PopularRides rides={rides} />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/contact" element={<ContactUs />} />
@@ -51,16 +51,10 @@ const App = () => {
                             <PopularRides rides={rides} />
                         </>
                     } />
-                    <Route path="/Signup" element={
-                        <> 
-                       
-                            <Signup />
-                        </>
-                    } />
+                    <Route path="/signup" element={<Signup />} />
                     <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
-                   
-                    
+                    <Route path="/book-now" element={<BookNow />} /> {/* Add the Book Now route */}
                 </Routes>
                 
                 <Footer />
