@@ -5,9 +5,7 @@ const upcomingRides = [
     { driver: "Shanu", driverImage: "https://storage.googleapis.com/a1aa/image/ImxifoeQiAuc9UQR8c7JdbMQ7tOWJ1Cc2rqVjgDHbH4EFG3TA.jpg", source: "IET", destination: "SWARGATE", time: "10:00 AM", pickupPoint: "IET Main Gate" },
     { driver: "Hrishi Bhai", driverImage: "https://storage.googleapis.com/a1aa/image/ImxifoeQiAuc9UQR8c7JdbMQ7tOWJ1Cc2rqVjgDHbH4EFG3TA.jpg", source: "IET", destination: "PIMPRI", time: "11:30 AM", pickupPoint: "IET Parking Lot" },
     { driver: "Sunny Bhai", driverImage: "https://storage.googleapis.com/a1aa/image/ImxifoeQiAuc9UQR8c7JdbMQ7tOWJ1Cc2rqVjgDHbH4EFG3TA.jpg", source: "IET", destination: "CHINCHWAD", time: "1:00 PM", pickupPoint: "IET Bus Stop" },
-    { driver: "Ashish", driverImage: "https://storage.googleapis.com/a1aa/image/ImxifoeQiAuc9UQR8c7JdbMQ7tOWJ1Cc2rqVjgDHbH4EFG3TA.jpg", source: "Gokhale Nagar", destination: "IET", time: "2:30 PM", pickupPoint: "Gokhale Nagar Square" },
-    { driver: "Pathya", driverImage: "https://storage.googleapis.com/a1aa/image/ImxifoeQiAuc9UQR8c7JdbMQ7tOWJ1Cc2rqVjgDHbH4EFG3TA.jpg", source: "IET", destination: "GOA", time: "5:00 PM", pickupPoint: "IET Main Gate" },
-    { driver: "Pratya", driverImage: "https://storage.googleapis.com/a1aa/image/ImxifoeQiAuc9UQR8c7JdbMQ7tOWJ1Cc2rqVjgDHbH4EFG3TA.jpg", source: "IET", destination: "SILENCE", time: "6:00 PM", pickupPoint: "IET Parking Lot" },
+    
 ];
 
 const UpcomingRides = () => {
