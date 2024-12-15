@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MapComponent from './MapComponent';
-import UserNavbar from './UserNavbar.js';
+import MapComponent from './/MapComponent.js';
+import UserNavbar from './/UserNavbar.js';
 const SearchSection = ({ setDistance }) => {
     const navigate = useNavigate();
     const fromInputRef = useRef(null);

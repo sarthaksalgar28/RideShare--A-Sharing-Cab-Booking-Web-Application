@@ -3,23 +3,24 @@ import { Routes, Route } from 'react-router-dom';
 import { LoadScript } from '@react-google-maps/api';
 
 // Import components
-import NavbarWrapper from './components/NavbarWrapper';
-import HeroSection from './components/HeroSection';
-import SearchSection from './components/SearchSection';
-import PopularRides from './components/PopularRides';
-import Footer from './components/Footer';
-import Home from './components/Home';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import AboutUs from './components/AboutUs';
-import ContactUs from './components/ContactUs';
-import OffersSection from './components/OffersSection';
+import NavbarWrapper from './components/HomePage/NavbarWrapper';
+import HeroSection from './components/HomePage/HeroSection';
+import SearchSection from './components/User/SearchSection';
+import PopularRides from './components/User/PopularRides';
+import Footer from './components/HomePage/Footer';
+import Home from './components/HomePage/Home';
+import Login from './components/Login/Login';
+import Signup from './components/SignUp/Signup';
+import AboutUs from './components/HomePage/AboutUs';
+import ContactUs from './components/HomePage/ContactUs';
+import OffersSection from './components/User/OffersSection';
 import NavbarDriver from './components/Driver/NavBarDriver';
 import PublishRide from './components/Driver/PublishRide';
 import UpcomingRides from './components/Driver/UpcomingRides';
-import BookNow from './components/BookNow'; // Import the Book Now component
+import BookNow from './components/User/BookNow'; // Import the Book Now component
 import useRides from './ridesData'; // Import the custom hook for rides
-import SignupNavbar from './components/SignupNavbar';
+import SignupNavbar from './components/SignUp/SignupNavbar';
+import ForgotPassword from './components/Login/ForgotPassword';
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -42,6 +43,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/rides" element={<PopularRides rides={rides} />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/contact" element={<ContactUs />} />

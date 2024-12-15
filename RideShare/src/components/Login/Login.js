@@ -88,11 +88,14 @@ const Login = () => {
                             Login
                         </button>
                         <p className="text-center mt-4">
-                    Don't have an account? <Link to="/signup" className="text-blue-500 px-4 py-2">Sign Up</Link>
-                </p>
+                            Don't have an account?<Link to="/signup" className="text-blue-500 px-4 py-2">Sign Up</Link>
+                        </p>
+                        <p className="text-center mt-2">
+                            <Link to="/forgot-password" className="text-blue-500">Forgot Password?</Link>
+                        </p>
+                    
                     </div>
                 </form>
-               
             </div>
         </div>
     );

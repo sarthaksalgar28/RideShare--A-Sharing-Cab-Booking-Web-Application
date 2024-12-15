@@ -19,9 +19,9 @@ const Footer = () => {
     }, []);
 
     return (
-        <footer className="bg-white py-6 position-fixed fixed-bottom">
+        <footer className="bg-white py-6 position-fixed-bottom">
             <div className="container mx-auto px-4">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between bottom">
                     <p className="text-gray-700">© 2024 RideShare. All rights reserved.</p>
                     <p className="text-gray-700">{currentTime}</p> {/* Display the current time */}
                     <ul className="flex space-x-4">
