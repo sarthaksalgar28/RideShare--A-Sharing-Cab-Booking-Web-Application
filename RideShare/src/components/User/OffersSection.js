@@ -1,7 +1,19 @@
 // src/components/OffersSection.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const OffersSection = () => {
+    const navigate = useNavigate(); // Initialize the useNavigate hook
+
+    const handleButtonClick = (offer) => {
+        if (offer.buttonText === "Get Started" || offer.buttonText === "Join Now") {
+            navigate('/signup'); // Redirect to the signup page for these buttons
+        } else if (offer.buttonText === "Book Now") {
+            navigate('/search'); // Redirect to the Search page for the "Book Now" button
+        }
+        // You can add more conditions for other buttons if needed
+    };
+
     return (
         <section className="bg-gray-100 py-20">
             <div className="container mx-auto px-4 text-center">
@@ -12,7 +24,12 @@ const OffersSection = () => {
                         <div key={index} className="offer bg-white text-blue-600 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
                             <h3 className="text-xl font-semibold">{offer.title}</h3>
                             <p>{offer.description}</p>
-                            <button className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700 transition duration-300">{offer.buttonText}</button>
+                            <button 
+                                onClick={() => handleButtonClick(offer)} // Call the function on button click
+                                className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700 transition duration-300"
+                            >
+                                {offer.buttonText}
+                            </button>
                         </div>
                     ))}
                 </div>
@@ -40,7 +57,7 @@ const offersData = [
     {
         title: "Weekend Rides at 30% Off!",
         description: "Enjoy your weekends with discounted rides. Get 30% off on all rides every Saturday and Sunday!",
-        buttonText: "Book Now"
+        buttonText: "Book Now" // This button will redirect to the Search page
     },
     {
         title: "Join Our Loyalty Program",
