@@ -21,9 +21,13 @@ import BookNow from './components/User/BookNow'; // Import the Book Now componen
 import useRides from './ridesData'; // Import the custom hook for rides
 import SignupNavbar from './components/SignUp/SignupNavbar';
 import ForgotPassword from './components/Login/ForgotPassword';
+<<<<<<< HEAD
 import Page1 from './components/HomePage/Page1';    
 import QuoteSection from './components/HomePage/QuoteSection';
 
+=======
+import PaymentComponent from './components/Payments/PaymentComponent';
+>>>>>>> 5f5808a2770beaf1585fdf9e10bb2ff018a30a1e
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -59,7 +63,7 @@ const App = () => {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
-                    <Route path="/book-now" element={<BookNow />} /> {/* Add the Book Now route */}
+                    <Route path="/book-now" element={<PaymentComponent />} /> {/* Add the Book Now route */}
                 </Routes>
                 <Page1 />
                 <OffersSection/>

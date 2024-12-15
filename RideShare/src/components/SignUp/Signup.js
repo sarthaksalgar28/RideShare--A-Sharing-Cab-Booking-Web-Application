@@ -46,6 +46,7 @@ const Signup = () => {
             const user = { name, role, email, password };
             sessionStorage.setItem('user', JSON.stringify(user)); // Store user data in session storage
             
+            alert('SignUp successful!');
             // Redirect to login page after signup
             navigate('/login');
         }
