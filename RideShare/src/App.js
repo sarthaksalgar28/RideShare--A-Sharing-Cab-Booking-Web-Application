@@ -21,6 +21,7 @@ import BookNow from './components/User/BookNow'; // Import the Book Now componen
 import useRides from './ridesData'; // Import the custom hook for rides
 import SignupNavbar from './components/SignUp/SignupNavbar';
 import ForgotPassword from './components/Login/ForgotPassword';
+import PaymentComponent from './components/Payments/PaymentComponent';
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -56,7 +57,7 @@ const App = () => {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
-                    <Route path="/book-now" element={<BookNow />} /> {/* Add the Book Now route */}
+                    <Route path="/book-now" element={<PaymentComponent />} /> {/* Add the Book Now route */}
                 </Routes>
                 
                 <Footer />
