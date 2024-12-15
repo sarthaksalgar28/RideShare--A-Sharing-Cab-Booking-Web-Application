@@ -21,13 +21,12 @@ import BookNow from './components/User/BookNow'; // Import the Book Now componen
 import useRides from './ridesData'; // Import the custom hook for rides
 import SignupNavbar from './components/SignUp/SignupNavbar';
 import ForgotPassword from './components/Login/ForgotPassword';
-<<<<<<< HEAD
 import Page1 from './components/HomePage/Page1';    
 import QuoteSection from './components/HomePage/QuoteSection';
 
-=======
+import Search from './components/HomePage/Search';
 import PaymentComponent from './components/Payments/PaymentComponent';
->>>>>>> 5f5808a2770beaf1585fdf9e10bb2ff018a30a1e
+
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -49,6 +48,7 @@ const App = () => {
               
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Search />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/rides" element={<PopularRides rides={rides} />} />
