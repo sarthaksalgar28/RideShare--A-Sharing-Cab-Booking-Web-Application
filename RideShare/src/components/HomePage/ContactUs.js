@@ -20,7 +20,16 @@ const ContactUs = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100"> {/* Centering div */}
-            <section className="py-10 bg-white rounded shadow-md w-full max-w-md"> {/* Adjusted section styles */}
+            <section 
+                style={{ 
+                    padding: '2.5rem', 
+                    backgroundColor: 'white', 
+                    borderRadius: '0.375rem', 
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)', 
+                    width: '100%', 
+                    maxWidth: '400px' // Adjust this value to reduce the size
+                }}
+            >
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold mb-6 text-center">Contact Us</h2>
                     {success && <p className="text-green-500 mb-4 text-center">Your message has been sent successfully!</p>}

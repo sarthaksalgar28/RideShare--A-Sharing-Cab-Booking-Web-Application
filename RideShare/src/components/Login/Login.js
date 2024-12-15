@@ -35,8 +35,10 @@ const Login = () => {
             if (user && email === user.email && password === user.password) {
                 // Redirect based on role
                 if (user.role === 'user') {
+                    alert('Login successful!');
                     navigate('/search'); // Redirect to SearchSection
                 } else if (user.role === 'driver') {
+                    alert('Login successful!');
                     navigate('/publish-ride'); // Redirect to PublishRide
                 }
             } else {

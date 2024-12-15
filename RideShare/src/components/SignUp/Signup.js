@@ -1,5 +1,5 @@
 // src/Signup.js
-import React, { useState } from 'react';
+import React, { useEffect,  useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // import './Signup.css'; // Import the CSS file if you are using external CSS
 import SignupPageNavbar from './SignupNavbar';
@@ -14,6 +14,11 @@ const Signup = () => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+      // Scroll to top when the component is mounted
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -46,6 +51,7 @@ const Signup = () => {
             const user = { name, role, email, password };
             sessionStorage.setItem('user', JSON.stringify(user)); // Store user data in session storage
             
+            alert('SignUp successful!');
             // Redirect to login page after signup
             navigate('/login');
         }

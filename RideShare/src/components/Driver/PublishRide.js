@@ -72,7 +72,7 @@ const PublishRide = ({ addRide }) => {
         setDate('');
         setTime('');
         setPassengers(1);
-        
+        alert('Published Ride successful!');
         navigate('/select-point');
     };
 
