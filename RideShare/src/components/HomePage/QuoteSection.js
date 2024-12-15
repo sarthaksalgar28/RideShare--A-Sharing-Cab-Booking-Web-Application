@@ -21,7 +21,15 @@ const QuoteSection = () => {
                     </div>
                 </div>
                 <div style={{ flex: 1, textAlign: 'right' }}>
+<<<<<<< HEAD
                     <img src="https://th.bing.com/th/id/OIP.M3qi8Yga5IxKo4orWrlzQwHaE8?rs=1&pid=ImgDetMain" alt="Safety" style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }} />
+=======
+                    <img 
+                        src="https://www.uberapps.tech/blog/images/top-leading-ride-sharing-apps.jpg" 
+                        alt="Safety" 
+                        style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', marginLeft: '20px' }} // Added marginLeft
+                    />
+>>>>>>> c44d58497ec21f68376723818d2c5b660ae8d44a
                 </div>
             </div>
         </section>
