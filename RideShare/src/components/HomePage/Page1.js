@@ -1,6 +1,5 @@
 // src/components/Page1.js
 import React from 'react';
-import offerImage from '../../Photos/Blue and White Abstract Geometric Blank Page A4 Landscape.jpg'; // Update this path as necessary
 
 const Page1 = () => {
     return (
@@ -14,7 +13,7 @@ const Page1 = () => {
                 </div>
                 <div className="flex-1 flex items-end justify-center">
                     <img 
-                        src={offerImage} 
+                        src="https://thumbs.dreamstime.com/b/hands-man-using-mobile-smart-phone-gps-application-th-car-technology-concept-114226552.jpg" 
                         alt="Offer" 
                         style={{ width: '861px', height: '286px', objectFit: 'cover' }} // Set width and height
                         className="rounded-lg" 

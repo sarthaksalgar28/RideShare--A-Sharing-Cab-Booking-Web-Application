@@ -93,6 +93,7 @@ const Home = () => {
           slide 9
         </div>
       </ReactSimplyCarousel>
+      
                 
                
             <h1 className="home-title">Travel Together, Save Together</h1>

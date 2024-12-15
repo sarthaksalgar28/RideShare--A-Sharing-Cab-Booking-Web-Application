@@ -13,6 +13,11 @@ const Search = ({ setDistance }) => {
     const [distanceInfo, setDistanceInfo] = useState(null); // State for distance and duration
 
     const isLoggedIn = true; // Simulate logged-in state or replace with real check
+      // Scroll to top when the component is mounted
+        useEffect(() => {
+            window.scrollTo(0, 0);
+        }, []);
+    
 
     useEffect(() => {
         const fromAutocomplete = new window.google.maps.places.Autocomplete(fromInputRef.current, {

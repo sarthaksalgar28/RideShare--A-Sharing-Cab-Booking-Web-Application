@@ -1,8 +1,14 @@
 // src/PopularRides.js
-import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import React, { useState } from 'react';
+import PaymentComponent from '../Payments/PaymentComponent';
 
 const PopularRides = ({ rides }) => {
+    const [selectedRide, setSelectedRide] = useState(null); // State to hold the selected ride for payment
+
+    const handleBookNow = (ride) => {
+        setSelectedRide(ride); // Set the selected ride when "Book Now" is clicked
+    };
+
     return (
         <div className="container">
             <style>
@@ -71,10 +77,13 @@ const PopularRides = ({ rides }) => {
                         <p>Driver: {ride.driver}</p>
                         <p>Price: {ride.price}</p>
                         <p>Rating: {ride.rating}</p>
-                        <Link to="/book-now" className="book-now-button">Book Now</Link> {/* Updated Link */}
+                        <button className="book-now-button" onClick={() => handleBookNow(ride)}>Book Now</button>
                     </div>
                 ))}
             </div>
+            {selectedRide && (
+                <PaymentComponent amount={selectedRide.price} /> // Pass the selected ride's price to the PaymentComponent
+            )}
         </div>
     );
 };
