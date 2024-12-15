@@ -24,7 +24,11 @@ import ForgotPassword from './components/Login/ForgotPassword';
 import Page1 from './components/HomePage/Page1';    
 import QuoteSection from './components/HomePage/QuoteSection';
 
+<<<<<<< HEAD
 import Search from './components/HomePage/Search';
+=======
+
+>>>>>>> fe604a9 (Notification)
 import PaymentComponent from './components/Payments/PaymentComponent';
 
 
