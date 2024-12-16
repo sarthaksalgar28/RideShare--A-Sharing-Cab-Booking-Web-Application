@@ -47,7 +47,7 @@ const App = () => {
                 <NavbarWrapper />
               
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Home />}  />
                     <Route path="/" element={<Search />} />
                     <Route path="/login" element={<Login />} />
                     {/* <Route path="/slider" element={<Slider />} /> */}
@@ -66,9 +66,7 @@ const App = () => {
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
                     <Route path="/book-now" element={<PaymentComponent />} /> {/* Add the Book Now route */}
                 </Routes>
-                <Page1 />
-                <OffersSection/>
-                <QuoteSection />
+                
                 <Footer />
             </div>
         </LoadScript>
