@@ -1,27 +1,64 @@
-// src/components/NavBar.js
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { useNavigate, Link } from 'react-router-dom'; 
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
+const UserNavbar = () => {
+    const navigate = useNavigate(); 
 
-const Navbar = () => {
+    const handleLogout = () => {
+        alert("You have been logged out.");
+        sessionStorage.clear(); 
+        navigate('/');
+    };
+
+    // Define a custom style for the brand text
+    const brandStyle = {
+        color: '#007bff', // Blue color
+        fontWeight: 'bold', // Bold text
+    };
+
     return (
-        <nav className="bg-white shadow-md">
-            <div className="container mx-auto px-4 py-2 flex justify-between items-center">
-            
-                <Link className="text-2xl font-bold text-blue-600" to="/">RideShare</Link> {/* Use Link for navigation */}
-                <ul className="flex space-x-4">
-                    <li><Link className="text-gray-700 hover:text-blue-600" to="/">Home</Link></li> {/* Link to Home */}
-                    <li><Link className="text-gray-700 hover:text-blue-600" to="/rides">Rides</Link></li>
-                    <li><Link className="text-gray-700 hover:text-blue-600" to="/about">About</Link></li> {/* Updated About link */}
-                    <li><Link className="text-gray-700 hover:text-blue-600" to="/contact">Contact Us</Link></li>
-                </ul>
-                <div className="flex space-x-4">
-                    <Link className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" to="login">Login</Link>
-                    <Link className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" to="Signup">Sign Up</Link>
+        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-md">
+            <div className="container">
+                <Link className="navbar-brand" to="/" style={brandStyle}>RideShare</Link> {/* Apply inline style */}
+                <button 
+                    className="navbar-toggler" 
+                    type="button" 
+                    data-toggle="collapse" 
+                    data-target="#userNavbarNav" 
+                    aria-controls="userNavbarNav" 
+                    aria-expanded="false" 
+                    aria-label="Toggle navigation"
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="userNavbarNav">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item">
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/">Home</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/rides">Rides</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/about">About</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/contact">Contact Us</Link>
+                        </li>
+                    </ul>
+                    <div className="ml-auto">
+                        <button
+                            className="btn btn-primary mr-2"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
     );
 };
 
-export default Navbar;
+export default UserNavbar;
