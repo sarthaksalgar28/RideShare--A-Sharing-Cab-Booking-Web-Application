@@ -24,11 +24,10 @@ import ForgotPassword from './components/Login/ForgotPassword';
 import Page1 from './components/HomePage/Page1';    
 import QuoteSection from './components/HomePage/QuoteSection';
 
-<<<<<<< HEAD
-import Search from './components/HomePage/Search';
-=======
 
->>>>>>> fe604a9 (Notification)
+import Search from './components/HomePage/Search';
+
+
 import PaymentComponent from './components/Payments/PaymentComponent';
 
 
@@ -51,9 +50,10 @@ const App = () => {
                 <NavbarWrapper />
               
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Home />}  />
                     <Route path="/" element={<Search />} />
                     <Route path="/login" element={<Login />} />
+                    {/* <Route path="/slider" element={<Slider />} /> */}
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/rides" element={<PopularRides rides={rides} />} />
                     <Route path="/about" element={<AboutUs />} />
@@ -69,9 +69,7 @@ const App = () => {
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
                     <Route path="/book-now" element={<PaymentComponent />} /> {/* Add the Book Now route */}
                 </Routes>
-                <Page1 />
-                <OffersSection/>
-                <QuoteSection />
+                
                 <Footer />
             </div>
         </LoadScript>

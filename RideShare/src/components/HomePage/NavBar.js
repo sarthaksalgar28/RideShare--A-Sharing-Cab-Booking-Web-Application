@@ -2,10 +2,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
+
 const Navbar = () => {
     return (
         <nav className="bg-white shadow-md">
             <div className="container mx-auto px-4 py-2 flex justify-between items-center">
+            
                 <Link className="text-2xl font-bold text-blue-600" to="/">RideShare</Link> {/* Use Link for navigation */}
                 <ul className="flex space-x-4">
                     <li><Link className="text-gray-700 hover:text-blue-600" to="/">Home</Link></li> {/* Link to Home */}
