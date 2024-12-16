@@ -24,7 +24,10 @@ import ForgotPassword from './components/Login/ForgotPassword';
 import Page1 from './components/HomePage/Page1';    
 import QuoteSection from './components/HomePage/QuoteSection';
 
+
 import Search from './components/HomePage/Search';
+
+
 import PaymentComponent from './components/Payments/PaymentComponent';
 
 

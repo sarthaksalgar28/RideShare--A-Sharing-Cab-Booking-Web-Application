@@ -1,30 +1,28 @@
-// src/ForgotPassword.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import './forgotPassword.css'; // Optional: Create a CSS file for styling
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         // Validate email format
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const emailRegex = /^(?:[a-zA-Z0-9._%+-]+)@(?:[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
         if (!emailRegex.test(email)) {
-
             setError('Invalid email address');
-            alert('Link Sent successful!');
+            setModalMessage('Please provide a valid email address.');
+            setModalVisible(true);
             return;
         } else {
             setError('');
         }
 
-        // Send reset password request to the server
         try {
             const response = await fetch('/api/send-reset-link', { // Adjust the API endpoint as needed
                 method: 'POST',
@@ -35,14 +33,21 @@ const ForgotPassword = () => {
             });
 
             if (response.ok) {
-                setMessage('Reset link sent to your email.');
+                setModalMessage('Failed to send the reset link. Please try again later.');
+                setModalVisible(true);
                 setTimeout(() => navigate('/login'), 3000); // Redirect to login after 3 seconds
             } else {
-                setError('Failed to send reset link. Please try again.');
+                setModalMessage('A reset link has been sent to your email.');
+                setModalVisible(true);
             }
         } catch (err) {
-            setError('An error occurred. Please try again later.');
+            setModalMessage('An error occurred. Please try again later.');
+            setModalVisible(true);
         }
+    };
+
+    const closeModal = () => {
+        setModalVisible(false);
     };
 
     return (
@@ -76,6 +81,27 @@ const ForgotPassword = () => {
                     </div>
                 </form>
             </div>
+
+            {/* Modal Popup */}
+            {modalVisible && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-6 rounded shadow-lg text-center w-80">
+                        <img
+                            width="50px"
+                            src="https://w7.pngwing.com/pngs/709/448/png-transparent-green-check-business-internet-service-organization-computer-software-web-page-green-registration-success-button-web-design-company-text-thumbnail.png"
+                            alt="Success"
+                            className="mx-auto mb-4"
+                        />
+                        <h1 className="text-xl font-bold text-green-600">{modalMessage}</h1>
+                        <button
+                            onClick={closeModal}
+                            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                        >
+                            Done
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
