@@ -143,6 +143,9 @@ const Login = () => {
                 // Display success message and redirect based on role
                 setModalMessage('Login successful!');
                 setModalVisible(true);
+                setTimeout(() => {
+            navigate('/select-point');
+        }, 2000);
 
                 if (user.role === 'user') {
                     setTimeout(() => navigate('/search'), 2000); // Redirect after 2 seconds
