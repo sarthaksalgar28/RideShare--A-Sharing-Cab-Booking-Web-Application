@@ -59,6 +59,7 @@ const Signup = () => {
 
     return (
         <>
+  
             {/* Modal for Success Message */}
             {modalVisible && (
                 <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">

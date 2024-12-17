@@ -6,10 +6,14 @@ import QuoteSection from './QuoteSection';
 import Search from './Search';
 import Page1 from './Page1';
 import OffersSection from '../User/OffersSection';
+import UserNavbar from './NavBar';
+import NavBar from './NavBar';
 
 const Home = () => {
     return (
       <>
+      <NavBar/>
+      {/* <UserNavbar/> */}
         <div className="home-container"> {/* Added class here */}
           
             <h1 className="home-title">Travel Together, Save Together</h1>

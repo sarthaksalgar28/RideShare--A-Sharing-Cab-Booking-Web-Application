@@ -1,8 +1,10 @@
 // src/components/AboutUs.js
 import React from 'react';
-
+import UserNavbar from './NavBar';
 const AboutUs = () => {
     return (
+        <>
+    <UserNavbar/>
         <section className="py-10 bg-gray-100">
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold mb-6">About Us</h2>
@@ -51,6 +53,7 @@ const AboutUs = () => {
                 </p>
             </div>
         </section>
+        </>
     );
 };
 

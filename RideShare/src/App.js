@@ -27,7 +27,7 @@ import QuoteSection from './components/HomePage/QuoteSection';
 
 import Search from './components/HomePage/Search';
 
-
+import YourRides from './components/User/YourRides';
 import PaymentComponent from './components/Payments/PaymentComponent';
 
 
@@ -47,7 +47,7 @@ const App = () => {
     return (
         <LoadScript googleMapsApiKey="AIzaSyDrQeNVgH6Jws5AngUuXOwpBMX3bywLWZI" libraries={['places']}>
             <div>
-                <NavbarWrapper />
+                {/* <NavbarWrapper /> */}
               
                 <Routes>
                     <Route path="/" element={<Home />}  />
@@ -64,6 +64,7 @@ const App = () => {
                             <PopularRides rides={rides} />
                         </>
                     } />
+                    <Route path="/your-rides" element={<YourRides/>} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />

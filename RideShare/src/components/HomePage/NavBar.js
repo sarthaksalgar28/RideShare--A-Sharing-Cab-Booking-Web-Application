@@ -5,10 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 const UserNavbar = () => {
     const navigate = useNavigate(); 
 
-    const handleLogout = () => {
-        alert("You have been logged out.");
-        sessionStorage.clear(); 
-        navigate('/');
+    const handleSignup = () => {
+        
+        
+        navigate('/signup'); // Redirect to signup page on logout
+    };
+
+    const handleLogin = () => {
+        navigate('/login'); // Redirect to login page
     };
 
     // Define a custom style for the brand text
@@ -50,9 +54,15 @@ const UserNavbar = () => {
                     <div className="ml-auto">
                         <button
                             className="btn btn-primary mr-2"
-                            onClick={handleLogout}
+                            onClick={handleLogin} // Redirect to login page
                         >
-                            Logout
+                            Login
+                        </button>
+                        <button
+                            className="btn btn-danger"
+                            onClick={handleSignup} // Redirect to signup page
+                        >
+                            Signup
                         </button>
                     </div>
                 </div>

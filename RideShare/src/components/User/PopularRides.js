@@ -1,6 +1,7 @@
 // src/PopularRides.js
 import React, { useState } from 'react';
 import PaymentComponent from '../Payments/PaymentComponent';
+import UserNavbar from './UserNavbar';
 
 const PopularRides = ({ rides }) => {
     const [selectedRide, setSelectedRide] = useState(null); // State to hold the selected ride for payment
@@ -10,6 +11,8 @@ const PopularRides = ({ rides }) => {
     };
 
     return (
+        <>
+       <UserNavbar/>
         <div className="container">
             <style>
                 {`
@@ -85,6 +88,7 @@ const PopularRides = ({ rides }) => {
                 <PaymentComponent amount={selectedRide.price} /> // Pass the selected ride's price to the PaymentComponent
             )}
         </div>
+        </>
     );
 };
 

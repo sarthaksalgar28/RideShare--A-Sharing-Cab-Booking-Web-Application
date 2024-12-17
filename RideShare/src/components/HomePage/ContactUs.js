@@ -1,5 +1,6 @@
 // src/components/ContactUs.js
 import React, { useState } from 'react';
+import UserNavbar from './NavBar';
 
 const ContactUs = () => {
     const [name, setName] = useState('');
@@ -19,6 +20,8 @@ const ContactUs = () => {
     };
 
     return (
+        <>
+        <UserNavbar/>
         <div className="flex items-center justify-center min-h-screen bg-gray-100"> {/* Centering div */}
             <section 
                 style={{ 
@@ -77,6 +80,7 @@ const ContactUs = () => {
                 </div>
             </section>
         </div>
+        </>
     );
 };
 
