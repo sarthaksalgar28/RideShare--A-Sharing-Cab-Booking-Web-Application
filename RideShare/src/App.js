@@ -23,6 +23,7 @@ import SignupNavbar from './components/SignUp/SignupNavbar';
 import ForgotPassword from './components/Login/ForgotPassword';
 import Page1 from './components/HomePage/Page1';    
 import QuoteSection from './components/HomePage/QuoteSection';
+import TermsAndPolicy from './components/HomePage/TermsAndPolicy';
 
 
 import Search from './components/HomePage/Search';
@@ -88,6 +89,11 @@ const App = () => {
                     <Route path="/refer" element={<Refer />} />
                     
                     {/* Add the Book Now route */}
+
+                    <Route path="/book-now" element={<PaymentComponent />} /> {/* Add the Book Now route */}
+                    <Route path="/TermsAndConditoins" element={<TermsAndPolicy/>} />
+                    
+
                 </Routes>
                 
                 <Footer />
