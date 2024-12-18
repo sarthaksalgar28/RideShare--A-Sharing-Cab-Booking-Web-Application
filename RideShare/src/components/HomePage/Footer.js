@@ -25,8 +25,8 @@ const Footer = () => {
                     <p className="text-gray-700">© 2024 RideShare. All rights reserved.</p>
                     <p className="text-gray-700">{currentTime}</p> {/* Display the current time */}
                     <ul className="flex space-x-4">
-                        <li><a className="text-gray-700 hover:text-blue-600" href="#">Privacy Policy</a></li>
-                        <li><a className="text-gray-700 hover:text-blue-600" href="#">Terms of Service</a></li>
+                        <li><a className="text-gray-700 hover:text-blue-600" href="TermsAndConditoins">TermsAndConditions</a></li>
+                        
                     </ul>
                 </div>
             </div>
