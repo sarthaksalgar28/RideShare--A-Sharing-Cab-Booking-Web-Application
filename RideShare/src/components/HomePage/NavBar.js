@@ -59,7 +59,7 @@ const UserNavbar = () => {
                             Login
                         </button>
                         <button
-                            className="btn btn-danger"
+                            className="btn btn-primary mr-2"
                             onClick={handleSignup} // Redirect to signup page
                         >
                             Signup

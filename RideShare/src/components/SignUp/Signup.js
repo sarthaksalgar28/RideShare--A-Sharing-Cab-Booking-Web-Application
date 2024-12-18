@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SignupPageNavbar from './SignupNavbar';
@@ -10,6 +9,9 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [carNumber, setCarNumber] = useState('');
+    const [licenseNumber, setLicenseNumber] = useState('');
+    const [cardLastFour, setCardLastFour] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
@@ -44,7 +46,7 @@ const Signup = () => {
 
         if (emailRegex.test(email) && password.length >= 8 && password === confirmPassword) {
             // Save user data in session storage
-            const user = { name, role, email, password };
+            const user = { name, role, email, password, carNumber, licenseNumber, cardLastFour };
             sessionStorage.setItem('user', JSON.stringify(user)); // Store user data in session storage
             
             setModalMessage('Signup Successful!');
@@ -59,27 +61,25 @@ const Signup = () => {
 
     return (
         <>
-  
             {/* Modal for Success Message */}
             {modalVisible && (
                 <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
-    <div className="flex justify-center mb-4"> {/* Flexbox to center the image */}
-        <img
-            width="50px"
-            src="https://w7.pngwing.com/pngs/709/448/png-transparent-green-check-business-internet-service-organization-computer-software-web-page-green-registration-success-button-web-design-company-text-thumbnail.png"
-            alt="Success"
-        />
-    </div>
-    <h1 className="text-xl font-bold text-green-600">{modalMessage}</h1>
-    <button
-        onClick={closeModal}
-        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-    >
-        Done
-    </button>
-</div>
-
+                        <div className="flex justify-center mb-4">
+                            <img
+                                width="50px"
+                                src="https://w7.pngwing.com/pngs/709/448/png-transparent-green-check-business-internet-service-organization-computer-software-web-page-green-registration-success-button-web-design-company-text-thumbnail.png"
+                                alt="Success"
+                            />
+                        </div>
+                        <h1 className="text-xl font-bold text-green-600">{modalMessage}</h1>
+                        <button
+                            onClick={closeModal}
+                            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                        >
+                            Done
+                        </button>
+                    </div>
                 </div>
             )}
 
@@ -105,7 +105,15 @@ const Signup = () => {
                             <select
                                 id="role"
                                 value={role}
-                                onChange={(e) => setRole(e.target.value)}
+                                onChange={(e) => {
+                                    setRole(e.target.value);
+                                    // Reset additional fields when role changes
+                                    if (e.target.value !== 'driver') {
+                                        setCarNumber('');
+                                        setLicenseNumber('');
+                                        setCardLastFour('');
+                                    }
+                                }}
                                 required
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             >
@@ -114,6 +122,46 @@ const Signup = () => {
                                 <option value="driver">Driver</option>
                             </select>
                         </div>
+                        {role === 'driver' && (
+                            <>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="carNumber">Car Number</label>
+                                    <input
+                                        type="text"
+                                        id="carNumber"
+                                        placeholder="Car Number"
+                                        value={carNumber}
+                                        onChange={(e) => setCarNumber(e.target.value)}
+                                        required
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="licenseNumber">Driver's License Number</label>
+                                    <input
+                                        type="text"
+                                        id="licenseNumber"
+                                        placeholder="Driver's License Number"
+                                        value={licenseNumber}
+                                        onChange={(e) => setLicenseNumber(e.target.value)}
+                                        required
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="cardLastFour">AdhaarCard Number</label>
+                                    <input
+                                        type="text"
+                                        id="cardLastFour"
+                                        placeholder="Last Four Digits"
+                                        value={cardLastFour}
+                                        onChange={(e) => setCardLastFour(e.target.value)}
+                                        required
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    />
+                                </div>
+                            </>
+                        )}
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
                             <input
@@ -151,7 +199,7 @@ const Signup = () => {
                                 required
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             />
-                            {confirmPasswordError && <p style={{ color: 'red' }}>{confirmPasswordError}</p>}
+                            {confirmPasswordError && <p style ={{ color: 'red' }}>{confirmPasswordError}</p>}
                         </div>
                         <div className="flex flex-col items-center">
                             <button

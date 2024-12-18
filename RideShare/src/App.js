@@ -36,6 +36,8 @@ import ContactUser from './components/User/ContactUser';
 import PopularRidesDriver from './components/Driver/PopularRidesDriver';
 import ContactDriver from './components/Driver/ContactDriver';
 import AboutDriver from './components/Driver/AboutDriver';
+import Refer from './components/HomePage/Refer';
+import Safety from './components/HomePage/Safety';
 
 
 const App = () => {
@@ -81,7 +83,11 @@ const App = () => {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
-                    <Route path="/book-now" element={<PaymentComponent />} /> {/* Add the Book Now route */}
+                    <Route path="/book-now" element={<PaymentComponent />} /> 
+                    <Route path="/safety" element={<Safety />} />
+                    <Route path="/refer" element={<Refer />} />
+                    
+                    {/* Add the Book Now route */}
                 </Routes>
                 
                 <Footer />
