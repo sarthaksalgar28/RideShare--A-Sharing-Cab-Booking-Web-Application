@@ -1,3 +1,4 @@
+// src/components/NavbarDriver.js
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
@@ -12,7 +13,7 @@ const NavbarDriver = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-md">
             <div className="container">
-                <Link className="navbar-brand" to="/" style={brandStyle}>RideShare</Link> {/* Apply inline style */}
+                <Link className="navbar-brand" to="/publish-ride" style={brandStyle}>RideShare</Link> {/* Apply inline style */}
                 <button 
                     className="navbar-toggler" 
                     type="button" 
@@ -27,21 +28,23 @@ const NavbarDriver = () => {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/">Home</Link>
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/publish-ride">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/rides">Rides</Link>
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/rides-driver">Rides</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/about">About</Link>
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/about-driver">About</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/contact">Contact Us</Link>
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/contact-driver">Contact Us</Link>
                         </li>
                     </ul>
+                   
                     <div className="ml-auto">
-                        <Link className="btn btn-primary" to="/publish-ride">Publish a Ride</Link>
-                    </div>
+    <Link className="btn btn-primary" to="/">Logout</Link>
+    <Link className="btn btn-primary ml-2" to="/publish-ride">Publish a Ride</Link> {/* Added ml-2 for spacing */}
+</div>
                 </div>
             </div>
         </nav>

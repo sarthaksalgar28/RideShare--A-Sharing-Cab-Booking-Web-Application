@@ -19,7 +19,7 @@ const UserNavbar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-md">
             <div className="container">
-                <Link className="navbar-brand" to="/" style={{ color: '#007bff', fontWeight: 'bold', textDecoration: 'none' }}>
+                <Link className="navbar-brand" to="/search" style={{ color: '#007bff', fontWeight: 'bold', textDecoration: 'none' }}>
                     RideShare
                 </Link>
                 <button 
@@ -35,16 +35,16 @@ const UserNavbar = () => {
                 <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id="navbarNav">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/">Home</Link>
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/search">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/rides">Rides</Link>
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/rides-user">Rides</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/about">About</Link>
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/about-user">About</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/contact">Contact Us</Link>
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/contact-user">Contact Us</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link text-gray-700 hover:text-blue-600" to="/your-rides">Your Rides</Link>

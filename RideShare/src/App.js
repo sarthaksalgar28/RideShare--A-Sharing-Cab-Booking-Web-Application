@@ -30,6 +30,12 @@ import Search from './components/HomePage/Search';
 import YourRides from './components/User/YourRides';
 import PaymentComponent from './components/Payments/PaymentComponent';
 import PopRides from './components/User/PopRides';
+import PopularRidesUser from './components/User/PopularRidesUser';
+import AboutUser from './components/User/AboutUser';
+import ContactUser from './components/User/ContactUser';
+import PopularRidesDriver from './components/Driver/PopularRidesDriver';
+import ContactDriver from './components/Driver/ContactDriver';
+import AboutDriver from './components/Driver/AboutDriver';
 
 
 const App = () => {
@@ -66,6 +72,12 @@ const App = () => {
                         </>
                     } />
                     <Route path="/your-rides" element={<YourRides/>} />
+                    <Route path="/rides-user" element={<PopularRidesUser/>} />
+                    <Route path="/contact-user" element={<ContactUser/>} />
+                    <Route path="/about-user" element={<AboutUser/>} />
+                    <Route path="/rides-driver" element={<PopularRidesDriver/>} />
+                    <Route path="/contact-driver" element={<ContactDriver/>} />
+                    <Route path="/about-driver" element={<AboutDriver/>} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
