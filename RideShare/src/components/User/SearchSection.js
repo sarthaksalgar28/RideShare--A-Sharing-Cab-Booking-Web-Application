@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MapComponent from './/MapComponent.js';
-import UserNavbar from './/UserNavbar.js';
+import MapComponent from './MapComponent.js';
+import UserNavbar from './UserNavbar.js';
 const SearchSection = ({ setDistance }) => {
     const navigate = useNavigate();
     const fromInputRef = useRef(null);
@@ -55,79 +55,94 @@ const SearchSection = ({ setDistance }) => {
         }
     };
 
+    const handleShowRides = () => {
+        navigate('/rides');
+    };
+
     return (
         <>
-        <UserNavbar/>
-        <section id="Search" className="py-10">
-            <div className="container mx-auto px-4">
-                <div className="bg-white shadow-md rounded-lg p-6">
-                    <h2 className="text-2xl font-bold mb-4">Search for a ride</h2>
-                    <form className="space-y-4" onSubmit={handleSubmit}>
-                        <div className="flex space-x-4">
-                            <div className="flex-1">
-                                <label className="block text-gray-700" htmlFor="from">From</label>
-                                <input
-                                    ref={fromInputRef}
-                                    className="w-full border-gray-300 rounded-lg p-2"
-                                    id="from"
-                                    placeholder="City or address"
-                                    type="text"
-                                />
+           <UserNavbar/>
+            <section id="Search" className="py-10">
+                <div className="container mx-auto px-4">
+                    <div className="bg-white shadow-md rounded-lg p-6">
+                        <h2 className="text-2xl font-bold mb-4">Search for a ride</h2>
+                        <form className="space-y-4" onSubmit={handleSubmit}>
+                            <div className="flex space-x-4">
+                                <div className="flex-1">
+                                    <label className="block text-gray-700" htmlFor="from">From</label>
+                                    <input
+                                        ref={fromInputRef}
+                                        className="w-full border-gray-300 rounded-lg p-2"
+                                        id="from"
+                                        placeholder="City or address"
+                                        type="text"
+                                    />
+                                </div>
+                                <div className="flex-1">
+                                    <label className="block text-gray-700" htmlFor="to">To</label>
+                                    <input
+                                        ref={toInputRef}
+                                        className="w-full border-gray-300 rounded-lg p-2"
+                                        id="to"
+                                        placeholder="City or address"
+                                        type="text"
+                                    />
+                                </div>
                             </div>
-                            <div className="flex-1">
-                                <label className="block text-gray-700" htmlFor="to">To</label>
-                                <input
-                                    ref={toInputRef}
-                                    className="w-full border-gray-300 rounded-lg p-2"
-                                    id="to"
-                                    placeholder="City or address"
-                                    type="text"
-                                />
+                            <div className="flex space-x-4">
+                                <div className="flex-1">
+                                    <label className="block text-gray-700" htmlFor="date">Date</label>
+                                    <input
+                                        className="w-full border-gray-300 rounded-lg p-2"
+                                        id="date"
+                                        type="date"
+                                    />
+                                </div>
+                                <div className="flex-1">
+                                    <label className="block text-gray-700" htmlFor="time">Time</label>
+                                    <input
+                                        className="w-full border-gray-300 rounded-lg p-2"
+                                        id="time"
+                                        type="time"
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex space-x-4">
-                            <div className="flex-1">
-                                <label className="block text-gray-700" htmlFor="date">Date</label>
-                                <input
-                                    className="w-full border-gray-300 rounded-lg p-2"
-                                    id="date"
-                                    type="date"
-                                />
-                            </div>
-                            <div className="flex-1">
-                                <label className="block text-gray-700" htmlFor="time">Time</label>
-                                <input
-                                    className="w-full border-gray-300 rounded-lg p-2"
-                                    id="time"
-                                    type="time"
-                                />
-                            </div>
-                        </div>
-                        <button
-                            type="submit"
-                            className="w-full bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600"
-                        >
-                            Search
-                        </button>
-                    </form>
+                            <button
+                                type="submit"
+                                className="w-full bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600"
+                            >
+                                Search
+                            </button>
+                        </form>
 
-                    {/* Map Component */}
-                    {isSubmitted && from && to && (
-                        <div className="mt-10">
-                            <MapComponent from={from} to={to} setDistance={setDistanceInfo} />
-                        </div>
-                    )}
+                        {/* Map Component */}
+                        {isSubmitted && from && to && (
+                            <div className="mt-10">
+                                <MapComponent from={from} to={to} setDistance={setDistanceInfo} />
+                            </div>
+                        )}
 
-                    {/* Display distance and time */}
-                    {distanceInfo && (
-                        <div className="mt-4 text-lg text-gray-700">
-                            <p>Distance: {distanceInfo.distance}</p>
-                            <p>Duration: {distanceInfo.duration}</p>
-                        </div>
-                    )}
+                        {/* Display distance and time */}
+                        {distanceInfo && (
+                            <div className="mt-4 text-lg text-gray-700">
+                                <p className="font-semibold">Distance: <span className="text-blue-500">{distanceInfo.distance}</span></p>
+                                <p className="font-semibold">Duration: <span className="text-blue-500">{distanceInfo.duration}</span></p>
+                            </div>
+                        )}
+
+                        {/* Show Rides Button */}
+                        {isSubmitted && (
+                            <button
+                                onClick={handleShowRides}
+                                className="mt-4 w-full bg-blue-600 text-white rounded-lg p-2 hover:bg-blue-600"
+                            >
+                                Show Rides
+                            </button>
+                        )}
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+           
         </>
     );
 };

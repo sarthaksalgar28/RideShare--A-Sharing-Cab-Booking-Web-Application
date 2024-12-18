@@ -29,6 +29,7 @@ import Search from './components/HomePage/Search';
 
 import YourRides from './components/User/YourRides';
 import PaymentComponent from './components/Payments/PaymentComponent';
+import PopRides from './components/User/PopRides';
 
 
 const App = () => {
@@ -61,7 +62,7 @@ const App = () => {
                     <Route path="/search" element={
                         <>
                             <SearchSection onSearch={handleSearch} setDistance={setDistance} />
-                            <PopularRides rides={rides} />
+                            <PopRides rides={rides} />
                         </>
                     } />
                     <Route path="/your-rides" element={<YourRides/>} />

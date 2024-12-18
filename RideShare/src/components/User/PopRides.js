@@ -5,7 +5,7 @@ import RidesNavBar from '../HomePage/RidesNavBar';
 
 
 
-const PopularRides = ({ rides }) => {
+const PopRides = ({ rides }) => {
     const [selectedRide, setSelectedRide] = useState(null); // State to hold the selected ride for payment
 
     const handleBookNow = (ride) => {
@@ -14,7 +14,7 @@ const PopularRides = ({ rides }) => {
 
     return (
         <>
-       <RidesNavBar/>
+     
         <div className="container">
             <style>
                 {`
@@ -73,7 +73,7 @@ const PopularRides = ({ rides }) => {
                     }
                 `}
             </style>
-            <h2 className="text-2xl font-bold">Upcoming Rides</h2>
+            <h2 className="text-2xl font-bold"> Popular Rides</h2>
             <div className="rides-grid">
                 {rides.map((ride, index) => (
                     <div key={index} className="card">
@@ -94,4 +94,4 @@ const PopularRides = ({ rides }) => {
     );
 };
 
-export default PopularRides;
+export default PopRides;

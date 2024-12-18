@@ -5,9 +5,9 @@ import UserNavbar from './UserNavbar';
 const YourRides = () => {
     // Simulated ride data
     const rides = [
-        { id: 1, route: 'Airport', date: '2023-10-01', driver: 'John Doe', price: 25, status: 'successful' },
-        { id: 2, route: 'Downtown', date: '2023-10-02', driver: 'Jane Smith', price: 15, status: 'unsuccessful' },
-        { id: 3, route: 'Train Station', date: '2023-10-03', driver: 'Alice Johnson', price: 20, status: 'successful' },
+        { id: 1, route: 'ShivajiNagar', date: '2023-10-01', driver: 'Bhosale', price: 25, status: 'successful' },
+        { id: 2, route: 'Swargate', date: '2023-10-02', driver: 'Gaikwad ', price: 15, status: 'unsuccessful' },
+        { id: 3, route: 'Pune Station', date: '2023-10-03', driver: 'Patil', price: 20, status: 'successful' },
     ];
 
     return (
