@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link,useNavigate  } from 'react-router-dom';
 import MapComponent from '../User/MapComponent';
 import Login from '../Login/Login';
+import UserNavbar from './NavBar';
 
 const Search = ({ setDistance }) => {
     const navigate = useNavigate();
@@ -63,6 +64,7 @@ const Search = ({ setDistance }) => {
 
     return (
         <>
+        
         <section id="Search" className="py-10">
             <div className="container mx-auto px-4">
                 <div className="bg-white shadow-md rounded-lg p-6">
@@ -110,9 +112,14 @@ const Search = ({ setDistance }) => {
                         </div>
                         <button
                             type="submit"
-                            className="w-full bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600"
+                            className="w-full bg-blue-500 text-black rounded-lg p-2 hover:bg-blue-600"
                         >
-                             <Link to="/login" className="text-blue-500">Search</Link>
+                             <Link
+            to="/login"
+            className="w-full bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600 text-center block"
+        >
+            Search
+        </Link>
                           
                         </button>
                     </form>

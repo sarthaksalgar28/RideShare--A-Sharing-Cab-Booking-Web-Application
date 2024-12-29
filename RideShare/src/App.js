@@ -23,12 +23,22 @@ import SignupNavbar from './components/SignUp/SignupNavbar';
 import ForgotPassword from './components/Login/ForgotPassword';
 import Page1 from './components/HomePage/Page1';    
 import QuoteSection from './components/HomePage/QuoteSection';
+import TermsAndPolicy from './components/HomePage/TermsAndPolicy';
 
 
 import Search from './components/HomePage/Search';
 
 import YourRides from './components/User/YourRides';
 import PaymentComponent from './components/Payments/PaymentComponent';
+import PopRides from './components/User/PopRides';
+import PopularRidesUser from './components/User/PopularRidesUser';
+import AboutUser from './components/User/AboutUser';
+import ContactUser from './components/User/ContactUser';
+import PopularRidesDriver from './components/Driver/PopularRidesDriver';
+import ContactDriver from './components/Driver/ContactDriver';
+import AboutDriver from './components/Driver/AboutDriver';
+import Refer from './components/HomePage/Refer';
+import Safety from './components/HomePage/Safety';
 
 
 const App = () => {
@@ -61,14 +71,29 @@ const App = () => {
                     <Route path="/search" element={
                         <>
                             <SearchSection onSearch={handleSearch} setDistance={setDistance} />
-                            <PopularRides rides={rides} />
+                            <PopRides rides={rides} />
                         </>
                     } />
                     <Route path="/your-rides" element={<YourRides/>} />
+                    <Route path="/rides-user" element={<PopularRidesUser/>} />
+                    <Route path="/contact-user" element={<ContactUser/>} />
+                    <Route path="/about-user" element={<AboutUser/>} />
+                    <Route path="/rides-driver" element={<PopularRidesDriver/>} />
+                    <Route path="/contact-driver" element={<ContactDriver/>} />
+                    <Route path="/about-driver" element={<AboutDriver/>} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
                     <Route path="/upcoming-rides" element={<UpcomingRides />} />
+                    <Route path="/book-now" element={<PaymentComponent />} /> 
+                    <Route path="/safety" element={<Safety />} />
+                    <Route path="/refer" element={<Refer />} />
+                    
+                    {/* Add the Book Now route */}
+
                     <Route path="/book-now" element={<PaymentComponent />} /> {/* Add the Book Now route */}
+                    <Route path="/TermsAndConditoins" element={<TermsAndPolicy/>} />
+                    
+
                 </Routes>
                 
                 <Footer />

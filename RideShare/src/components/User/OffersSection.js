@@ -10,6 +10,10 @@ const OffersSection = () => {
             navigate('/signup'); // Redirect to the signup page for these buttons
         } else if (offer.buttonText === "Book Now") {
             navigate('/search'); // Redirect to the Search page for the "Book Now" button
+        } else if (offer.buttonText === "Learn More") {
+            navigate('/safety'); // Redirect to the Safety page for "Learn More"
+        } else if (offer.buttonText === "Refer Now") {
+            navigate('/refer'); // Redirect to the Refer page for "Refer Now"
         }
         // You can add more conditions for other buttons if needed
     };

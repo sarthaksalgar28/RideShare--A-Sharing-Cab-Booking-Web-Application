@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, Link } from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
-const UserNavbar = () => {
+const RidesNavbar = () => {
     const navigate = useNavigate(); 
 
     const handleSignup = () => {
@@ -71,4 +71,4 @@ const UserNavbar = () => {
     );
 };
 
-export default UserNavbar;
+export default RidesNavbar;
