@@ -1,13 +1,13 @@
-// src/PopularRides.js
+
 import React, { useState } from 'react';
 import PaymentComponent from '../Payments/PaymentComponent';
 
 
 const PopularRides = ({ rides }) => {
-    const [selectedRide, setSelectedRide] = useState(null); // State to hold the selected ride for payment
+    const [selectedRide, setSelectedRide] = useState(null); 
 
     const handleBookNow = (ride) => {
-        setSelectedRide(ride); // Set the selected ride when "Book Now" is clicked
+        setSelectedRide(ride); 
     };
 
     return (
