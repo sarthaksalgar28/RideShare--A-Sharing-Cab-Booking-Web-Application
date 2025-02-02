@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth, provider } from '../firebase'; // Adjust the path as necessary
-import { signInWithPopup } from "firebase/auth";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,41 +11,49 @@ const Login = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-        setEmailError('Invalid email address');
-        return; 
-    } else {
-        setEmailError('');
-    }
-
-    if (password.length < 8) {
-        setPasswordError('Password must be at least 8 characters long');
-        return; // Stop further execution
-    } else {
-        setPasswordError('');
-    }
-
-    // Handle normal email/password login
-    try {
-        const response = await fetch('https://localhost:44345/api/Auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            // Display success message and redirect based on role
-            setModalMessage('Login successful!');
-            setModalVisible(true);
-            setTimeout(() => {
-                // Check if user object exists and has a role
-                if (data.role === 'user') { // Check role directly from data
+        event.preventDefault();
+    
+        // Email validation
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            setEmailError('Invalid email address');
+            return;
+        } else {
+            setEmailError('');
+        }
+    
+        // Password validation
+        if (password.length < 8) {
+            setPasswordError('Password must be at least 8 characters long');
+            return;
+        } else {
+            setPasswordError('');
+        }
+    
+        try {
+            const response = await fetch('https://localhost:44345/api/Auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+    
+            const data = await response.json(); // Data is defined here.
+            
+            // Log the data to check the response
+            console.log("Login response data:", data);  // Log inside the try block
+    
+            if (response.ok) {
+                // Set success message and show modal
+                setModalMessage('Login successful!');
+                setModalVisible(true);
+    
+                // Store the auth token in localStorage
+                localStorage.setItem('authToken', data.token);  // Assuming `data.token` contains the auth token
+                
+                // Redirect based on role
+                if (data.role === 'user') {
                     navigate('/search'); // Redirect to user interface
                 } else if (data.role === 'driver') {
                     navigate('/publish-ride'); // Redirect to driver interface
@@ -55,62 +61,29 @@ const Login = () => {
                     setModalMessage('Role not recognized.');
                     setModalVisible(true);
                 }
-            }, 2000);
-        } else {
-            setModalMessage(data.error || 'An error occurred during login.');
-            setModalVisible(true);
-        }
-    } catch (error) {
-        console.error('Error during login:', error);
-        setModalMessage('An error occurred. Please try again later.');
-        setModalVisible(true);
-    }
-};
-    const handleGoogleSignIn = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-
-            // Now check the user's email in your database
-            const response = await fetch('https://localhost:44345/api/Auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: user.email }), // Ensure this matches your backend expectations
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                // Redirect based on user role
-                if (data.user?.role === 'user') {
-                    navigate('/search'); // Redirect to user interface
-                } else if (data.user?.role === 'driver') {
-                    navigate('/publish-ride'); // Redirect to driver interface
-                } else {
-                    setModalMessage('Role not recognized.');
-                    setModalVisible(true);
-                }
             } else {
-                // Handle user not registered case
-                setModalMessage(data.error || 'User  not registered. Please sign up.');
+                setModalMessage(data.error || 'An error occurred during login.');
                 setModalVisible(true);
             }
         } catch (error) {
-            console.error("Error during Google sign-in:", error);
-            setModalMessage('An error occurred during Google sign-in. Please try again.');
+            console.error('Error during login:', error);
+            setModalMessage('An error occurred. Please try again later.');
             setModalVisible(true);
         }
     };
-
+    
+    // Redirect to signup page
     const handleCreate = () => {
-        // Redirect to the /signup page
         navigate('/signup');
     };
-
+    
+    // Close modal function
     const closeModal = () => {
         setModalVisible(false);
+        // Optionally, you can navigate to a different page when the modal is closed
+        // navigate('/'); // Uncomment if you want to redirect to home on modal close
     };
+    
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -203,13 +176,7 @@ const Login = () => {
 
                         <div className="mt-6 grid grid-cols-1 gap-1">
                             <div>
-                                <button
-                                    onClick={handleGoogleSignIn}
-                                    className="w-full flex items-center justify-center px-8 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-gray-50"
-                                >
-                                    <img className="h-6 w-6 mr-2" src="https://www.svgrepo.com/show/506498/google.svg" alt="Google" />
-                                    Sign in with Google
-                                </button>
+                              
                                 <button
                                     onClick={handleCreate}
                                     className="w-full flex items-center justify-center px-8 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-gray-50 mt-4"
