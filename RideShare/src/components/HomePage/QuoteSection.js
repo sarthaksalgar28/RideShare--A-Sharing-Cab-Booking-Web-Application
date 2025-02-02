@@ -6,18 +6,12 @@ const QuoteSection = () => {
         <section style={{ backgroundColor: '#007BFF', color: 'white', padding: '40px 20px', marginTop: '40px' }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', alignItems: 'center' }}>
                 <div style={{ flex: 1, textAlign: 'left', paddingRight: '20px' }}>
-                    <h2 style={{ fontFamily: 'Arial, sans-serif', fontSize: '2rem', marginBottom: '20px' }}>Safety First</h2>
-                    <div style={{ marginBottom: '16px' }}>
-                        <p style={{ fontFamily: 'Georgia, serif', fontSize: '1.2rem' }}>"Your safety is our priority. Ride with peace of mind."</p>
-                    </div>
-                    <div style={{ marginBottom: '16px' }}>
-                        <p style={{ fontFamily: 'Georgia, serif', fontSize: '1.2rem' }}>"Traveling together makes every journey safer."</p>
-                    </div>
-                    <div style={{ marginBottom: '16px' }}>
-                        <p style={{ fontFamily: 'Georgia, serif', fontSize: '1.2rem' }}>"Ride smart, ride safe, ride together."</p>
-                    </div>
-                    <div style={{ marginBottom: '16px' }}>
-                        <p style={{ fontFamily: 'Georgia, serif', fontSize: '1.2rem' }}>"Safety is not just a feature; it's our commitment."</p>
+                    <h2 style={{ fontFamily: 'var(--font-secondary)', fontSize: '2.5rem', marginBottom: '80px' }}>Safety First</h2>
+                    <div style={{ marginBottom: '20px', fontFamily: 'var(--font-secondary)', fontSize: '1.3rem' }}>
+                        <p>"Your safety is our priority. Ride with peace of mind."</p>
+                        <p>"Traveling together makes every journey safer."</p>
+                        <p>"Ride smart, ride safe, ride together."</p>
+                        <p>"Safety is not just a feature; it's our commitment."</p>
                     </div>
                 </div>
                 <div style={{ flex: 1, textAlign: 'right' }}>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import SignupPageNavbar from './SignupNavbar';
+import axios from 'axios';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Signup = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         // Validate email and password
@@ -45,12 +45,18 @@ const Signup = () => {
         }
 
         if (emailRegex.test(email) && password.length >= 8 && password === confirmPassword) {
-            // Save user data in session storage
+            // Prepare user data
             const user = { name, role, email, password, carNumber, licenseNumber, cardLastFour };
-            sessionStorage.setItem('user', JSON.stringify(user)); // Store user data in session storage
-            
-            setModalMessage('Signup Successful!');
-            setModalVisible(true); // Show modal on success
+
+            try {
+                // Send POST request to the backend
+                const response = await axios.post('https://localhost:44345/api/Signup', user);
+                setModalMessage(response.data.message);
+                setModalVisible(true); // Show modal on success
+            } catch (error) {
+                setModalMessage('Signup failed: ' + (error.response?.data?.error || error.message));
+                setModalVisible(true); // Show modal on error
+            }
         }
     };
 
@@ -61,7 +67,7 @@ const Signup = () => {
 
     return (
         <>
-            {/* Modal for Success Message */}
+            {/* Modal for Success/Error Message */}
             {modalVisible && (
                 <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
@@ -84,7 +90,7 @@ const Signup = () => {
             )}
 
             {/* Main Signup Form */}
-            <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: '#007BFF', color: 'white' }}>
+            <div className="flex items-center justify-center min-h-screen bg-gray-100">
                 <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
                     <h2 className="text-2xl font-bold text-blue-600 mb-4 text-center">Sign Up</h2>
                     <form onSubmit={handleSubmit} className="text-black">
@@ -199,12 +205,12 @@ const Signup = () => {
                                 required
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             />
-                            {confirmPasswordError && <p style ={{ color: 'red' }}>{confirmPasswordError}</p>}
+                            {confirmPasswordError && <p style={{ color: 'red' }}>{confirmPasswordError}</p>}
                         </div>
                         <div className="flex flex-col items-center">
                             <button
                                 type="submit"
-                                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline mb-2"
+ className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline mb-2"
                             >
                                 Sign Up
                             </button>

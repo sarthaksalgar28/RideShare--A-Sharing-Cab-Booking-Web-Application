@@ -1,113 +1,7 @@
-// // src/Login.js
-// import React, { useState } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
-// import './login.css'; // Import the CSS file if you are using external CSS
-
-// const Login = () => {
-//     const navigate = useNavigate();
-//     const [email, setEmail] = useState('');
-//     const [password, setPassword] = useState('');
-//     const [emailError, setEmailError] = useState('');
-//     const [passwordError, setPasswordError] = useState('');
-
-//     const handleSubmit = (event) => {
-//         event.preventDefault();
-
-//         const user = JSON.parse(sessionStorage.getItem('user'));
-
-//         // Validate email and password
-//         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-//         if (!emailRegex.test(email)) {
-//             setEmailError('Invalid email address');
-//             return; // Stop further execution
-//         } else {
-//             setEmailError('');
-//         }
-
-//         if (password.length < 8) {
-//             setPasswordError('Password must be at least 8 characters long');
-//             return; // Stop further execution
-//         } else {
-//             setPasswordError('');
-//         }
-
-//         if (emailRegex.test(email) && password.length >= 8) {
-//             if (user && email === user.email && password === user.password) {
-//                 // Redirect based on role
-//                 if (user.role === 'user') {
-//                     alert('Login successful!');
-//                     navigate('/search'); // Redirect to SearchSection
-//                 } else if (user.role === 'driver') {
-//                     alert('Login successful!');
-//                     navigate('/publish-ride'); // Redirect to PublishRide
-//                 }
-//             } else {
-//                 alert('Invalid email or password');
-//             }
-//         }
-//     };
-
-//     return (
-//         <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: '#007BFF', color: 'white' }}>
-//             <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
-//                 <h2 className="text-2xl font-bold text-blue-600 mb-4 text-center">Login</h2>
-//                 <form onSubmit={handleSubmit} className="text-black">
-//                     <div className="mb-4">
-//                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-//                             Email
-//                         </label>
-//                         <input
-//                             type="email"
-//                             id="email"
-//                             placeholder="Email"
-//                             value={email}
-//                             onChange={(e) => setEmail(e.target.value)}
-//                             required
-//                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//                         />
-//                         {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
-//                     </div>
-//                     <div className="mb-4">
-//                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-//                             Password
-//                         </label>
-//                         <input
-//                             type="password"
-//                             id="password"
-//                             placeholder="Password"
-//                             value={password}
-//                             onChange={(e) => setPassword(e.target.value)}
-//                             required
-//                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//                         />
-//                         {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
-//                     </div>
-//                     <div className="flex flex-col items-center">
-//                         <button
-//                             type="submit"
-//                             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline mb-2"
-//                         >
-//                             Login
-//                         </button>
-//                         <p className="text-center mt-4">
-//                             Don't have an account?<Link to="/signup" className="text-blue-500 px-4 py-2">Sign Up</Link>
-//                         </p>
-//                         <p className="text-center mt-2">
-//                             <Link to="/forgot-password" className="text-blue-500">Forgot Password?</Link>
-//                         </p>
-                    
-//                     </div>
-//                 </form>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default Login;
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './login.css';
+import { auth, provider } from '../firebase'; // Adjust the path as necessary
+import { signInWithPopup } from "firebase/auth";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -118,45 +12,100 @@ const Login = () => {
     const [modalMessage, setModalMessage] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        const user = JSON.parse(sessionStorage.getItem('user'));
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+        setEmailError('Invalid email address');
+        return; 
+    } else {
+        setEmailError('');
+    }
 
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(email)) {
-            setEmailError('Invalid email address');
-            return; 
+    if (password.length < 8) {
+        setPasswordError('Password must be at least 8 characters long');
+        return; // Stop further execution
+    } else {
+        setPasswordError('');
+    }
+
+    // Handle normal email/password login
+    try {
+        const response = await fetch('https://localhost:44345/api/Auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            // Display success message and redirect based on role
+            setModalMessage('Login successful!');
+            setModalVisible(true);
+            setTimeout(() => {
+                // Check if user object exists and has a role
+                if (data.role === 'user') { // Check role directly from data
+                    navigate('/search'); // Redirect to user interface
+                } else if (data.role === 'driver') {
+                    navigate('/publish-ride'); // Redirect to driver interface
+                } else {
+                    setModalMessage('Role not recognized.');
+                    setModalVisible(true);
+                }
+            }, 2000);
         } else {
-            setEmailError('');
+            setModalMessage(data.error || 'An error occurred during login.');
+            setModalVisible(true);
         }
+    } catch (error) {
+        console.error('Error during login:', error);
+        setModalMessage('An error occurred. Please try again later.');
+        setModalVisible(true);
+    }
+};
+    const handleGoogleSignIn = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
 
-        if (password.length < 8) {
-            setPasswordError('Password must be at least 8 characters long');
-            return; // Stop further execution
-        } else {
-            setPasswordError('');
-        }
+            // Now check the user's email in your database
+            const response = await fetch('https://localhost:44345/api/Auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: user.email }), // Ensure this matches your backend expectations
+            });
 
-        if (emailRegex.test(email) && password.length >= 8) {
-            if (user && email === user.email && password === user.password) {
-                // Display success message and redirect based on role
-                setModalMessage('Login successful!');
-                setModalVisible(true);
-                setTimeout(() => {
-            navigate('/select-point');
-        }, 2000);
-
-                if (user.role === 'user') {
-                    setTimeout(() => navigate('/search'), 2000); // Redirect after 2 seconds
-                } else if (user.role === 'driver') {
-                    setTimeout(() => navigate('/publish-ride'), 2000); // Redirect after 2 seconds
+            const data = await response.json();
+            if (response.ok) {
+                // Redirect based on user role
+                if (data.user?.role === 'user') {
+                    navigate('/search'); // Redirect to user interface
+                } else if (data.user?.role === 'driver') {
+                    navigate('/publish-ride'); // Redirect to driver interface
+                } else {
+                    setModalMessage('Role not recognized.');
+                    setModalVisible(true);
                 }
             } else {
-                setModalMessage('Invalid email or password');
+                // Handle user not registered case
+                setModalMessage(data.error || 'User  not registered. Please sign up.');
                 setModalVisible(true);
             }
+        } catch (error) {
+            console.error("Error during Google sign-in:", error);
+            setModalMessage('An error occurred during Google sign-in. Please try again.');
+            setModalVisible(true);
         }
+    };
+
+    const handleCreate = () => {
+        // Redirect to the /signup page
+        navigate('/signup');
     };
 
     const closeModal = () => {
@@ -164,55 +113,113 @@ const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: '#007BFF', color: 'white' }}>
-            <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
-                <h2 className="text-2xl font-bold text-blue-600 mb-4 text-center">Login</h2>
-                <form onSubmit={handleSubmit} className="text-black">
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        />
-                        {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        />
-                        {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
-                    </div>
-                    <div className="flex flex-col items-center">
-                        <button
-                            type="submit"
-                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline mb-2"
-                        >
+        <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                    <div className="sm:mx-auto sm:w-full sm:max-w-md">
+                        <h2 className="text-2xl font-bold text-blue-600 mb-6 text-center">
                             Login
-                        </button>
-                        <p className="text-center mt-4">
-                            Don't have an account?<Link to="/signup" className="text-blue-500 px-4 py-2">Sign Up</Link>
-                        </p>
-                        <p className="text-center mt-2">
-                            <Link to="/forgot-password" className="text-blue-500">Forgot Password?</Link>
-                        </p>
+                        </h2>
                     </div>
-                </form>
+                    <form className="space-y-6" onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                Email address 
+                            </label>
+                            <div className="mt-1">
+                                <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="Enter your email address"
+                                />
+                                {emailError && <p className="text-red-500 text-xs">{emailError}</p>}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                Password
+                            </label>
+                            <div className="mt-1">
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="Enter your password"
+                                />
+                                {passwordError && <p className="text-red-500 text-xs">{passwordError}</p>}
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                                <input
+                                    id="remember_me"
+                                    name="remember_me"
+                                    type="checkbox"
+                                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                />
+                                <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
+                                    Remember me
+                                </label>
+                            </div>
+
+                            <div className="text-sm">
+                                <Link to="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
+                                    Forgot your password?
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button
+                                type="submit"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Sign in
+                            </button>
+                        </div>
+                    </form>
+                    <div className="mt-6">
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-gray-100 text-gray-500">
+                                    Or continue with
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 grid grid-cols-1 gap-1">
+                            <div>
+                                <button
+                                    onClick={handleGoogleSignIn}
+                                    className="w-full flex items-center justify-center px-8 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-gray-50"
+                                >
+                                    <img className="h-6 w-6 mr-2" src="https://www.svgrepo.com/show/506498/google.svg" alt="Google" />
+                                    Sign in with Google
+                                </button>
+                                <button
+                                    onClick={handleCreate}
+                                    className="w-full flex items-center justify-center px-8 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-gray-50 mt-4"
+                                >
+                                    Create New Account
+                                </button>
+                            </div>
+                        </div>
+                    </ div>
+                </div>
             </div>
 
             {/* Modal Popup */}
@@ -240,4 +247,3 @@ const Login = () => {
 };
 
 export default Login;
-

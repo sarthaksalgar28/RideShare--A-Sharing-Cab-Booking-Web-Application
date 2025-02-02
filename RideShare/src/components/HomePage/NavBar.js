@@ -6,21 +6,21 @@ const UserNavbar = () => {
     const navigate = useNavigate(); 
 
     const handleSignup = () => {
-        
-        
+    
+    
         navigate('/signup'); // Redirect to signup page on logout
     };
-
+    
     const handleLogin = () => {
         navigate('/login'); // Redirect to login page
     };
-
+    
     // Define a custom style for the brand text
     const brandStyle = {
         color: '#007bff', // Blue color
         fontWeight: 'bold', // Bold text
     };
-
+    
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-md">
             <div className="container">
@@ -68,7 +68,6 @@ const UserNavbar = () => {
                 </div>
             </div>
         </nav>
-    );
-};
+)};
 
 export default UserNavbar;

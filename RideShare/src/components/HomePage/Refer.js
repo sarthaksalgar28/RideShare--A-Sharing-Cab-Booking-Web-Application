@@ -7,7 +7,7 @@ const Refer = () => {
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-4 text-blue-600">Refer a Friend, Earn Rewards!</h1>
                 <p className="mb-6">
-                    At [Your Rideshare Company], we believe in sharing the love! Our referral program allows you to earn rewards by inviting your friends to join our rideshare community.
+                    At RideShare, we believe in sharing the love! Our referral program allows you to earn rewards by inviting your friends to join our rideshare community.
                 </p>
                 <h2 className="text-2xl font-semibold mb-2 text-blue-600">How It Works</h2>
                 <p className="mb-4">
