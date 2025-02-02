@@ -1,21 +1,19 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom'; 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import UserProfile from './UserProfile';     
 
 const UserNavbar = () => {
     const navigate = useNavigate(); 
 
     const handleSignup = () => {
-    
-    
-        navigate('/login'); // Redirect to signup page on logout
+        navigate('/login'); // Redirect to login page on logout
     };
     
     const handleLogin = () => {
-        navigate('/'); // Redirect to login page
+        navigate('/user-profile'); // Redirect to user profile page
     };
     
-    // Define a custom style for the brand text
     const brandStyle = {
         color: '#007bff', // Blue color
         fontWeight: 'bold', // Bold text
@@ -24,7 +22,7 @@ const UserNavbar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-md">
             <div className="container">
-                <Link className="navbar-brand" to="/search" style={brandStyle}>RideShare</Link> {/* Apply inline style */}
+                <Link className="navbar-brand" to="/search" style={brandStyle}>RideShare</Link>
                 <button 
                     className="navbar-toggler" 
                     type="button" 
@@ -51,16 +49,16 @@ const UserNavbar = () => {
                             <Link className="nav-link text-gray-700 hover:text-blue-600" to="/user-contact">Contact Us</Link>
                         </li>
                     </ul>
-                    <div className="ml-auto">
+                    <div className="ml-auto ">
                         <button
                             className="btn btn-primary mr-2"
-                            onClick={handleLogin} // Redirect to login page
+                            onClick={handleLogin} // Redirect to user profile page
                         >
                             Profile
                         </button>
                         <button
                             className="btn btn-primary mr-2"
-                            onClick={handleSignup} // Redirect to signup page
+                            onClick={handleSignup} // Redirect to login page
                         >
                             Log Out
                         </button>
@@ -68,6 +66,7 @@ const UserNavbar = () => {
                 </div>
             </div>
         </nav>
-)};
+    );
+};
 
 export default UserNavbar;

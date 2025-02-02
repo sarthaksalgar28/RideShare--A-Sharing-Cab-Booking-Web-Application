@@ -39,12 +39,14 @@ const NavbarDriver = () => {
                         <li className="nav-item">
                             <Link className="nav-link text-gray-700 hover:text-blue-600" to="/contact-driver">Contact Us</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/driver-profile">Profile</Link> {/* Added Profile link */}
+                        </li>
                     </ul>
-                   
                     <div className="ml-auto">
-    <Link className="btn btn-primary" to="/">Logout</Link>
-    <Link className="btn btn-primary ml-2" to="/publish-ride">Publish a Ride</Link> {/* Added ml-2 for spacing */}
-</div>
+                        <Link className="btn btn-primary" to="/">Logout</Link>
+                        <Link className="btn btn-primary ml-2" to="/publish-ride">Publish a Ride</Link> {/* Added ml-2 for spacing */}
+                    </div>
                 </div>
             </div>
         </nav>
