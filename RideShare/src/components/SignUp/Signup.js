@@ -12,6 +12,7 @@ const Signup = () => {
     const [carNumber, setCarNumber] = useState('');
     const [licenseNumber, setLicenseNumber] = useState('');
     const [cardLastFour, setCardLastFour] = useState('');
+    const [mobileNumber, setMobileNumber] = useState(''); // Added mobile number state
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
@@ -46,7 +47,7 @@ const Signup = () => {
 
         if (emailRegex.test(email) && password.length >= 8 && password === confirmPassword) {
             // Prepare user data
-            const user = { name, role, email, password, carNumber, licenseNumber, cardLastFour };
+            const user = { name, role, email, password, carNumber, licenseNumber, cardLastFour, mobileNumber }; // Include mobile number
 
             try {
                 // Send POST request to the backend
@@ -155,7 +156,7 @@ const Signup = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="cardLastFour">AdhaarCard Number</label>
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="cardLastFour">Aadhar Card Number</label>
                                     <input
                                         type="text"
                                         id="cardLastFour"
@@ -168,6 +169,18 @@ const Signup = () => {
                                 </div>
                             </>
                         )}
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="mobileNumber">Mobile Number</label>
+                            <input
+                                type="text"
+                                id="mobileNumber"
+                                placeholder="Mobile Number"
+                                value={mobileNumber}
+                                onChange={(e) => setMobileNumber(e.target.value)}
+                                required
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            />
+                        </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
                             <input
@@ -210,7 +223,7 @@ const Signup = () => {
                         <div className="flex flex-col items-center">
                             <button
                                 type="submit"
- className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline mb-2"
+                                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline mb-2"
                             >
                                 Sign Up
                             </button>

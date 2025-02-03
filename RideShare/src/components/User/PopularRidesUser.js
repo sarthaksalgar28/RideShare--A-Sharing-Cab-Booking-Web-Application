@@ -1,13 +1,30 @@
 // src/PopularRides.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import PaymentComponent from '../Payments/PaymentComponent';
 import UserNavbar from './UserNavbar';
 
-const PopularRidesUser  = ({ rides }) => {
-    const [selectedRide, setSelectedRide] = useState(null); // State to hold the selected ride for payment
+const PopularRidesUser = () => {
+    const [selectedRide, setSelectedRide] = useState(null);
+    const [upcomingRides, setUpcomingRides] = useState([]);
+
+    useEffect(() => {
+        const fetchRides = async () => {
+            try {
+                const response = await axios.get('https://localhost:44345/api/Rides'); // Replace with your actual endpoint
+                const currentDate = new Date();
+                const filteredRides = response.data.filter(ride => new Date(ride.date) > currentDate);
+                setUpcomingRides(filteredRides);
+            } catch (error) {
+                console.error('Error fetching rides:', error);
+            }
+        };
+
+        fetchRides();
+    }, []);
 
     const handleBookNow = (ride) => {
-        setSelectedRide(ride); // Set the selected ride when "Book Now" is clicked
+        setSelectedRide(ride);
     };
 
     return (
@@ -50,7 +67,7 @@ const PopularRidesUser  = ({ rides }) => {
                         }
 
                         .book-now-button {
-                            background-color: #2563eb; /* Blue 600 */
+                            background-color: #2563eb;
                             color: white;
                             padding: 10px 15px;
                             border: none;
@@ -63,37 +80,37 @@ const PopularRidesUser  = ({ rides }) => {
                         }
 
                         .book-now-button:hover {
-                            background-color: #1d4ed8; /* Darker blue on hover */
+                            background-color: #1d4ed8;
                         }
 
                         .route {
-                            color: #2563eb; /* Blue 600 */
+                            color: #2563eb;
                         }
                     `}
                 </style>
                 <h2 className="text-2xl font-bold">Upcoming Rides</h2>
                 <div className="rides-grid">
-                    {rides && rides.length > 0 ? (
-                        rides.map((ride, index) => (
+                    {upcomingRides.length > 0 ? (
+                        upcomingRides.map((ride, index) => (
                             <div key={index} className="card">
                                 <h3 className="font-bold route">{ride.route}</h3>
                                 <p>Date: {ride.date}</p>
                                 <p>Driver: {ride.driver}</p>
-                                <p>Price: ${ride.price.toFixed(2)}</p> {/* Format price to 2 decimal places */}
+                                <p>Price: ₹{ride.price.toFixed(2)}</p>
                                 <p>Rating: {ride.rating}</p>
                                 <button className="book-now-button" onClick={() => handleBookNow(ride)}>Book Now</button>
                             </div>
                         ))
                     ) : (
-                        <p>No upcoming rides available.</p> // Handle case when there are no rides
+                        <p>No upcoming rides available.</p>
                     )}
                 </div>
                 {selectedRide && (
-                    <PaymentComponent amount={selectedRide.price} /> // Pass the selected ride's price to the PaymentComponent
+                    <PaymentComponent amount={selectedRide.price} />
                 )}
             </div>
         </>
     );
 };
 
-export default PopularRidesUser ;
+export default PopularRidesUser;

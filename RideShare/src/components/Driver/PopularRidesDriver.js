@@ -1,99 +1,54 @@
-// src/PopularRides.js
-import React, { useState } from 'react';
-import PaymentComponent from '../Payments/PaymentComponent';
-import NavbarDriver from './NavBarDriver';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import NavbarDriver from "./NavBarDriver";
 
-const PopularRidesDriver  = ({ rides }) => {
-    const [selectedRide, setSelectedRide] = useState(null); // State to hold the selected ride for payment
-
-    const handleBookNow = (ride) => {
-        setSelectedRide(ride); // Set the selected ride when "Book Now" is clicked
-    };
+const PopularRidesDriver = () => {
+    const [rides, setRides] = useState([]);
+    const driverId = localStorage.getItem('id');
+    console.log("Driver ID from localStorage:", driverId); // Log the driverId to check
+    
+    useEffect(() => {
+        const fetchUserRides = async () => {
+            try {
+                const response = await axios.get(`https://localhost:44345/api/Rides/myrides/${driverId}`);
+                setRides(response.data);
+            } catch (error) {
+                console.error("Error fetching rides:", error);
+            }
+        };
+    
+        if (driverId) {
+            fetchUserRides();
+        } else {
+            console.error("Driver ID not found in localStorage");
+        }
+    }, [driverId]);
+    
 
     return (
         <>
-            <NavbarDriver/>
-            <div className="container">
-                <style>
-                    {`
-                        .container {
-                            max-width: 1200px;
-                            margin: 0 auto;
-                            padding: 20px;
-                        }
-
-                        h2 {
-                            color: #007bff;
-                            margin-bottom: 20px;
-                        }
-
-                        .rides-grid {
-                            display: grid;
-                            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                            gap: 20px;
-                        }
-
-                        .card {
-                            background-color: white;
-                            border-radius: 8px;
-                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                            padding: 20px;
-                            transition: transform 0.2s;
-                        }
-
-                        .card:hover {
-                            transform: scale(1.02);
-                        }
-
-                        .font-bold {
-                            font-weight: bold;
-                        }
-
-                        .book-now-button {
-                            background-color: #2563eb; /* Blue 600 */
-                            color: white;
-                            padding: 10px 15px;
-                            border: none;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            text-align: center;
-                            display: inline-block;
-                            margin-top: 10px;
-                            text-decoration: none;
-                        }
-
-                        .book-now-button:hover {
-                            background-color: #1d4ed8; /* Darker blue on hover */
-                        }
-
-                        .route {
-                            color: #2563eb; /* Blue 600 */
-                        }
-                    `}
-                </style>
-                <h2 className="text-2xl font-bold">Upcoming Rides</h2>
-                <div className="rides-grid">
-                    {rides && rides.length > 0 ? (
-                        rides.map((ride, index) => (
-                            <div key={index} className="card">
-                                <h3 className="font-bold route">{ride.route}</h3>
-                                <p>Date: {ride.date}</p>
-                                <p>Driver: {ride.driver}</p>
-                                <p>Price: ${ride.price.toFixed(2)}</p> {/* Format price to 2 decimal places */}
-                                <p>Rating: {ride.rating}</p>
-                                <button className="book-now-button" onClick={() => handleBookNow(ride)}>Book Now</button>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No upcoming rides available.</p> // Handle case when there are no rides
-                    )}
-                </div>
-                {selectedRide && (
-                    <PaymentComponent amount={selectedRide.price} /> // Pass the selected ride's price to the PaymentComponent
+        <NavbarDriver/>
+        <div className="min-h-screen bg-white p-6">
+            <div className="bg-blue-50 shadow-lg rounded-2xl p-8 max-w-3xl mx-auto">
+                <h1 className="text-3xl font-bold text-blue-600 text-center mb-6">Your Published Rides</h1>
+                {rides.length > 0 ? (
+                    <ul className="space-y-4">
+                        {rides.map(ride => (
+                            <li key={ride.rideId} className="bg-white p-4 rounded-lg shadow border border-blue-200">
+                                <p className="text-lg font-semibold text-blue-600">Route: <span className="text-gray-800">{ride.route}</span></p>
+                                <p className="text-md text-gray-700">Date: {ride.date}</p>
+                                <p className="text-md text-gray-700">Price: ₹{ride.price}</p>
+                                <p className="text-md text-gray-700">Passengers: {ride.passengers}</p>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="text-center text-gray-700">No rides published yet.</p>
                 )}
             </div>
+        </div>
         </>
     );
 };
 
-export default PopularRidesDriver ;
+export default PopularRidesDriver;

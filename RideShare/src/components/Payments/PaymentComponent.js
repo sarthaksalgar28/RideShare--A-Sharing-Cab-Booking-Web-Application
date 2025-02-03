@@ -1,18 +1,16 @@
-// src/components/PaymentComponent.js
 import React from 'react';
 
-const PaymentComponent = ({ amount, onPaymentSuccess, onPaymentFailure }) => {
+const PaymentComponent = ({ amount, rideId, onPaymentSuccess, onPaymentFailure }) => {
     const handlePayment = (event) => {
         event.preventDefault();
 
-        // Ensure Razorpay is loaded and initialized properly
         if (!window.Razorpay) {
             console.error('Razorpay is not loaded');
             return;
         }
 
         const options = {
-            key: 'rzp_test_LMZHnNT5VlTSU1', // Replace with your Razorpay Key ID
+            key: 'rzp_test_LMZHnNT5VlTSU1',
             amount: amount * 100, // Amount in paise
             currency: 'INR',
             name: 'RideShare',
@@ -20,19 +18,62 @@ const PaymentComponent = ({ amount, onPaymentSuccess, onPaymentFailure }) => {
             handler: function (response) {
                 console.log('Payment successful:', response);
                 alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
-                if (onPaymentSuccess && typeof onPaymentSuccess === 'function') {
-                    onPaymentSuccess(response.razorpay_payment_id); // Notify parent of successful payment
-                } else {
-                    console.error('onPaymentSuccess is not a function');
-                }
+
+                const paymentId = response.razorpay_payment_id;
+                const paymentStatus = 'success'; // Assuming payment was successful
+                const paymentAmount = amount;
+
+                // Make sure the amount is a number (remove any non-numeric characters)
+                const cleanedAmount = parseFloat(paymentAmount.replace(/[^\d.-]/g, ''));
+
+                const paymentPayload = {
+                    paymentId: paymentId,
+                    status: paymentStatus,
+                    amount: cleanedAmount, // Now amount is a number
+                    rideId: rideId // Include the RideId here
+                };
+
+                console.log('Sending payment payload:', paymentPayload);
+
+                // Send payment data to the backend
+                fetch('https://localhost:44345/api/Payments/savePayment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(paymentPayload)
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        console.log('Payment saved to the database');
+                        if (onPaymentSuccess && typeof onPaymentSuccess === 'function') {
+                            onPaymentSuccess(paymentId);
+                        }
+                    } else {
+                        console.error('Failed to save payment ID:', data);
+                        if (onPaymentFailure && typeof onPaymentFailure === 'function') {
+                            onPaymentFailure();
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error while saving payment:', error);
+                    if (onPaymentFailure && typeof onPaymentFailure === 'function') {
+                        onPaymentFailure();
+                    }
+                });
             },
             modal: {
                 ondismiss: function () {
-                    alert('Payment was not completed.'); // Notify user of unsuccessful payment
+                    alert('Payment was not completed.');
                     if (onPaymentFailure && typeof onPaymentFailure === 'function') {
-                        onPaymentFailure(); // Notify parent of payment failure
-                    } else {
-                        console.error('onPaymentFailure is not a function');
+                        onPaymentFailure();
                     }
                 }
             },
@@ -57,7 +98,7 @@ const PaymentComponent = ({ amount, onPaymentSuccess, onPaymentFailure }) => {
             <button
                 onClick={handlePayment}
                 style={{
-                    backgroundColor: '#2563eb', // Blue 600
+                    backgroundColor: '#2563eb',
                     color: 'white',
                     padding: '10px 15px',
                     border: 'none',
@@ -69,8 +110,6 @@ const PaymentComponent = ({ amount, onPaymentSuccess, onPaymentFailure }) => {
                     fontSize: '16px',
                     transition: 'background-color 0.3s ease',
                 }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'} // Darker blue on hover
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2563eb'} // Reset to original color
             >
                 Pay Now
             </button>

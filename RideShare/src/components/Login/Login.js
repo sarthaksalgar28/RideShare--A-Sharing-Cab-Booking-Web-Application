@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -12,7 +13,7 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+        
         // Email validation
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!emailRegex.test(email)) {
@@ -21,7 +22,7 @@ const Login = () => {
         } else {
             setEmailError('');
         }
-    
+        
         // Password validation
         if (password.length < 8) {
             setPasswordError('Password must be at least 8 characters long');
@@ -29,7 +30,7 @@ const Login = () => {
         } else {
             setPasswordError('');
         }
-    
+        
         try {
             const response = await fetch('https://localhost:44345/api/Auth/login', {
                 method: 'POST',
@@ -38,25 +39,34 @@ const Login = () => {
                 },
                 body: JSON.stringify({ email, password }),
             });
-    
+        
             const data = await response.json(); // Data is defined here.
             
             // Log the data to check the response
-            console.log("Login response data:", data);  // Log inside the try block
-    
+            console.log("Login response data:", data);  
+            
             if (response.ok) {
                 // Set success message and show modal
                 setModalMessage('Login successful!');
                 setModalVisible(true);
     
                 // Store the auth token in localStorage
-                localStorage.setItem('authToken', data.token);  // Assuming `data.token` contains the auth token
-                
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('id', data.id); 
+
+                 // Assuming `data.token` contains the auth token
+                localStorage.setItem('username', data.name);
+               
+                console.log(data.name);
+                console.log(localStorage.getItem('id'));
+
+                // Log immediately after setting
+    
                 // Redirect based on role
                 if (data.role === 'user') {
-                    navigate('/search'); // Redirect to user interface
+                    navigate('/search');
                 } else if (data.role === 'driver') {
-                    navigate('/publish-ride'); // Redirect to driver interface
+                    navigate('/publish-ride');
                 } else {
                     setModalMessage('Role not recognized.');
                     setModalVisible(true);

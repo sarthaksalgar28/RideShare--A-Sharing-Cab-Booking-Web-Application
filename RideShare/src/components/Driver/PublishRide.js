@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavbarDriver from './NavBarDriver';
+import axios from 'axios';
 
 const PublishRide = ({ addRide }) => {
-    const [driverName, setDriverName] = useState(''); // State for driver's name
+    const [driverName, setDriverName] = useState('');
     const [source, setSource] = useState('');
     const [destination, setDestination] = useState('');
     const [pickupPoint, setPickupPoint] = useState('');
@@ -14,7 +14,8 @@ const PublishRide = ({ addRide }) => {
     const [passengers, setPassengers] = useState(1);
     const [modalMessage, setModalMessage] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    
+    const [isLoading, setIsLoading] = useState(false); 
+
     const navigate = useNavigate();
     const sourceInputRef = useRef(null);
     const destinationInputRef = useRef(null);
@@ -52,39 +53,54 @@ const PublishRide = ({ addRide }) => {
         };
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        const driverId = localStorage.getItem('id');  // Fetch driver ID from localStorage
+    
         const newRide = {
-            driver: driverName || "Your Driver Name", // Use the driver's name from the input
+            driverId: driverId, // Pass the driver ID
+            driver: driverName || "Your Driver Name",
             rating: 5.0,
             route: `${source} to ${destination}`,
             date: `${date} at ${time}`,
-            price: `${passengers * 100}rs`,
+            price: `${passengers * 100}`,
+            passengers: passengers,  // Number of passengers from the input
         };
-
-        addRide(newRide);
-
-        // Reset form fields
-        setDriverName('');
-        setSource('');
-        setDestination('');
-        setPickupPoint('');
-        setDropOffPoint('');
-        setDate('');
-        setTime('');
-        setPassengers(1);
-
-        // Show modal with success message
-        setModalMessage('Published Ride successful!');
-        setModalVisible(true);
-
-        // Navigate after 2 seconds to allow the user to see the modal
-        setTimeout(() => {
-            navigate('/rides');
-        }, 2000);
+    
+        setIsLoading(true); // Set loading state to true
+        
+        try {
+            // POST the data to your backend API
+            await axios.post('https://localhost:44345/api/Rides/publish', newRide);
+    
+            // Success - Show modal
+            setModalMessage('Published Ride successful!');
+            setModalVisible(true);
+    
+            // Reset form fields
+            setDriverName('');
+            setSource('');
+            setDestination('');
+            setPickupPoint('');
+            setDropOffPoint('');
+            setDate('');
+            setTime('');
+            setPassengers(1);
+    
+            // Navigate after 2 seconds to allow user to see the modal
+            setTimeout(() => {
+                navigate('/rides-driver');
+            }, 2000);
+        } catch (error) {
+            // Handle error
+            console.error("Error publishing ride:", error);
+            setModalMessage('Failed to publish ride. Please try again!');
+            setModalVisible(true);
+        } finally {
+            setIsLoading(false); // Reset loading state
+        }
     };
-
     const closeModal = () => {
         setModalVisible(false);
     };
@@ -215,8 +231,9 @@ const PublishRide = ({ addRide }) => {
                             <button
                                 type="submit"
                                 className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                                disabled={isLoading} // Disable button while loading
                             >
-                                Publish Ride
+                                {isLoading ? "Publishing..." : "Publish Ride"}
                             </button>
                         </div>
                     </form>

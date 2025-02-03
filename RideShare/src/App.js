@@ -39,6 +39,8 @@ import Safety from './components/HomePage/Safety';
 import Login1 from './components/Login/login1';
 import AboutUser from './components/User/AboutUser';
 import ContactUser from './components/User/ContactUser';
+import UserProfile from './components/User/UserProfile';
+import DriverProfile from './components/Driver/DriverProfile';
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -107,6 +109,8 @@ const App = () => {
                     <Route path="/user-rides" element={<ProtectedRoute element={<YourRides />} user={user} />} />
                     <Route path="/user-about" element={<ProtectedRoute element={<AboutUser  />} user={user} />} />
                     <Route path="/user-contact" element={<ProtectedRoute element={<ContactUser  />} user={user} />} />
+                    <Route path="/userprofile" element={<ProtectedRoute element={<UserProfile  />} user={user} />} />
+                    <Route path="/driverprofile" element={<ProtectedRoute element={<DriverProfile  />} user={user} />} />
                 </Routes>
 
                 <Footer />
