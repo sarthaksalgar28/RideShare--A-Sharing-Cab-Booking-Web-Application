@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [modalMessage, setModalMessage] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // For navigation
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -24,7 +23,8 @@ const ForgotPassword = () => {
         }
 
         try {
-            const response = await fetch('/api/send-reset-link', { // Adjust the API endpoint as needed
+            // Make a POST request to verify the email
+            const response = await fetch('https://localhost:44345/api/VerifyEmail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,12 +32,17 @@ const ForgotPassword = () => {
                 body: JSON.stringify({ email }),
             });
 
+            const data = await response.json();
+
             if (response.ok) {
-                setModalMessage('Failed to send the reset link. Please try again later.');
+                setModalMessage(data.message); // Success message from the backend
                 setModalVisible(true);
-                setTimeout(() => navigate('/login'), 3000); // Redirect to login after 3 seconds
+                setTimeout(() => {
+                    // Redirect to UpdatePassword page with the email as a query parameter
+                    navigate(`/update-password?email=${email}`);
+                }, 3000); // Redirect after 3 seconds
             } else {
-                setModalMessage('A reset link has been sent to your email.');
+                setModalMessage(data.error || 'An error occurred. Please try again later.');
                 setModalVisible(true);
             }
         } catch (err) {
@@ -75,9 +80,8 @@ const ForgotPassword = () => {
                             type="submit"
                             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline mb-2"
                         >
-                            Send Reset Link
+                            Verify Email
                         </button>
-                        {message && <p style={{ color: 'green' }}>{message}</p>}
                     </div>
                 </form>
             </div>
