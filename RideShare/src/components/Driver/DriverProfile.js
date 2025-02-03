@@ -1,161 +1,238 @@
-// DriverProfile.js
-import React, { useState } from 'react';
-import NavbarDriver from './NavBarDriver'; // Import the NavbarDriver component
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import NavbarDriver from './NavBarDriver';
 
 const DriverProfile = () => {
-    // State to hold driver details
+    const navigate = useNavigate();
+    const [driverId, setDriverId] = useState(null);  // Store Driver ID
     const [driverDetails, setDriverDetails] = useState({
-        name: 'John Doe',
-        email: 'john.doe@example.com',
+        name: '',
+        email: '',
+        mobileNumber: '',
         carNumber: '',
-        licenseNumber: 'DL123456789', // Dummy license number
-        aadharNumber: '1234 5678 9012', // Dummy Aadhar number
-        mobileNumber: '', // Added mobile number field
+        licenseNumber: '',
+        cardLastFour: ''
     });
+    const [isEditing, setIsEditing] = useState(false);
 
-    const [isEditing, setIsEditing] = useState(false); // State to manage editing mode
+    useEffect(() => {
+        const uid = localStorage.getItem("driverId"); // Fetch driver ID from localStorage
+        setDriverId(uid);  // Store ID in state
+
+        if (!uid) {
+            alert("Driver ID not found!");
+            return;
+        }
+
+        const fetchDriverData = async () => {
+            try {
+                const response = await fetch(`https://localhost:44345/api/driver/${uid}`);
+                if (response.ok) {
+                    const data = await response.json();
+
+                    setDriverDetails({
+                        id:data.id,
+                        name: data.name,
+                        email: data.email,
+                        mobileNumber: data.mobileNumber,
+                        carNumber: data.carNumber,
+                        licenseNumber: data.licenseNumber,
+                        cardLastFour: data.cardLastFour,
+                    });
+                } else {
+                    alert('Failed to fetch driver data');
+                }
+            } catch (error) {
+                console.error("Error fetching driver data:", error);
+            }
+        };
+
+        fetchDriverData();
+    }, []);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setDriverDetails((prevDetails) => ({
             ...prevDetails,
-            [name]: value, // Update the specific field based on input name
+            [name]: value,
         }));
     };
 
     const handleEditToggle = () => {
-        setIsEditing((prev) => !prev); // Toggle editing mode
+        setIsEditing((prev) => !prev);
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent default form submission
-        alert(`Driver Details Updated:\n${JSON.stringify(driverDetails, null, 2)}`); // Placeholder for submission logic
-        setIsEditing(false); // Exit editing mode
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+    
+        if (!driverId) {
+            alert("Driver ID is missing! Cannot update.");
+            return;
+        }
+    
+        try {
+            const response = await fetch(`https://localhost:44345/api/driver/${driverId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(driverDetails),
+            });
+    
+            if (response.ok) {
+                alert('Driver details updated successfully');
+                setIsEditing(false);
+            } else {
+                alert('Failed to update driver details');
+            }
+        } catch (error) {
+            console.error('Error updating driver data:', error);
+            alert('Failed to update driver details');
+        }
     };
+    
 
     return (
-        <div>
-            <NavbarDriver /> {/* Include the NavbarDriver at the top */}
-            <div className="flex items-center justify-center min-h-screen bg-gray-100">
-                <div className="bg-white shadow-lg rounded-lg p-8 mb-4 w-full max-w-lg border border-gray-300"> {/* Added border class */}
-                    <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center">Driver Profile</h1> {/* Centered Title */}
-                    <form onSubmit={handleSubmit} className="text-left">
-                        <div className="mb-5">
-                            <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="name">
+        <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+            <div className="fixed top-0 left-0 w-full z-10 bg-white shadow">
+                <NavbarDriver />
+            </div>
+            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                    <h2 className="text-2xl font-bold text-blue-600 mb-6 text-center">Driver Profile</h2>
+
+                    <form className="space-y-6" onSubmit={handleSubmit}>
+                    <div>
+                            <label htmlFor="Id" className="block text-sm font-medium text-gray-700">
+                               Driver ID
+                            </label>
+                            <input
+                                id="id"
+                                name="id"
+                                type="text"
+                                value={driverDetails.id}
+                                onChange={handleInputChange}
+                                className="appearance-none rounded-md w-full px-3 py-2 border border-gray-300"
+                                placeholder="Enter your Id"
+                                disabled={!isEditing}
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                                 Driver Name
                             </label>
                             <input
-                                type="text"
+                                id="name"
                                 name="name"
+                                type="text"
                                 value={driverDetails.name}
                                 onChange={handleInputChange}
+                                className="appearance-none rounded-md w-full px-3 py-2 border border-gray-300"
                                 placeholder="Enter Driver Name"
-                                className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                disabled={!isEditing} // Disable input if not in editing mode
-                                required
+                                disabled={!isEditing}
                             />
                         </div>
-                        <div className="mb-5">
-                            <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="email">
-                                Email
+
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                Email address
                             </label>
                             <input
-                                type="email"
+                                id="email"
                                 name="email"
+                                type="email"
                                 value={driverDetails.email}
                                 onChange={handleInputChange}
-                                placeholder="Enter Email"
-                                className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                disabled={!isEditing} // Disable input if not in editing mode
-                                required
+                                className="appearance-none rounded-md w-full px-3 py-2 border border-gray-300"
+                                placeholder="Enter your email"
+                                disabled={!isEditing}
                             />
                         </div>
-                        <div className="mb-5">
-                            <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="mobileNumber">
+
+                        <div>
+                            <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">
                                 Mobile Number
                             </label>
                             <input
-                                type="text"
+                                id="mobileNumber"
                                 name="mobileNumber"
+                                type="text"
                                 value={driverDetails.mobileNumber}
                                 onChange={handleInputChange}
+                                className="appearance-none rounded-md w-full px-3 py-2 border border-gray-300"
                                 placeholder="Enter Mobile Number"
-                                className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                disabled={!isEditing} // Disable input if not in editing mode
-                                required
+                                disabled={!isEditing}
                             />
                         </div>
-                        <div className="mb-5">
-                            <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="carNumber">
+
+                        <div>
+                            <label htmlFor="carNumber" className="block text-sm font-medium text-gray-700">
                                 Car Number
                             </label>
                             <input
-                                type="text"
+                                id="carNumber"
                                 name="carNumber"
+                                type="text"
                                 value={driverDetails.carNumber}
                                 onChange={handleInputChange}
+                                className="appearance-none rounded-md w-full px-3 py-2 border border-gray-300"
                                 placeholder="Enter Car Number"
-                                className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                disabled={!isEditing} // Disable input if not in editing mode
+                                disabled={!isEditing}
                             />
                         </div>
-                        <div className="mb-5">
-                            <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="licenseNumber">
-                                Driver License Number
+
+                        <div>
+                            <label htmlFor="licenseNumber" className="block text-sm font-medium text-gray-700">
+                                License Number
                             </label>
                             <input
-                                type="text"
+                                id="licenseNumber"
                                 name="licenseNumber"
+                                type="text"
                                 value={driverDetails.licenseNumber}
                                 onChange={handleInputChange}
-                                placeholder="Enter Driver License Number"
-                                className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                disabled={!isEditing} // Disable input if not in editing mode
-                                required
+                                className="appearance-none rounded-md w-full px-3 py-2 border border-gray-300"
+                                placeholder="Enter License Number"
+                                disabled={!isEditing}
                             />
                         </div>
-                        <div className="mb-5">
-                            <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="aadharNumber">
+
+                        <div>
+                            <label htmlFor="aadharNumber" className="block text-sm font-medium text-gray-700">
                                 Aadhar Card Number
                             </label>
                             <input
+                                id="aadharNumber"
+                                name="cardLastFour"
                                 type="text"
-                                name="aadharNumber"
-                                value={driverDetails.aadharNumber}
+                                value={driverDetails.cardLastFour}
                                 onChange={handleInputChange}
+                                className="appearance-none rounded-md w-full px-3 py-2 border border-gray-300"
                                 placeholder="Enter Aadhar Card Number"
-                                className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                disabled={!isEditing} // Disable input if not in editing mode
-                                required
+                                disabled={!isEditing}
                             />
                         </div>
-                        <div className="flex justify-between">
+
+                        <div className="flex justify-between items-center mt-6">
                             <button
                                 type="button"
                                 onClick={handleEditToggle}
-                                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:shadow-outline transition duration-200"
+                                className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                             >
                                 {isEditing ? 'Cancel' : 'Edit'}
                             </button>
+
                             {isEditing && (
                                 <button
                                     type="submit"
-                                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:shadow-outline transition duration-200"
+                                    className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
                                 >
                                     Update
                                 </button>
                             )}
                         </div>
                     </form>
-                    <div className="mt-6 text-left">
-                        <h2 className="text-lg font-bold">Current Details:</h2>
-                        <p><strong>Driver Name:</strong> {driverDetails.name}</p>
-                        <p><strong>Email:</strong> {driverDetails.email}</p>
-                        <p><strong>Mobile Number:</strong> {driverDetails.mobileNumber || 'Not provided'}</p>
-                        <p><strong>Car Number:</strong> {driverDetails.carNumber || 'Not provided'}</p>
-                        <p><strong>Driver License Number:</strong> {driverDetails.licenseNumber}</p>
-                        <p><strong>Aadhar Card Number:</strong> {driverDetails.aadharNumber}</p>
-                    </div>
                 </div>
             </div>
         </div>

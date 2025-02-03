@@ -50,7 +50,7 @@ const NavbarDriver = () => {
                     <div className="ml-auto">
                         <button
                             className="btn btn-primary mr-2"
-                            onClick={handleProfileClick} // Redirect to driver's profile page
+                            onClick={handleProfileClick} 
                         >
                             Profile
                         </button>
