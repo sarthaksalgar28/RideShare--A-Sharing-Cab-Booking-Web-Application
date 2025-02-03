@@ -51,7 +51,10 @@ const Login = () => {
     
                 // Store the auth token in localStorage
                 localStorage.setItem('authToken', data.token);  // Assuming `data.token` contains the auth token
-                
+                localStorage.setItem('username', data.name);
+                localStorage.setItem('id', data.id);
+                console.log(data.name);
+                console.log(localStorage.getItem('id'));
                 // Redirect based on role
                 if (data.role === 'user') {
                     navigate('/search'); // Redirect to user interface

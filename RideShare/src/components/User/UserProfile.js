@@ -1,110 +1,170 @@
-// UserProfile.js
-import React, { useState } from 'react';
-import UserNavbar from './UserNavbar'; // Import the UserNavbar component
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserNavbar from './UserNavbar';
 
 const UserProfile = () => {
-    // State to hold user details
-    const [userDetails, setUser ] = useState({
-        username: 'JohnDoe',
-        email: 'john.doe@example.com',
-        mobileNumber: '',
+    const navigate = useNavigate();
+    const [userDetails, setUser] = useState({
+        Username: '',
+        email: '',
+        mobileNumber: ''
     });
+    const [isEditing, setIsEditing] = useState(false);
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
-    const [isEditing, setIsEditing] = useState(false); // State to manage editing mode
+    useEffect(() => {
+        const uid = localStorage.getItem("id");
+        const storedUsername = localStorage.getItem("username");
+        setUser(prevDetails => ({
+            ...prevDetails,
+            Username: storedUsername || ''
+        }));
+
+        const fetchUserData = async () => {
+            const response = await fetch(`https://localhost:44345/api/user/${uid}`);
+            if (response.ok) {
+                const data = await response.json();
+                setUser(prevDetails => ({
+                    ...prevDetails,
+                    email: data.email,
+                    mobileNumber: data.mobileNumber,
+                }));
+            } else {
+                alert('Failed to fetch user data');
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setUser ((prevDetails) => ({
+        setUser((prevDetails) => ({
             ...prevDetails,
-            [name]: value, // Update the specific field based on input name
+            [name]: value,
         }));
     };
 
     const handleEditToggle = () => {
-        setIsEditing((prev) => !prev); // Toggle editing mode
+        setIsEditing((prev) => !prev);
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent default form submission
-        alert(`User  Details Updated:\n${JSON.stringify(userDetails, null, 2)}`); // Placeholder for submission logic
-        setIsEditing(false); // Exit editing mode
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const uid = localStorage.getItem("id");
+
+        try {
+            const response = await fetch(`https://localhost:44345/api/user/${uid}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    Id: uid,
+                    Username: userDetails.Username,
+                    Email: userDetails.email,
+                    MobileNumber: userDetails.mobileNumber,
+                }),
+            });
+
+            if (response.ok) {
+                alert('User details updated successfully');
+                setIsEditing(false); // Exit editing mode
+            } else {
+                alert('Failed to update user details');
+            }
+        } catch (error) {
+            console.error('Error updating user data:', error);
+            alert('Failed to update user details');
+        }
     };
 
     return (
-        <div>
-            <UserNavbar /> {/* Include the UserNavbar at the top */}
-            <div className="flex items-center justify-center min-h-screen bg-gray-100">
-                <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md">
-                    <h1 className="text-2xl font-bold text-blue-600 mb-4 text-center">User  Profile</h1> {/* Centered Title */}
-                    <form onSubmit={handleSubmit} className="text-left">
-                        <div className="mb-4">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+        <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+            <UserNavbar />
+            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                    <h2 className="text-2xl font-bold text-blue-600 mb-6 text-center">Your Profile</h2>
+
+                    {/* Form to Edit User Details */}
+                    <form className="space-y-6" onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                                 Username
                             </label>
-                            <input
-                                type="text"
-                                name="username"
-                                value={userDetails.username}
-                                onChange={handleInputChange}
-                                placeholder="Enter Username"
-                                className="border rounded px-3 py-2 w-full"
-                                disabled={!isEditing} // Disable input if not in editing mode
-                                required
-                            />
+                            <div className="mt-1">
+                                <input
+                                    id="username"
+                                    name="Username"
+                                    type="text"
+                                    required
+                                    value={userDetails.Username}
+                                    onChange={handleInputChange}
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="Enter your username"
+                                    disabled={!isEditing}
+                                />
+                            </div>
                         </div>
-                        <div className="mb-4">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                                Email
+
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                Email address
                             </label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={userDetails.email}
-                                onChange={handleInputChange}
-                                placeholder="Enter Email"
-                                className="border rounded px-3 py-2 w-full"
-                                disabled={!isEditing} // Disable input if not in editing mode
-                                required
-                            />
+                            <div className="mt-1">
+                                <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    required
+                                    value={userDetails.email}
+                                    onChange={handleInputChange}
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="Enter your email address"
+                                    disabled={!isEditing}
+                                />
+                            </div>
                         </div>
-                        <div className="mb-4">
-                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="mobileNumber">
+
+                        <div>
+                            <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">
                                 Mobile Number
                             </label>
-                            <input
-                                type="text"
-                                name="mobileNumber"
-                                value={userDetails.mobileNumber}
-                                onChange={handleInputChange}
-                                placeholder="Enter Mobile Number"
-                                className="border rounded px-3 py-2 w-full"
-                                disabled={!isEditing} // Disable input if not in editing mode
-                            />
+                            <div className="mt-1">
+                                <input
+                                    id="mobileNumber"
+                                    name="mobileNumber"
+                                    type="text"
+                                    value={userDetails.mobileNumber}
+                                    onChange={handleInputChange}
+                                    className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="Enter your mobile number"
+                                    disabled={!isEditing}
+                                />
+                            </div>
                         </div>
-                        <div className="flex justify-between">
+
+                        {/* Edit and Save buttons */}
+                        <div className="flex justify-between items-center mt-6">
                             <button
                                 type="button"
                                 onClick={handleEditToggle}
-                                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                                className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 {isEditing ? 'Cancel' : 'Edit'}
                             </button>
+
                             {isEditing && (
                                 <button
                                     type="submit"
-                                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
+                                    className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                 >
                                     Update
                                 </button>
                             )}
                         </div>
                     </form>
-                    <div className="mt-6 text-left">
-                        <h2 className="text-lg font-bold">Current Details:</h2>
-                        <p><strong>Username:</strong> {userDetails.username}</p>
-                        <p><strong>Email:</strong> {userDetails.email}</p>
-                        <p><strong>Mobile Number:</strong> {userDetails.mobileNumber || 'Not provided'}</p>
-                    </div>
                 </div>
             </div>
         </div>
