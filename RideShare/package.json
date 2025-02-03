@@ -23,6 +23,7 @@
     "react-gallery-carousel": "^0.4.0",
     "react-multi-carousel": "^2.8.5",
     "react-router-dom": "^7.0.2",
+    "react-script": "^2.0.5",
     "react-scripts": "^5.0.1",
     "react-simply-carousel": "^9.1.7",
     "script": "^0.1.4",

@@ -1,7 +1,7 @@
 // src/PopularRides.js
 import React, { useState } from 'react';
 import PaymentComponent from '../Payments/PaymentComponent';
-import RidesNavBar from '../HomePage/RidesNavBar';
+
 
 
 

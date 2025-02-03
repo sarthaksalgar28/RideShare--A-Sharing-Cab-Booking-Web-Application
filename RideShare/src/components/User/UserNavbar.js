@@ -12,7 +12,7 @@ const UserNavbar = () => {
     };
     
     const handleLogin = () => {
-        navigate('/'); // Redirect to login page
+        navigate('/userprofile'); // Redirect to login page
     };
     
     // Define a custom style for the brand text

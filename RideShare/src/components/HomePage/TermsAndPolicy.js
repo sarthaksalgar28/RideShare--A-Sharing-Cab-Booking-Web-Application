@@ -1,6 +1,6 @@
 import React from 'react';
 import UserNavbar from './NavBar'; // Assuming you have a UserNavbar component
-import Footer from './Footer'; // Assuming you have a Footer component
+
 
 const TermsAndPolicy = () => {
   return (

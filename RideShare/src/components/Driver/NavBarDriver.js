@@ -1,13 +1,19 @@
 // src/components/NavbarDriver.js
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate from react-router-dom
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 const NavbarDriver = () => {
+    const navigate = useNavigate(); // Initialize useNavigate hook
+
     // Define a custom style for the brand text
     const brandStyle = {
         color: '#007bff', // Replace with your desired blue color
         fontWeight: 'bold', // Make the text bold
+    };
+
+    const handleProfileClick = () => {
+        navigate('/driverprofile'); // Redirect to the driver's profile page
     };
 
     return (
@@ -39,12 +45,18 @@ const NavbarDriver = () => {
                         <li className="nav-item">
                             <Link className="nav-link text-gray-700 hover:text-blue-600" to="/contact-driver">Contact Us</Link>
                         </li>
+                        
                     </ul>
-                   
                     <div className="ml-auto">
-    <Link className="btn btn-primary" to="/">Logout</Link>
-    <Link className="btn btn-primary ml-2" to="/publish-ride">Publish a Ride</Link> {/* Added ml-2 for spacing */}
-</div>
+                        <button
+                            className="btn btn-primary mr-2"
+                            onClick={handleProfileClick} // Redirect to driver's profile page
+                        >
+                            Profile
+                        </button>
+                        <Link className="btn btn-primary" to="/">Logout</Link>
+                        <Link className="btn btn-primary ml-2" to="/publish-ride">Publish a Ride</Link> {/* Added ml-2 for spacing */}
+                    </div>
                 </div>
             </div>
         </nav>
