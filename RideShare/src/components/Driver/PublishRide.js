@@ -12,6 +12,7 @@ const PublishRide = ({ addRide }) => {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [passengers, setPassengers] = useState(1);
+    const [remainingPassengers, setRemainingPassengers] = useState(1);  // Add remaining passengers state
     const [modalMessage, setModalMessage] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false); 
@@ -20,64 +21,37 @@ const PublishRide = ({ addRide }) => {
     const sourceInputRef = useRef(null);
     const destinationInputRef = useRef(null);
 
-    useEffect(() => {
-        const sourceAutocomplete = new window.google.maps.places.Autocomplete(sourceInputRef.current, {
-            types: ['geocode'],
-        });
-
-        const destinationAutocomplete = new window.google.maps.places.Autocomplete(destinationInputRef.current, {
-            types: ['geocode'],
-        });
-
-        sourceAutocomplete.addListener('place_changed', () => {
-            const place = sourceAutocomplete.getPlace();
-            if (place && place.geometry) {
-                setSource(place.formatted_address);
-            }
-        });
-
-        destinationAutocomplete.addListener('place_changed', () => {
-            const place = destinationAutocomplete.getPlace();
-            if (place && place.geometry) {
-                setDestination(place.formatted_address);
-            }
-        });
-
-        return () => {
-            if (sourceInputRef.current) {
-                window.google.maps.event.clearInstanceListeners(sourceInputRef.current);
-            }
-            if (destinationInputRef.current) {
-                window.google.maps.event.clearInstanceListeners(destinationInputRef.current);
-            }
-        };
-    }, []);
+    // On passenger count change, update remaining passengers as well
+    const handlePassengerChange = (e) => {
+        const count = e.target.value;
+        setPassengers(count);
+        setRemainingPassengers(count); // Set remaining passengers to the same initially
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const driverId = localStorage.getItem('id');  // Fetch driver ID from localStorage
     
         const newRide = {
-            driverId: driverId, // Pass the driver ID
+            driverId: driverId,
             driver: driverName || "Your Driver Name",
             rating: 5.0,
             route: `${source} to ${destination}`,
             date: `${date} at ${time}`,
             price: `${passengers * 100}`,
             passengers: passengers,  // Number of passengers from the input
+            remainingPassengers: remainingPassengers,  // Adding the remaining passengers
         };
-    
-        setIsLoading(true); // Set loading state to true
+
+        setIsLoading(true); 
         
         try {
             // POST the data to your backend API
             await axios.post('https://localhost:44345/api/Rides/publish', newRide);
-    
-            // Success - Show modal
             setModalMessage('Published Ride successful!');
             setModalVisible(true);
-    
+
             // Reset form fields
             setDriverName('');
             setSource('');
@@ -87,20 +61,20 @@ const PublishRide = ({ addRide }) => {
             setDate('');
             setTime('');
             setPassengers(1);
-    
-            // Navigate after 2 seconds to allow user to see the modal
+            setRemainingPassengers(1);  // Reset remaining passengers on submit
+
+            // Redirect after 2 seconds
             setTimeout(() => {
                 navigate('/rides-driver');
             }, 2000);
         } catch (error) {
-            // Handle error
-            console.error("Error publishing ride:", error);
             setModalMessage('Failed to publish ride. Please try again!');
             setModalVisible(true);
         } finally {
-            setIsLoading(false); // Reset loading state
+            setIsLoading(false);
         }
     };
+
     const closeModal = () => {
         setModalVisible(false);
     };
@@ -227,6 +201,7 @@ const PublishRide = ({ addRide }) => {
                                 required
                             />
                         </div>
+                        
                         <div className="flex items-center justify-center">
                             <button
                                 type="submit"

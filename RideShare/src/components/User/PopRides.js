@@ -8,9 +8,9 @@ const PopularRidesUser = () => {
     const [upcomingRides, setUpcomingRides] = useState([]);
     const [userId, setUserId] = useState(null);  // State for userId
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+    const [rideBookings, setRideBookings] = useState({});  // Track successful bookings
 
     useEffect(() => {
-        // Fetch userId from localStorage directly
         const uid = localStorage.getItem("id");
         if (uid) {
             setUserId(uid);
@@ -22,6 +22,7 @@ const PopularRidesUser = () => {
         const fetchRides = async () => {
             try {
                 const response = await axios.get('https://localhost:44345/api/Rides');
+                console.log(response.data);  // Add this to check the structure
                 const currentDate = new Date();
                 const filteredRides = response.data.filter(ride => {
                     const rideDate = new Date(ride.date.split(' at ')[0]);
@@ -33,11 +34,20 @@ const PopularRidesUser = () => {
             }
         };
         
+
         fetchRides();
     }, []);
 
     const handleBookNow = (ride) => {
         setSelectedRide(ride);
+    };
+
+    const handlePaymentSuccess = (rideId) => {
+        // Update the booked passengers for the specific ride
+        setRideBookings((prevBookings) => ({
+            ...prevBookings,
+            [rideId]: (prevBookings[rideId] || 0) + 1
+        }));
     };
 
     return (
@@ -52,20 +62,39 @@ const PopularRidesUser = () => {
                                 <p>Date: {ride.date}</p>
                                 <p>Driver: {ride.driverName}</p>
                                 <p>Price: ₹{ride.price.toFixed(2)}</p>
-                                <p>Rating: {ride.rating}</p>
-                                <p>Ride ID: {ride.id}</p>  {/* Display Ride ID */}
-                                <button className="book-now-button" onClick={() => handleBookNow(ride)}>Book Now</button>
+                                
+                                <p> Remaining Seats: {ride.remainingpassengers}</p> {/* Display remaining passengers */}
+
+                                <div className="fab-container">
+                                    {/* Generate the FAB icons based on remaining passengers */}
+                                    {[...Array(ride.passengers)].map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className={`fab-icon ${rideBookings[ride.id] > i ? 'filled' : ''}`}
+                                        ></div>
+                                    ))}
+                                </div>
+
+                                <button 
+                                    className="book-now-button" 
+                                    onClick={() => handleBookNow(ride)} 
+                                    disabled={ride.remainingPassengers <= 0} // Disable button if no remaining passengers
+                                >
+                                    {ride.remainingPassengers > 0 ? 'Book Now' : 'No Seats Left'}
+                                </button>
                             </div>
                         ))
                     ) : (
                         <p>No upcoming rides available.</p>
                     )}
                 </div>
+
                 {selectedRide && (
                     <PaymentComponent 
                         amount={selectedRide.price} 
-                        rideId={selectedRide.id}  // Ensure rideId is passed correctly
+                        rideId={selectedRide.id}
                         userId={userId}
+                        onPaymentSuccess={() => handlePaymentSuccess(selectedRide.id)}  // Handle successful payment
                     />
                 )}
             </div>
@@ -97,8 +126,27 @@ const PopularRidesUser = () => {
                         transform: scale(1.02);
                     }
 
+                    .fab-container {
+                        display: flex;
+                        gap: 10px;
+                        margin-top: 10px;
+                    }
+
+                    .fab-icon {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        background-color: #2563eb; /* Blue */
+                        display: inline-block;
+                        transition: background-color 0.3s;
+                    }
+
+                    .fab-icon.filled {
+                        background-color: #4CAF50; /* Green for filled */
+                    }
+
                     .book-now-button {
-                        background-color: #2563eb; /* Blue 600 */
+                        background-color: #2563eb;
                         color: white;
                         padding: 10px 15px;
                         border: none;
@@ -111,7 +159,12 @@ const PopularRidesUser = () => {
                     }
 
                     .book-now-button:hover {
-                        background-color: #1d4ed8; /* Darker blue on hover */
+                        background-color: #1d4ed8;
+                    }
+
+                    .book-now-button:disabled {
+                        background-color: #d1d5db;
+                        cursor: not-allowed;
                     }
                 `}
             </style>
