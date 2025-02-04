@@ -6,22 +6,27 @@ import UserNavbar from './UserNavbar';
 const PopularRidesUser = () => {
     const [selectedRide, setSelectedRide] = useState(null);
     const [upcomingRides, setUpcomingRides] = useState([]);
-    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false); // Track if the user is logged in
+    const [userId, setUserId] = useState(null);  // State for userId
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
     useEffect(() => {
+        // Fetch userId from localStorage directly
+        const uid = localStorage.getItem("id");
+        if (uid) {
+            setUserId(uid);
+            setIsUserLoggedIn(true);
+        } else {
+            setIsUserLoggedIn(false);
+        }
+
         const fetchRides = async () => {
             try {
                 const response = await axios.get('https://localhost:44345/api/Rides');
-                console.log("Rides data from API:", response.data);  // Log raw API response data
-                
-                // Ensure that the 'date' is parsed correctly for comparison
                 const currentDate = new Date();
                 const filteredRides = response.data.filter(ride => {
-                    const rideDate = new Date(ride.date.split(' at ')[0]); // Splitting and parsing only the date part
-                    console.log("Ride Date:", rideDate); // Log each ride's date
-                    return rideDate > currentDate; // Compare the date with the current date
+                    const rideDate = new Date(ride.date.split(' at ')[0]);
+                    return rideDate > currentDate;
                 });
-                console.log("Filtered Rides:", filteredRides);  // Log filtered rides after filtering by date
                 setUpcomingRides(filteredRides);
             } catch (error) {
                 console.error('Error fetching rides:', error);
@@ -29,16 +34,10 @@ const PopularRidesUser = () => {
         };
         
         fetchRides();
-    }, [isUserLoggedIn]);
-
-    useEffect(() => {
-        if (selectedRide) {
-            console.log("Selected Ride:", selectedRide); // This will log after selecting a ride
-        }
-    }, [selectedRide]);
+    }, []);
 
     const handleBookNow = (ride) => {
-        setSelectedRide(ride);  // Set selected ride when user clicks "Book Now"
+        setSelectedRide(ride);
     };
 
     return (
@@ -66,6 +65,7 @@ const PopularRidesUser = () => {
                     <PaymentComponent 
                         amount={selectedRide.price} 
                         rideId={selectedRide.id}  // Ensure rideId is passed correctly
+                        userId={userId}
                     />
                 )}
             </div>
