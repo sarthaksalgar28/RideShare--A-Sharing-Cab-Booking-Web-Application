@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { LoadScript } from '@react-google-maps/api';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute'; 
 // Import components
 import NavbarWrapper from './components/HomePage/NavbarWrapper';
 import HeroSection from './components/HomePage/HeroSection';
@@ -65,11 +65,7 @@ const App = () => {
         }
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem('user'); // Clear user data from local storage
-        setUser (null); // Clear user state
-        navigate('/login'); // Redirect to login page
-    };
+  
 
     return (
         <LoadScript googleMapsApiKey="AIzaSyDrQeNVgH6Jws5AngUuXOwpBMX3bywLWZI" libraries={['places']}>
@@ -113,7 +109,7 @@ const App = () => {
                     <Route path="/driverprofile" element={<ProtectedRoute element={<DriverProfile  />} user={user} />} />
                 </Routes>
 
-                <Footer />
+                <Footer /> 
             </div>
         </LoadScript>
     );

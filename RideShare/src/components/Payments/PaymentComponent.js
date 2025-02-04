@@ -1,6 +1,6 @@
-import React from 'react';
-
 const PaymentComponent = ({ amount, rideId, onPaymentSuccess, onPaymentFailure }) => {
+    console.log("RideId:", rideId);  // Log rideId to check if it's correct
+
     const handlePayment = (event) => {
         event.preventDefault();
 
@@ -11,70 +11,43 @@ const PaymentComponent = ({ amount, rideId, onPaymentSuccess, onPaymentFailure }
 
         const options = {
             key: 'rzp_test_LMZHnNT5VlTSU1',
-            amount: amount * 100, // Amount in paise
+            amount: amount * 100, // Amount is multiplied by 100 to convert to paise
             currency: 'INR',
             name: 'RideShare',
             description: 'Payment For Ride',
             handler: function (response) {
-                console.log('Payment successful:', response);
                 alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
 
-                const paymentId = response.razorpay_payment_id;
-                const paymentStatus = 'success'; // Assuming payment was successful
-                const paymentAmount = amount;
-
-                // Make sure the amount is a number (remove any non-numeric characters)
-                const cleanedAmount = parseFloat(paymentAmount.replace(/[^\d.-]/g, ''));
-
+                // Creating payment payload to send to backend
                 const paymentPayload = {
-                    paymentId: paymentId,
-                    status: paymentStatus,
-                    amount: cleanedAmount, // Now amount is a number
-                    rideId: rideId // Include the RideId here
+                    paymentId: response.razorpay_payment_id,
+                    status: 'success',
+                    amount: amount,
+                    rideId: rideId  // Passing the rideId
                 };
 
-                console.log('Sending payment payload:', paymentPayload);
-
-                // Send payment data to the backend
-                fetch('https://localhost:44345/api/Payments/savePayment', {
+                // Send the payment details to your API to save the payment
+                fetch('https://localhost:44345/api/Payment', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(paymentPayload)
                 })
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
-                    }
-                    return res.json();
-                })
+                .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        console.log('Payment saved to the database');
-                        if (onPaymentSuccess && typeof onPaymentSuccess === 'function') {
-                            onPaymentSuccess(paymentId);
-                        }
+                        onPaymentSuccess && onPaymentSuccess(response.razorpay_payment_id);
                     } else {
-                        console.error('Failed to save payment ID:', data);
-                        if (onPaymentFailure && typeof onPaymentFailure === 'function') {
-                            onPaymentFailure();
-                        }
+                        onPaymentFailure && onPaymentFailure();
                     }
                 })
-                .catch(error => {
-                    console.error('Error while saving payment:', error);
-                    if (onPaymentFailure && typeof onPaymentFailure === 'function') {
-                        onPaymentFailure();
-                    }
-                });
+                .catch(() => onPaymentFailure && onPaymentFailure());
             },
             modal: {
                 ondismiss: function () {
                     alert('Payment was not completed.');
-                    if (onPaymentFailure && typeof onPaymentFailure === 'function') {
-                        onPaymentFailure();
-                    }
+                    onPaymentFailure && onPaymentFailure();
                 }
             },
             prefill: {
@@ -92,24 +65,12 @@ const PaymentComponent = ({ amount, rideId, onPaymentSuccess, onPaymentFailure }
     };
 
     return (
-        <div>
-            <h2>Payment</h2>
-            <p>Amount: ₹{amount}</p>
+        <div className="p-4 border rounded shadow-lg bg-white max-w-sm mx-auto mt-4">
+            <h2 className="text-xl font-bold mb-2">Payment</h2>
+            <p className="text-gray-700 mb-4">Amount: ₹{amount}</p>
             <button
                 onClick={handlePayment}
-                style={{
-                    backgroundColor: '#2563eb',
-                    color: 'white',
-                    padding: '10px 15px',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    textAlign: 'center',
-                    display: 'inline-block',
-                    marginTop: '10px',
-                    fontSize: '16px',
-                    transition: 'background-color 0.3s ease',
-                }}
+                className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
             >
                 Pay Now
             </button>

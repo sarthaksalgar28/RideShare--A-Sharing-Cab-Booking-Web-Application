@@ -1,61 +1,64 @@
 // src/components/NavbarDriver.js
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate from react-router-dom
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import { Link, useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import Bootstrap JS for toggler functionality
 
 const NavbarDriver = () => {
-    const navigate = useNavigate(); // Initialize useNavigate hook
+    const navigate = useNavigate();
 
-    // Define a custom style for the brand text
+    // Custom style for brand text
     const brandStyle = {
-        color: '#007bff', // Replace with your desired blue color
-        fontWeight: 'bold', // Make the text bold
+        color: '#007bff', 
+        fontWeight: 'bold',
+        fontSize: '1.5rem',
     };
 
     const handleProfileClick = () => {
-        navigate('/driverprofile'); // Redirect to the driver's profile page
+        navigate('/driverprofile');
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-md">
-            <div className="container">
-                <Link className="navbar-brand" to="/publish-ride" style={brandStyle}>RideShare</Link> {/* Apply inline style */}
+        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+            <div className="container-fluid">
+                <Link className="navbar-brand" to="/publish-ride" style={brandStyle}>RideShare</Link>
                 <button 
                     className="navbar-toggler" 
                     type="button" 
-                    data-toggle="collapse" 
-                    data-target="#navbarNav" 
+                    data-bs-toggle="collapse"   // Updated for Bootstrap 5
+                    data-bs-target="#navbarNav" // Updated for Bootstrap 5
                     aria-controls="navbarNav" 
                     aria-expanded="false" 
                     aria-label="Toggle navigation"
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
+
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav mr-auto">
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/publish-ride">Home</Link>
+                            <Link className="nav-link" to="/publish-ride">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/rides-driver">Rides</Link>
+                            <Link className="nav-link" to="/rides-driver">Rides</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/about-driver">About</Link>
+                            <Link className="nav-link" to="/about-driver">About</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-gray-700 hover:text-blue-600" to="/contact-driver">Contact Us</Link>
+                            <Link className="nav-link" to="/contact-driver">Contact Us</Link>
                         </li>
-                        
                     </ul>
-                    <div className="ml-auto">
+
+                    <div className="d-flex">
                         <button
-                            className="btn btn-primary mr-2"
-                            onClick={handleProfileClick} 
+                            className="btn btn-outline-primary me-2"
+                            onClick={handleProfileClick}
                         >
                             Profile
                         </button>
-                        <Link className="btn btn-primary" to="/">Logout</Link>
-                        <Link className="btn btn-primary ml-2" to="/publish-ride">Publish a Ride</Link> {/* Added ml-2 for spacing */}
+                        <Link className="btn btn-primary me-2" to="/">Logout</Link>
+                        <Link className="btn btn-success" to="/publish-ride">Publish a Ride</Link>
                     </div>
                 </div>
             </div>
