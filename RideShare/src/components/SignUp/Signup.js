@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -12,7 +14,7 @@ const Signup = () => {
     const [carNumber, setCarNumber] = useState('');
     const [licenseNumber, setLicenseNumber] = useState('');
     const [cardLastFour, setCardLastFour] = useState('');
-    const [mobileNumber, setMobileNumber] = useState(''); // Added mobile number state
+    const [mobileNumber, setMobileNumber] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
@@ -22,53 +24,49 @@ const Signup = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validate email and password
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!emailRegex.test(email)) {
             setEmailError('Invalid email address');
-            return; // Stop further execution
+            return;
         } else {
             setEmailError('');
         }
 
         if (password.length < 8) {
             setPasswordError('Password must be at least 8 characters long');
-            return; // Stop further execution
+            return;
         } else {
             setPasswordError('');
         }
 
         if (password !== confirmPassword) {
             setConfirmPasswordError('Passwords do not match');
-            return; // Stop further execution
+            return;
         } else {
             setConfirmPasswordError('');
         }
 
         if (emailRegex.test(email) && password.length >= 8 && password === confirmPassword) {
-            // Prepare user data
-            const user = { name, role, email, password, carNumber, licenseNumber, cardLastFour, mobileNumber }; // Include mobile number
+            const user = { name, role, email, password, carNumber, licenseNumber, cardLastFour, mobileNumber };
 
             try {
-                // Send POST request to the backend
                 const response = await axios.post('https://localhost:44345/api/Signup', user);
                 setModalMessage(response.data.message);
-                setModalVisible(true); // Show modal on success
+                setModalVisible(true);
             } catch (error) {
                 setModalMessage('Signup failed: ' + (error.response?.data?.error || error.message));
-                setModalVisible(true); // Show modal on error
+                setModalVisible(true);
             }
         }
     };
 
     const closeModal = () => {
-        setModalVisible(false); // Hide modal
-        navigate('/login'); // Redirect to login page when the modal is closed
+        setModalVisible(false);
+        navigate('/login');
     };
 
     return (
         <>
-            {/* Modal for Success/Error Message */}
             {modalVisible && (
                 <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded shadow-lg text-center">
@@ -90,7 +88,6 @@ const Signup = () => {
                 </div>
             )}
 
-            {/* Main Signup Form */}
             <div className="flex items-center justify-center min-h-screen bg-gray-100">
                 <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm">
                     <h2 className="text-2xl font-bold text-blue-600 mb-4 text-center">Sign Up</h2>
@@ -114,7 +111,6 @@ const Signup = () => {
                                 value={role}
                                 onChange={(e) => {
                                     setRole(e.target.value);
-                                    // Reset additional fields when role changes
                                     if (e.target.value !== 'driver') {
                                         setCarNumber('');
                                         setLicenseNumber('');
@@ -125,7 +121,7 @@ const Signup = () => {
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             >
                                 <option value="">Select a role</option>
-                                <option value="user">User </option>
+                                <option value="user">User</option>
                                 <option value="driver">Driver</option>
                             </select>
                         </div>
@@ -171,13 +167,13 @@ const Signup = () => {
                         )}
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="mobileNumber">Mobile Number</label>
-                            <input
-                                type="text"
+                            <PhoneInput
                                 id="mobileNumber"
-                                placeholder="Mobile Number"
+                                placeholder="Enter mobile number"
                                 value={mobileNumber}
-                                onChange={(e) => setMobileNumber(e.target.value)}
+                                onChange={setMobileNumber}
                                 required
+                                defaultCountry="IN"
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             />
                         </div>

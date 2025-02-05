@@ -33,7 +33,6 @@ const PopularRidesUser = () => {
                 console.error('Error fetching rides:', error);
             }
         };
-        
 
         fetchRides();
     }, []);
@@ -43,11 +42,13 @@ const PopularRidesUser = () => {
     };
 
     const handlePaymentSuccess = (rideId) => {
-        // Update the booked passengers for the specific ride
         setRideBookings((prevBookings) => ({
             ...prevBookings,
             [rideId]: (prevBookings[rideId] || 0) + 1
         }));
+
+        // Refresh rides to get updated remaining passengers
+        fetchRides();
     };
 
     return (
@@ -62,23 +63,12 @@ const PopularRidesUser = () => {
                                 <p>Date: {ride.date}</p>
                                 <p>Driver: {ride.driverName}</p>
                                 <p>Price: ₹{ride.price.toFixed(2)}</p>
-                                
-                                <p> Remaining Seats: {ride.remainingpassengers}</p> {/* Display remaining passengers */}
+                                <p>Remaining Seats: {ride.remainingPassengers}</p>
 
-                                <div className="fab-container">
-                                    {/* Generate the FAB icons based on remaining passengers */}
-                                    {[...Array(ride.passengers)].map((_, i) => (
-                                        <div
-                                            key={i}
-                                            className={`fab-icon ${rideBookings[ride.id] > i ? 'filled' : ''}`}
-                                        ></div>
-                                    ))}
-                                </div>
-
-                                <button 
-                                    className="book-now-button" 
-                                    onClick={() => handleBookNow(ride)} 
-                                    disabled={ride.remainingPassengers <= 0} // Disable button if no remaining passengers
+                                <button
+                                    className="book-now-button"
+                                    onClick={() => handleBookNow(ride)}
+                                    disabled={ride.remainingPassengers <= 0}
                                 >
                                     {ride.remainingPassengers > 0 ? 'Book Now' : 'No Seats Left'}
                                 </button>
@@ -90,8 +80,8 @@ const PopularRidesUser = () => {
                 </div>
 
                 {selectedRide && (
-                    <PaymentComponent 
-                        amount={selectedRide.price} 
+                    <PaymentComponent
+                        amount={selectedRide.price}
                         rideId={selectedRide.id}
                         userId={userId}
                         onPaymentSuccess={() => handlePaymentSuccess(selectedRide.id)}  // Handle successful payment
@@ -109,9 +99,9 @@ const PopularRidesUser = () => {
 
                     .rides-grid {
                         display: grid;
-                        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                        gap: 20px;
-                        padding: 10px;
+                        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                        gap: 30px;
+                        padding: 40px;
                     }
 
                     .card {
@@ -120,42 +110,27 @@ const PopularRidesUser = () => {
                         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                         padding: 20px;
                         transition: transform 0.2s;
+                        display: flex;
+                        flex-direction: column;  /* Flexbox for vertical alignment */
+                        justify-content: space-between;  /* Space between content and button */
+                        height: 100%;
+                        width:350px;
                     }
 
                     .card:hover {
                         transform: scale(1.02);
                     }
 
-                    .fab-container {
-                        display: flex;
-                        gap: 10px;
-                        margin-top: 10px;
-                    }
-
-                    .fab-icon {
-                        width: 30px;
-                        height: 30px;
-                        border-radius: 50%;
-                        background-color: #2563eb; /* Blue */
-                        display: inline-block;
-                        transition: background-color 0.3s;
-                    }
-
-                    .fab-icon.filled {
-                        background-color: #4CAF50; /* Green for filled */
-                    }
-
                     .book-now-button {
                         background-color: #2563eb;
                         color: white;
-                        padding: 10px 15px;
+                        padding: 12px 20px;
                         border: none;
                         border-radius: 5px;
                         cursor: pointer;
                         text-align: center;
                         display: inline-block;
-                        margin-top: 10px;
-                        text-decoration: none;
+                        margin-top: auto;  /* Pushes the button to the bottom */
                     }
 
                     .book-now-button:hover {
@@ -165,6 +140,38 @@ const PopularRidesUser = () => {
                     .book-now-button:disabled {
                         background-color: #d1d5db;
                         cursor: not-allowed;
+                    }
+
+                    /* Media queries for smaller screens */
+                    @media (max-width: 768px) {
+                        .container {
+                            padding: 15px;
+                        }
+
+                        .rides-grid {
+                            grid-template-columns: 1fr;
+                            gap: 15px;
+                        }
+
+                        .book-now-button {
+                            padding: 10px 15px;
+                            font-size: 14px;
+                        }
+
+                        .card {
+                            padding: 15px;
+                        }
+                    }
+
+                    @media (max-width: 480px) {
+                        .book-now-button {
+                            padding: 8px 12px;
+                            font-size: 12px;
+                        }
+
+                        .card {
+                            padding: 10px;
+                        }
                     }
                 `}
             </style>

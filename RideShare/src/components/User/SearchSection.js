@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MapComponent from './MapComponent.js';
 import UserNavbar from './UserNavbar.js';
+
 const SearchSection = ({ setDistance }) => {
     const navigate = useNavigate();
     const fromInputRef = useRef(null);
@@ -9,11 +10,14 @@ const SearchSection = ({ setDistance }) => {
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [distanceInfo, setDistanceInfo] = useState(null); // State for distance and duration
-
-    const isLoggedIn = true; // Simulate logged-in state or replace with real check
+    const [distanceInfo, setDistanceInfo] = useState(null);
+    const [currentDate, setCurrentDate] = useState(''); // State for current date
 
     useEffect(() => {
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        setCurrentDate(formattedDate);
+
         const fromAutocomplete = new window.google.maps.places.Autocomplete(fromInputRef.current, {
             types: ['geocode'],
         });
@@ -48,11 +52,7 @@ const SearchSection = ({ setDistance }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!isLoggedIn) {
-            navigate('/login');
-        } else {
-            setIsSubmitted(true);
-        }
+        setIsSubmitted(true);
     };
 
     const handleShowRides = () => {
@@ -61,7 +61,7 @@ const SearchSection = ({ setDistance }) => {
 
     return (
         <>
-           <UserNavbar/>
+            <UserNavbar />
             <section id="Search" className="py-10">
                 <div className="container mx-auto px-4">
                     <div className="bg-white shadow-md rounded-lg p-6">
@@ -96,6 +96,7 @@ const SearchSection = ({ setDistance }) => {
                                         className="w-full border-gray-300 rounded-lg p-2"
                                         id="date"
                                         type="date"
+                                        min={currentDate}  // Restrict to current date and future
                                     />
                                 </div>
                                 <div className="flex-1">
@@ -115,14 +116,12 @@ const SearchSection = ({ setDistance }) => {
                             </button>
                         </form>
 
-                        {/* Map Component */}
                         {isSubmitted && from && to && (
                             <div className="mt-10">
                                 <MapComponent from={from} to={to} setDistance={setDistanceInfo} />
                             </div>
                         )}
 
-                        {/* Display distance and time */}
                         {distanceInfo && (
                             <div className="mt-4 text-lg text-gray-700">
                                 <p className="font-semibold">Distance: <span className="text-blue-500">{distanceInfo.distance}</span></p>
@@ -130,7 +129,6 @@ const SearchSection = ({ setDistance }) => {
                             </div>
                         )}
 
-                        {/* Show Rides Button */}
                         {isSubmitted && (
                             <button
                                 onClick={handleShowRides}
@@ -142,7 +140,6 @@ const SearchSection = ({ setDistance }) => {
                     </div>
                 </div>
             </section>
-           
         </>
     );
 };
