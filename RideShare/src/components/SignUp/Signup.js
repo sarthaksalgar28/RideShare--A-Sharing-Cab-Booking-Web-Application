@@ -21,6 +21,11 @@ const Signup = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
+    const validatePassword = (password) => {
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return passwordRegex.test(password);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -32,8 +37,8 @@ const Signup = () => {
             setEmailError('');
         }
 
-        if (password.length < 8) {
-            setPasswordError('Password must be at least 8 characters long');
+        if (!validatePassword(password)) {
+            setPasswordError('Password must be at least 8 characters long, contain at least one lowercase letter, one uppercase letter, one number, and one special character');
             return;
         } else {
             setPasswordError('');
@@ -46,7 +51,7 @@ const Signup = () => {
             setConfirmPasswordError('');
         }
 
-        if (emailRegex.test(email) && password.length >= 8 && password === confirmPassword) {
+        if (emailRegex.test(email) && validatePassword(password) && password === confirmPassword) {
             const user = { name, role, email, password, carNumber, licenseNumber, cardLastFour, mobileNumber };
 
             try {
