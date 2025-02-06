@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import Bootstrap JS for toggler functionality
 
-const UserNavbar = () => {
+const ChatNavbar = () => {
     const [isRideSuccessful, setIsRideSuccessful] = useState(false); // Track ride status
     const navigate = useNavigate();
 
@@ -55,9 +55,7 @@ const UserNavbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/search">Home</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/user-rides">Rides</Link>
-                        </li>
+                       
                         <li className="nav-item">
                             <Link className="nav-link" to="/user-about">About</Link>
                         </li>
@@ -66,26 +64,7 @@ const UserNavbar = () => {
                         </li>
                     </ul>
 
-                    <div className="d-flex">
-                        <button
-                            className="btn btn-outline-primary me-2"
-                            onClick={handleLogin}
-                        >
-                            Profile
-                        </button>
-                        <button
-                            className="btn btn-outline-success me-2"
-                            onClick={() => navigate('/chat')} // Navigate to chat
-                        >
-                            Chat
-                        </button>
-                        <button
-                            className="btn btn-primary"
-                            onClick={handleLogout}
-                        >
-                            Log Out
-                        </button>
-                    </div>
+                    
                 </div>
             </div>
 
@@ -94,4 +73,4 @@ const UserNavbar = () => {
     );
 };
 
-export default UserNavbar;
+export default ChatNavbar;

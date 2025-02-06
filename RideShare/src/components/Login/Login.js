@@ -52,9 +52,13 @@ const Login = () => {
     
                 // Store the auth token in localStorage
                 localStorage.setItem('authToken', data.token);
-                localStorage.setItem('id', data.id); 
+                // localStorage.setItem('id', data.id); 
                 localStorage.setItem('role', data.role); 
-
+                if (data.role === 'user') {
+                    localStorage.setItem('id', data.id); // Store user ID
+                  } else if (data.role === 'driver') {
+                    localStorage.setItem('driverId', data.id); // Store driver ID
+                  }
                  // Assuming `data.token` contains the auth token
                 localStorage.setItem('username', data.name);
                

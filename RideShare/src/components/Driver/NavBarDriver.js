@@ -1,4 +1,3 @@
-// src/components/NavbarDriver.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -60,6 +59,12 @@ const NavbarDriver = () => {
                             onClick={handleProfileClick}
                         >
                             Profile
+                        </button>
+                        <button
+                            className="btn btn-outline-success me-2"
+                            onClick={() => navigate('/chat')} // Navigate to chat
+                        >
+                            Chat
                         </button>
                         <Link className="btn btn-primary me-2" onClick={handleLogout}>Logout</Link>
                         <Link className="btn btn-success" to="/publish-ride">Publish a Ride</Link>

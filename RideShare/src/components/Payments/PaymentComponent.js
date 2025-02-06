@@ -7,12 +7,12 @@ const PaymentComponent = ({ amount, rideId, userId, onPaymentSuccess, onPaymentF
 
     const handlePayment = (event) => {
         event.preventDefault();
-
+    
         if (!window.Razorpay) {
             console.error('Razorpay is not loaded');
             return;
         }
-
+    
         const options = {
             key: 'rzp_test_LMZHnNT5VlTSU1',
             amount: amount * 100, // Amount is multiplied by 100 to convert to paise
@@ -21,18 +21,27 @@ const PaymentComponent = ({ amount, rideId, userId, onPaymentSuccess, onPaymentF
             description: 'Payment For Ride',
             handler: function (response) {
                 alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
-
+    
+                // ✅ Debugging logs
+                console.log("Ride ID:", rideId);
+                console.log("User ID:", userId);
+    
+                if (!rideId || !userId) {
+                    console.error("🚨 rideId or userId is undefined!");
+                    return;
+                }
+    
                 // Creating payment payload inside the handler function
                 const paymentPayload = {
                     paymentId: response.razorpay_payment_id,
                     status: 'success',
                     amount: amount,
-                    rideId: rideId,  // Passing the rideId
-                    userId: userId   // Passing the userId
+                    rideId: rideId,  
+                    userId: userId  
                 };
-
-                console.log(paymentPayload);  // Log the payload to check if userId is present
-
+    
+                console.log("📦 Payment Payload:", paymentPayload);
+    
                 // Send the payment details to your API to save the payment
                 fetch('https://localhost:44345/api/Payment', {
                     method: 'POST',
@@ -44,10 +53,13 @@ const PaymentComponent = ({ amount, rideId, userId, onPaymentSuccess, onPaymentF
                 .then(res => res.json())
                 .then(data => {
                     console.log("API Response:", data);
-                    if (data.success) { // Ensure API sends `success` field
+                    if (data.success) { 
                         setIsPaymentSuccess(true);
-                        onPaymentSuccess && onPaymentSuccess(response.razorpay_payment_id);
-                        navigate('/user-rides'); // Redirect only on success
+                        
+                        // ✅ Fix: Ensure rideId & userId are correctly passed
+                        onPaymentSuccess && onPaymentSuccess(rideId, userId); 
+    
+                        navigate('/user-rides'); 
                     } else {
                         onPaymentFailure && onPaymentFailure();
                     }
@@ -69,10 +81,12 @@ const PaymentComponent = ({ amount, rideId, userId, onPaymentSuccess, onPaymentF
                 color: '#F37254',
             },
         };
-
+    
         const razorpay = new window.Razorpay(options);
         razorpay.open();
     };
+    
+
     return (
         <div className="p-4 border rounded shadow-lg bg-white max-w-sm mx-auto mt-4">
             <h2 className="text-xl font-bold mb-2">Payment</h2>

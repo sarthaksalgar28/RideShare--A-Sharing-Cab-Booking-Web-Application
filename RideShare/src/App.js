@@ -42,6 +42,9 @@ import AboutUser from './components/User/AboutUser';
 import ContactUser from './components/User/ContactUser';
 import UserProfile from './components/User/UserProfile';
 import DriverProfile from './components/Driver/DriverProfile';
+import ChatComponent from './components/ChatComponent';
+import { HubConnectionBuilder } from '@microsoft/signalr';
+import ParentComponent from './components/ParentComponent';
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -57,6 +60,27 @@ const App = () => {
         setFrom(fromValue);
         setTo(toValue);
     };
+    const [conn,setConnection]= useState();
+
+    const joinChatRoom=async(username,chatroom)=>{
+        try{
+            const conn=HubConnectionBuilder()
+                    .WithUrl("https://localhost:44345")
+                    .configureLogging(LogLevel.Information)
+                    .build();
+
+                    conn.on("JoinSpecificChatRoom",(username,msg)=>{
+                        console.log("msg:",msg)
+                     });
+
+                     await conn.start();
+                     await conn.invoke("JoinSpecificChatRoom",{username,chatroom})
+
+                     setConnection(conn);
+        }catch(e){
+            console.log(e)
+        }
+    }
 
     // Check for user authentication on app load
     useEffect(() => {
@@ -80,6 +104,7 @@ const App = () => {
     <Route path="/about" element={<AboutUs />} />
     <Route path="/contact" element={<ContactUs />} />
     <Route path="/rides" element={<PopularRides />} />
+    <Route path="/chat" element={<ParentComponent />} />
 
  
 
