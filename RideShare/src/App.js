@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { LoadScript } from '@react-google-maps/api';
 import ProtectedRoute from './components/ProtectedRoute'; 
+import { AuthProvider } from './components/NavigateAuth/AuthContext';
 // Import components
 import NavbarWrapper from './components/HomePage/NavbarWrapper';
 import HeroSection from './components/HomePage/HeroSection';
@@ -36,7 +37,7 @@ import ContactDriver from './components/Driver/ContactDriver';
 import AboutDriver from './components/Driver/AboutDriver';
 import Refer from './components/HomePage/Refer';
 import Safety from './components/HomePage/Safety';
-import Login1 from './components/Login/login1';
+
 import AboutUser from './components/User/AboutUser';
 import ContactUser from './components/User/ContactUser';
 import UserProfile from './components/User/UserProfile';
@@ -48,10 +49,10 @@ const App = () => {
     const [distance, setDistance] = useState(null);
     const [user, setUser ] = useState(null); // State to hold user information
     const navigate = useNavigate();
-
+    const [searchQuery, setSearchQuery] = useState({ from: '', to: '' });
     // Use the custom hook to manage rides
     const { rides, addRide } = useRides();
-
+    const userId= localStorage.getItem('id');
     const handleSearch = (fromValue, toValue) => {
         setFrom(fromValue);
         setTo(toValue);
@@ -70,45 +71,54 @@ const App = () => {
     return (
         <LoadScript googleMapsApiKey="AIzaSyDrQeNVgH6Jws5AngUuXOwpBMX3bywLWZI" libraries={['places']}>
             <div>
-            {/* {user && user.role === 'driver' ? (
-                    <NavbarDriver onLogout={handleLogout} />
-                ) : (
-                    <NavbarWrapper onLogout={handleLogout} />
-                )} */}
-                {/* Render Navbar based on user role */}
-                {/* {user ? (user.role === 'driver' ? <NavbarDriver onLogout={handleLogout} /> : <NavbarWrapper onLogout={handleLogout} />) : <NavbarWrapper />} */}
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login setUser ={setUser } />} />
+            <Routes>
+    {/* Public routes */}
+    <Route path="/" element={<Home />} />
+    <Route path="/login" element={<Login setUser={setUser} />} />
+    <Route path="/signup" element={<Signup />} />
+    <Route path="/forgot-password" element={<ForgotPassword />} />
+    <Route path="/about" element={<AboutUs />} />
+    <Route path="/contact" element={<ContactUs />} />
+    <Route path="/rides" element={<PopularRides />} />
 
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/rides" element={<PopularRides rides={rides} />} />
-                    <Route path="/about" element={<AboutUs />} />
-                    <Route path="/contact" element={<ContactUs />} />
-                    <Route path="/search" element={<ProtectedRoute element={
-                        <>
-                            <SearchSection onSearch={handleSearch} setDistance={setDistance} />
-                            <PopRides rides={rides} />
-                        </>
-                    } />}></Route>
-                    <Route path="/rides" element={<ProtectedRoute element={<PopularRides rides={rides} />} user={user} />} />
-                    <Route path="/your-rides" element={<ProtectedRoute element={<YourRides />} user={user} />} />
-                    <Route path="/rides-driver" element={<ProtectedRoute element={<PopularRidesDriver />} user={user} />} />
-                    <Route path="/contact-driver" element={<ProtectedRoute element={<ContactDriver />} user={user} />} />
-                    <Route path="/about-driver" element={<ProtectedRoute element={<AboutDriver />} user={user} />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/publish-ride" element={< ProtectedRoute element={<PublishRide addRide={addRide} />} user={user} />} />
-                    <Route path="/upcoming-rides" element={<ProtectedRoute element={<UpcomingRides />} user={user} />} />
-                    <Route path="/book-now" element={<ProtectedRoute element={<PaymentComponent />} user={user} />} />
-                    <Route path="/safety" element={<ProtectedRoute element={<Safety />} user={user} />} />
-                    <Route path="/refer" element={<ProtectedRoute element={<Refer />} user={user} />} />
-                    <Route path="/user-rides" element={<ProtectedRoute element={<YourRides />} user={user} />} />
-                    <Route path="/user-about" element={<ProtectedRoute element={<AboutUser  />} user={user} />} />
-                    <Route path="/user-contact" element={<ProtectedRoute element={<ContactUser  />} user={user} />} />
-                    <Route path="/userprofile" element={<ProtectedRoute element={<UserProfile  />} user={user} />} />
-                    <Route path="/driverprofile" element={<ProtectedRoute element={<DriverProfile  />} user={user} />} />
-                </Routes>
+ 
 
+    {/* Protected Routes - Sirf Login Users Ke Liye */}
+    <Route element={<ProtectedRoute />}>
+    <Route path="/search" element={
+                <>
+                    <SearchSection 
+                        onSearch={handleSearch} 
+                        setDistance={setDistance} 
+                        setSearchQuery={setSearchQuery}
+                    />
+                    <PopRides rides={rides} />
+                </>
+            } />
+            <Route path="/your-rides" element={<YourRides />} />
+            <Route path="/rides-driver" element={<PopularRidesDriver />} />
+            <Route path="/contact-driver" element={<ContactDriver />} />
+            <Route path="/about-driver" element={<AboutDriver />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/publish-ride" element={<PublishRide addRide={addRide} />} />
+            <Route path="/upcoming-rides" element={<UpcomingRides />} />
+            <Route path="/book-now" element={<PaymentComponent />} />
+            <Route path="/safety" element={<Safety />} />
+            <Route path="/refer" element={<Refer />} />
+            <Route path="/user-rides" element={<YourRides />} />
+            <Route path="/user-about" element={<AboutUser  />} />
+            <Route path="/user-contact" element={<ContactUser  />} />
+            <Route path="/userprofile" element={<UserProfile />} />
+            <Route path="/driverprofile" element={<DriverProfile />} />
+    </Route>
+</Routes>
+
+
+
+                    
+                    
+                    
+        
                 <Footer /> 
             </div>
         </LoadScript>

@@ -53,6 +53,7 @@ const Login = () => {
                 // Store the auth token in localStorage
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('id', data.id); 
+                localStorage.setItem('role', data.role); 
 
                  // Assuming `data.token` contains the auth token
                 localStorage.setItem('username', data.name);
@@ -86,6 +87,7 @@ const Login = () => {
     const handleCreate = () => {
         navigate('/signup');
     };
+    
     
     // Close modal function
     const closeModal = () => {

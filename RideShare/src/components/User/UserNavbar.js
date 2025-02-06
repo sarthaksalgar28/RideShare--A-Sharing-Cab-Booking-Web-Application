@@ -14,6 +14,12 @@ const UserNavbar = () => {
         navigate('/userprofile'); // Redirect to user profile page
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('id');
+        navigate('/login');
+    };
+    
+
     // Custom style for brand text
     const brandStyle = {
         color: '#007bff', // Blue color
@@ -62,7 +68,7 @@ const UserNavbar = () => {
                         </button>
                         <button
                             className="btn btn-primary"
-                            onClick={handleSignup}
+                            onClick={handleLogout}
                         >
                             Log Out
                         </button>

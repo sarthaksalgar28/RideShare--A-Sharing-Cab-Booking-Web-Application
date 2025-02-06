@@ -17,6 +17,10 @@ const NavbarDriver = () => {
     const handleProfileClick = () => {
         navigate('/driverprofile');
     };
+    const handleLogout = () => {
+        localStorage.removeItem('id');
+        navigate('/login');
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
@@ -57,7 +61,7 @@ const NavbarDriver = () => {
                         >
                             Profile
                         </button>
-                        <Link className="btn btn-primary me-2" to="/">Logout</Link>
+                        <Link className="btn btn-primary me-2" onClick={handleLogout}>Logout</Link>
                         <Link className="btn btn-success" to="/publish-ride">Publish a Ride</Link>
                     </div>
                 </div>

@@ -35,32 +35,34 @@ const YourRides = () => {
     // Function to determine the text color based on payment status
     const getStatusStyle = (status) => {
         if (status.toLowerCase() === "success") {
-            return { color: "#4CAF50" };  // Green text for success
+            return "text-green-600 font-bold";  // Green text for success
         }
-        return { color: "#1D4ED8" };  // Blue text for other statuses
+        return "text-blue-600 font-bold";  // Blue text for other statuses
     };
 
     return (
         <>
         <UserNavbar />
-        <div className="payment-container">
-            <h1>Your Payment Details</h1>
-            {error && <p className="error-message">{error}</p>}
+        <div className="max-w-5xl mx-auto p-4">
+            <h2 className="text-2xl font-bold mb-4 text-center">Your Payment Details</h2>
+            {error && <p className="text-red-600 text-center mb-4">{error}</p>}
             {paymentDetails.length > 0 ? (
-                <ul className="payment-list">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {paymentDetails.map((payment) => (
-                        <li key={payment.paymentId} className="payment-item">
-                            <p><strong>Payment ID:</strong> {payment.paymentId}</p>
-                            <p style={getStatusStyle(payment.status)}><strong>Status:</strong> {payment.status}</p>
-                            <p><strong>Amount:</strong> ₹{payment.amount}</p>
-                            <p><strong>Route:</strong> {payment.route}</p>
-                            <p><strong>Driver ID:</strong> {payment.driverId}</p>
-                            <p><strong>Date:</strong> {payment.date}</p>
-                        </li>
+                        <div key={payment.paymentId} className="bg-white shadow-lg border border-green-300 hover:shadow-xl hover:border-green-400 transition-all rounded-xl p-4 flex flex-col justify-between">
+                            <div>
+                                <p><strong>Payment ID:</strong> {payment.paymentId}</p>
+                                <p className={getStatusStyle(payment.status)}><strong>Status:</strong> {payment.status}</p>
+                                <p><strong>Amount:</strong> ₹{payment.amount}</p>
+                                <p><strong>Route:</strong> {payment.route}</p>
+                                <p><strong>Driver ID:</strong> {payment.driverId}</p>
+                                <p><strong>Date:</strong> {payment.date}</p>
+                            </div>
+                        </div>
                     ))}
-                </ul>
+                </div>
             ) : (
-                <p className="no-payments">No payment details found for your rides.</p>
+                <p className="text-gray-600 text-center">No payment details found for your rides.</p>
             )}
         </div>
         </>
@@ -68,61 +70,3 @@ const YourRides = () => {
 };
 
 export default YourRides;
-
-// Styling directly in the same file using template literals
-const styles = `
-.payment-container {
-    width: 80%;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 1.5rem;
-}
-
-.payment-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.payment-item {
-    border: 2px solid #1D4ED8;  /* Blue outline */
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.payment-item p {
-    margin: 0.5rem 0;
-    color: #555;
-}
-
-.payment-item strong {
-    color: #333;
-}
-
-.no-payments {
-    font-size: 1.1rem;
-    color: #777;
-    text-align: center;
-}
-
-.error-message {
-    font-size: 1.1rem;
-    color: red;
-    text-align: center;
-}
-`;
-
-// Adding styles to the document head
-const styleSheet = document.createElement("style");
-styleSheet.type = "text/css";
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);

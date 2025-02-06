@@ -93,14 +93,15 @@ const Search = ({ setDistance }) => {
                             </div>
                         </div>
                         <div className="flex space-x-4">
-                            <div className="flex-1">
-                                <label className="block text-gray-700" htmlFor="date">Date</label>
-                                <input
-                                    className="w-full border-gray-300 rounded-lg p-2"
-                                    id="date"
-                                    type="date"
-                                />
-                            </div>
+                        <div className="flex-1">
+        <label className="block text-gray-700" htmlFor="date">Date</label>
+        <input
+            className="w-full border-gray-300 rounded-lg p-2"
+            id="date"
+            type="date"
+            min={new Date().toISOString().split("T")[0]}  // Set min to the current date
+        />
+    </div>
                             <div className="flex-1">
                                 <label className="block text-gray-700" htmlFor="time">Time</label>
                                 <input
