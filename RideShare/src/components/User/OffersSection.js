@@ -25,13 +25,18 @@ const OffersSection = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {offersData.map((offer, index) => (
-                        <div key={index} className="offer bg-white text-blue-600 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-                            <h3 className="text-xl font-semibold">{offer.title}</h3>
-                            <p>{offer.description}</p>
-                            <button 
+                        <div
+                            key={index}
+                            className="offer bg-white text-blue-600 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105"
+                        >
+                            <h3 className="text-xl font-semibold mb-4">{offer.title}</h3>
+                            <p className="mb-4">{offer.description}</p>
+                            
+                            <button
                                 onClick={() => handleButtonClick(offer)} // Call the function on button click
-                                className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700 transition duration-300"
+                                className={`flex items-center justify-center ${offer.buttonColor} text-white px-6 py-2 rounded mt-4 hover:bg-opacity-80 transition duration-300`}
                             >
+                                <i className={`fas ${offer.icon} mr-2`}></i> {/* Icon added here */}
                                 {offer.buttonText}
                             </button>
                         </div>
@@ -46,27 +51,37 @@ const offersData = [
     {
         title: "50% Off Your First Ride!",
         description: "Sign up today and enjoy 50% off your first ride with us. Experience the convenience of ridesharing at half the price!",
-        buttonText: "Get Started"
+        buttonText: "Get Started",
+        icon: "fa-sign-in-alt",  // FontAwesome icon for "Get Started"
+        buttonColor: "bg-blue-600",  // Blue button color for "Get Started"
     },
     {
         title: "Your Safety is Our Priority",
         description: "We ensure a safe and secure ride every time. Our drivers are background checked and trained to provide you with a comfortable experience.",
-        buttonText: "Learn More"
+        buttonText: "Learn More",
+        icon: "fa-shield-alt",  // FontAwesome icon for "Learn More"
+        buttonColor: "bg-green-600",  // Green button color for "Learn More"
     },
     {
         title: "Refer a Friend, Earn Rewards!",
         description: "Invite your friends to join our rideshare community and earn ride credits for every successful referral. Share the love!",
-        buttonText: "Refer Now"
+        buttonText: "Refer Now",
+        icon: "fa-users",  // FontAwesome icon for "Refer Now"
+        buttonColor: "bg-yellow-600",  // Yellow button color for "Refer Now"
     },
     {
         title: "Weekend Rides at 30% Off!",
         description: "Enjoy your weekends with discounted rides. Get 30% off on all rides every Saturday and Sunday!",
-        buttonText: "Book Now" // This button will redirect to the Search page
+        buttonText: "Book Now",
+        icon: "fa-calendar-check",  // FontAwesome icon for "Book Now"
+        buttonColor: "bg-red-600",  // Red button color for "Book Now"
     },
     {
         title: "Join Our Loyalty Program",
         description: "Sign up for our loyalty program and earn points for every ride. Redeem points for discounts and exclusive offers!",
-        buttonText: "Join Now"
+        buttonText: "Join Now",
+        icon: "fa-gift",  // FontAwesome icon for "Join Now"
+        buttonColor: "bg-purple-600",  // Purple button color for "Join Now"
     }
 ];
 
