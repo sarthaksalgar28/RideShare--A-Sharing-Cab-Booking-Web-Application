@@ -22,7 +22,7 @@ const UserProfile = () => {
         }));
 
         const fetchUserData = async () => {
-            const response = await fetch(`https://localhost:44345/api/user/${uid}`);
+            const response = await fetch(`http://rideshare.ap-south-1.elasticbeanstalk.com/api/user/${uid}`);
             if (response.ok) {
                 const data = await response.json();
                 setUser(prevDetails => ({
@@ -55,7 +55,7 @@ const UserProfile = () => {
         const uid = localStorage.getItem("id");
 
         try {
-            const response = await fetch(`https://localhost:44345/api/user/${uid}`, {
+            const response = await fetch(`http://rideshare.ap-south-1.elasticbeanstalk.com/api/user/${uid}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

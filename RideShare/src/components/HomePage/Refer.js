@@ -1,48 +1,79 @@
 // src/pages/Refer.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import Navbar from './NavBar'; // Ensure this is your Navbar component
+import { FaUser , FaMoneyBillWave, FaShieldAlt } from 'react-icons/fa'; // Importing icons
 
 const Refer = () => {
+    const navigate = useNavigate(); // Initialize useNavigate
+
+    const handleButtonClick = () => {
+        navigate('/login'); // Redirect to the login page
+    };
+
     return (
-        <div className="bg-white text-gray-800">
-            <div className="container mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-4 text-blue-600">Refer a Friend, Earn Rewards!</h1>
-                <p className="mb-6">
-                    At RideShare, we believe in sharing the love! Our referral program allows you to earn rewards by inviting your friends to join our rideshare community.
-                </p>
-                <h2 className="text-2xl font-semibold mb-2 text-blue-600">How It Works</h2>
-                <p className="mb-4">
-                    It's simple! Just follow these steps:
-                    <ol className="list-decimal list-inside ml-4">
+        <>
+            <Navbar />
+            <div className="bg-gradient-to-r from-blue-500 to-blue-300 text-gray-800">
+                <div className="container mx-auto px-4 py-8">
+                    <h1 className="text-4xl font-bold mb-4 text-white text-center animate__animated animate__fadeIn" aria-label="Refer a Friend, Earn Rewards!">Refer a Friend, Earn Rewards!</h1>
+                    <p className="mb-6 text-center text-lg text-white animate__animated animate__fadeIn" style={{ animationDelay: '0.2s' }}>
+                        At RideShare, we believe in sharing the love! Our referral program allows you to earn rewards by inviting your friends to join our rideshare community.
+                    </p>
+                    
+                    <h2 className="text-3xl font-semibold mb-4 text-white text-center animate__animated animate__fadeIn" style={{ animationDelay: '0.4s' }} aria-label="How It Works">How It Works</h2>
+                    <p className="mb-4 text-center text-lg text-white animate__animated animate__fadeIn" style={{ animationDelay: '0.6s' }}>
+                        It's simple! Just follow these steps:
+                    </p>
+                    <ol className="list-decimal list-inside ml-4 mb-6 text-white text-lg animate__animated animate__fadeIn" style={{ animationDelay: '0.8s' }}>
                         <li>Share your unique referral link with friends and family.</li>
                         <li>When they sign up and take their first ride, you both earn rewards!</li>
                     </ol>
-                </p>
-                <h2 className="text-2xl font-semibold mb-2 text-blue-600">What You Earn</h2>
-                <p className="mb-4">
-                    For every friend you refer who completes their first ride, you will receive:
-                    <ul className="list-disc list-inside ml-4">
-                        <li>A $10 credit towards your next ride</li>
- <li>Your friend will also receive a $10 discount on their first ride!</li>
+
+                    <h2 className="text-3xl font-semibold mb-4 text-white text-center animate__animated animate__fadeIn" style={{ animationDelay: '1s' }} aria-label="What You Earn">What You Earn</h2>
+                    <p className="mb-4 text-center text-lg text-white animate__animated animate__fadeIn" style={{ animationDelay: '1.2s' }}>
+                        For every friend you refer who completes their first ride, you will receive:
+                    </p>
+                    <ul className="list-disc list-inside ml-4 mb-6 text-white text-lg animate__animated animate__fadeIn" style={{ animationDelay: '1.4s' }}>
+                        <li>A ₹100 credit towards your next ride</li>
+                        <li>Your friend will also receive a ₹100 discount on their first ride!</li>
                     </ul>
-                </p>
-                <h2 className="text-2xl font-semibold mb-2 text-blue-600">Why Refer Us?</h2>
-                <p className="mb-4">
-                    By referring your friends, you are helping them discover a reliable and safe rideshare option. Plus, you get rewarded for sharing the experience! Here are some reasons to refer us:
-                    <ul className="list-disc list-inside ml-4">
-                        <li>High safety standards and background-checked drivers</li>
-                        <li>User-friendly app with real-time tracking</li>
-                        <li>24/7 customer support for any inquiries</li>
-                    </ul>
-                </p>
-                <h2 className="text-2xl font-semibold mb-2 text-blue-600">Get Started!</h2>
-                <p className="mb-4">
-                    Ready to start earning rewards? Log in to your account and find your unique referral link in the "Refer a Friend" section. Share it via social media, email, or text, and watch the rewards roll in!
-                </p>
-                <p>
-                    Thank you for being a part of our rideshare community. We appreciate your support and look forward to rewarding you for sharing the love!
-                </p>
+
+                    <h2 className="text-3xl font-semibold mb-4 text-white text-center animate__animated animate__fadeIn" style={{ animationDelay: '1.6s' }} aria-label="Why Refer Us?">Why Refer Us?</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div className="bg-white p-4 rounded-lg shadow-lg text-center animate__animated animate__fadeIn transition-transform transform hover:scale-105 hover:shadow-xl" style={{ animationDelay: '1.8s' }}>
+                            <FaShieldAlt className="text-blue-600 text-4xl mb-2" />
+                            <h3 className="font-semibold">Safety First</h3>
+                            <p>High safety standards and background-checked drivers.</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg shadow-lg text-center animate__animated animate__fadeIn transition-transform transform hover:scale-105 hover:shadow-xl" style={{ animationDelay: '2s' }}>
+                            <FaUser  className="text-blue-600 text-4xl mb-2" />
+                            <h3 className="font-semibold">User -Friendly</h3>
+                            <p>User-friendly app with real-time tracking.</p>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg shadow-lg text-center animate__animated animate__fadeIn transition-transform transform hover:scale-105 hover:shadow-xl" style={{ animationDelay: '2.2s' }}>
+                            <FaMoneyBillWave className="text-blue-600 text-4xl mb-2" />
+                            <h3 className="font-semibold">24/7 Support</h3>
+                            <p>24/7 customer support for any inquiries.</p>
+                        </div>
+                    </div>
+
+                    <h2 className="text-3xl font-semibold mb-4 text-white text-center animate__animated animate__fadeIn" style={{ animationDelay: '2.4s' }} aria-label="Get Started">Get Started</h2>
+                    <p className="mb-4 text-center text-lg text-white animate__animated animate__fadeIn" style={{ animationDelay: '2.6s' }}>
+                        Ready to start earning rewards? Click the button below to get your unique referral link!
+                    </p>
+                    <div className="text-center">
+                        <button 
+                            className="bg-yellow-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-yellow-400 transition duration-300 animate__animated animate__fadeIn" 
+                            style={{ animationDelay: '2.8s' }} 
+                            onClick={handleButtonClick} // Add onClick event to handle redirection
+                        >
+                            Get My Referral Link
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

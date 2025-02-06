@@ -26,7 +26,7 @@ const DriverProfile = () => {
 
         const fetchDriverData = async () => {
             try {
-                const response = await fetch(`https://localhost:44345/api/driver/${uid}`);
+                const response = await fetch(`http://rideshare.ap-south-1.elasticbeanstalk.com/api/driver/${uid}`);
                 if (response.ok) {
                     const data = await response.json();
 
@@ -71,7 +71,7 @@ const DriverProfile = () => {
         }
     
         try {
-            const response = await fetch(`https://localhost:44345/api/driver/${driverId}`, {
+            const response = await fetch(`http://rideshare.ap-south-1.elasticbeanstalk.com/api/driver/${driverId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -11,7 +11,7 @@ const PopularRidesUser = () => {
     useEffect(() => {
         const fetchRides = async () => {
             try {
-                const response = await axios.get('https://localhost:44345/api/Rides');
+                const response = await axios.get('http://rideshare.ap-south-1.elasticbeanstalk.com/api/Rides');
                 console.log("Rides data from API:", response.data);  // Log raw API response data
                 const currentDate = new Date();
                 const filteredRides = response.data.filter(ride => new Date(ride.date) > currentDate);

@@ -23,7 +23,7 @@ const ForgotPassword = () => {
         }
 
         try {
-            // Make a POST request to verify the email
+            // Make a POST request to verify the email exists in the database
             const response = await fetch('https://localhost:44345/api/VerifyEmail', {
                 method: 'POST',
                 headers: {
@@ -42,7 +42,7 @@ const ForgotPassword = () => {
                     navigate(`/update-password?email=${email}`);
                 }, 3000); // Redirect after 3 seconds
             } else {
-                setModalMessage(data.error || 'An error occurred. Please try again later.');
+                setModalMessage(data.error || 'Email not found. Please try again.');
                 setModalVisible(true);
             }
         } catch (err) {

@@ -20,7 +20,7 @@ const PopularRidesUser = () => {
 
     const fetchRides = async () => {
         try {
-            const response = await axios.get('https://localhost:44345/api/Rides');
+            const response = await axios.get('http://rideshare.ap-south-1.elasticbeanstalk.com/api/Rides');
             const currentDate = new Date();
             const filteredRides = response.data.filter(ride => new Date(ride.date.split(' at ')[0]) > currentDate);
             setUpcomingRides(filteredRides);

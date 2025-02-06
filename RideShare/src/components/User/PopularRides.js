@@ -19,7 +19,7 @@ const PopularRides = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await axios.get('https://localhost:44345/api/rides/filter', {
+            const response = await axios.get('http://rideshare.ap-south-1.elasticbeanstalk.com/api/rides/filter', {
                 params: { from, to, date }
             });
             setRides(response.data);

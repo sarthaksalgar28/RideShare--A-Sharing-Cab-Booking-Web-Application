@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr'; // Import HttpTransportType
 import UserNavbar from './User/UserNavbar'; // Import User Navbar
- // Import Driver Navbar
-import NavbarDriver from './Driver/NavBarDriver';
+import NavbarDriver from './Driver/NavBarDriver'; // Import Driver Navbar
+import * as signalR from "@microsoft/signalr";
+
 
 const ChatComponent = ({ username, chatroom, role }) => {  // Accept 'role' as prop
     const [conn, setConnection] = useState(null);
@@ -11,18 +12,25 @@ const ChatComponent = ({ username, chatroom, role }) => {  // Accept 'role' as p
 
     useEffect(() => {
         const connect = async () => {
-            const connection = new HubConnectionBuilder()
-                .withUrl("https://localhost:44345/chathub") // SignalR URL
-                .configureLogging(LogLevel.Information)
-                .build();
+            const connection = new signalR.HubConnectionBuilder()
+    .withUrl("http://rideshare.ap-south-1.elasticbeanstalk.com/chathub", {
+        transport: signalR.HttpTransportType.WebSockets
+    })
+    .withAutomaticReconnect()
+    .build();
+        
 
             connection.on("ReceiveMessage", (msg) => {
                 setMessages((prevMessages) => [...prevMessages, msg]);
             });
 
-            await connection.start();
-            await connection.invoke("JoinChatRoom", username, chatroom);
-            setConnection(connection);
+            try {
+                await connection.start();
+                await connection.invoke("JoinChatRoom", username, chatroom);
+                setConnection(connection); // Save the connection state
+            } catch (err) {
+                console.error('Error starting connection: ', err);
+            }
         };
 
         connect();

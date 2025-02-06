@@ -23,43 +23,46 @@ const UpdatePassword = () => {
             }, 3000);
         }
     }, [email, navigate]);
-
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         // Check if passwords match
         if (newPassword !== confirmPassword) {
             setError('Passwords do not match');
             return;
         }
-
+    
         try {
-            // Send the new password to the backend to update it in the database
-            const response = await fetch('https://localhost:44345/api/update-password', {
+            const response = await fetch('http://rideshare.ap-south-1.elasticbeanstalk.com/api/UpdatePassword', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email, newPassword }), // Sending email and new password
             });
-
+    
             const data = await response.json();
-
+            
+            console.log('Response from backend:', data);  // Log the response data
+    
             if (response.ok) {
                 setModalMessage('Password successfully updated.');
                 setModalVisible(true);
                 setTimeout(() => {
                     navigate('/login'); // Redirect to login after successful password change
-                }, 3000);
+                }, 1000);
             } else {
                 setModalMessage(data.error || 'An error occurred while updating the password.');
                 setModalVisible(true);
             }
         } catch (err) {
+            console.error('Error occurred:', err);  // Log any errors
             setModalMessage('An error occurred. Please try again later.');
             setModalVisible(true);
         }
     };
+    
+    
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-blue-100">

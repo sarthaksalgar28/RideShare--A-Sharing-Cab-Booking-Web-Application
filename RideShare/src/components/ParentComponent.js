@@ -13,6 +13,7 @@ const ParentComponent = () => {
     // Fetch the role from localStorage when the component mounts
     useEffect(() => {
         const storedRole = localStorage.getItem("role");
+        console.log("Stored Role: ", storedRole);  // Check if the role is correct
         setRole(storedRole || 'user'); // Default to 'user' if no role is found
     }, []);
 

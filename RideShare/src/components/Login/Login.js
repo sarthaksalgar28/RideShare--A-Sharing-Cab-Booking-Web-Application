@@ -32,7 +32,7 @@ const Login = () => {
         }
         
         try {
-            const response = await fetch('https://localhost:44345/api/Auth/login', {
+            const response = await fetch('http://rideshare.ap-south-1.elasticbeanstalk.com/api/Auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,13 +52,9 @@ const Login = () => {
     
                 // Store the auth token in localStorage
                 localStorage.setItem('authToken', data.token);
-                // localStorage.setItem('id', data.id); 
+                localStorage.setItem('id', data.id); 
                 localStorage.setItem('role', data.role); 
-                if (data.role === 'user') {
-                    localStorage.setItem('id', data.id); // Store user ID
-                  } else if (data.role === 'driver') {
-                    localStorage.setItem('driverId', data.id); // Store driver ID
-                  }
+
                  // Assuming `data.token` contains the auth token
                 localStorage.setItem('username', data.name);
                

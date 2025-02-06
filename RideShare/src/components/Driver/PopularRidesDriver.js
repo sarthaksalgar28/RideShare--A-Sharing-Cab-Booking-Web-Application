@@ -10,7 +10,7 @@ const PopularRidesDriver = () => {
     useEffect(() => {
         const fetchUserRides = async () => {
             try {
-                const response = await axios.get(`https://localhost:44345/api/Rides/myrides/${driverId}`);
+                const response = await axios.get(`http://rideshare.ap-south-1.elasticbeanstalk.com/api/Rides/myrides/${driverId}`);
                 setRides(response.data);
             } catch (error) {
                 console.error("Error fetching rides:", error);

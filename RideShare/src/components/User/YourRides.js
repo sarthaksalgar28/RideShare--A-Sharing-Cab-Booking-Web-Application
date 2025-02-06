@@ -18,7 +18,7 @@ const YourRides = () => {
 
                 // Fetch payment details for the user
                 const response = await axios.get(
-                    `https://localhost:44345/${userId}`  // Correct API endpoint
+                    `http://rideshare.ap-south-1.elasticbeanstalk.com/${userId}`  // Correct API endpoint
                 );
 
                 // Set payment details to the state

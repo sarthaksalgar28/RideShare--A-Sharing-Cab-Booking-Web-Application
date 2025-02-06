@@ -45,6 +45,7 @@ import DriverProfile from './components/Driver/DriverProfile';
 import ChatComponent from './components/ChatComponent';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import ParentComponent from './components/ParentComponent';
+import UpdatePassword from './components/Login/UpdatePassword';
 
 const App = () => {
     const [from, setFrom] = useState('');
@@ -104,6 +105,7 @@ const App = () => {
     <Route path="/about" element={<AboutUs />} />
     <Route path="/contact" element={<ContactUs />} />
     <Route path="/rides" element={<PopularRides />} />
+    <Route path="/update-password" element={<UpdatePassword/>} />
     <Route path="/chat" element={<ParentComponent />} />
 
  

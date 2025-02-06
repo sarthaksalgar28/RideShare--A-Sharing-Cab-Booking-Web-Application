@@ -74,7 +74,7 @@ const PublishRide = ({ addRide }) => {
         
         try {
             // POST the data to your backend API
-            const response =await axios.post('https://localhost:44345/api/Rides/publish', newRide);
+            const response =await axios.post('http://rideshare.ap-south-1.elasticbeanstalk.com/api/Rides/publish', newRide);
             if (response.data.success) {
                 setModalMessage('Published Ride successful!');
             } else {
